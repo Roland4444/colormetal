@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-public class ViewModel {
+public class WayBillView {
 
     private int waybillId;
     private int weighingId;

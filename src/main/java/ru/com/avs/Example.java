@@ -2,7 +2,7 @@ package ru.com.avs;
 
 import ch.roland.ModuleGUI;
 
-import java.awt.GridLayout;
+import java.awt.*;
 
 import javax.swing.*;
 
@@ -21,13 +21,15 @@ public class Example extends ModuleGUI {
     
     public void preperaGUI() throws ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException {
     	frame = new JFrame();
-    	
+        frame.setSize(600, 400);
     	tPosition = new JTable();
     	
     	lPosition = new JLabel("Position::");
     	
     	pPosition = new JPanel();
-    	pPosition.setLayout(new BoxLayout(pPosition, BoxLayout.PAGE_AXIS));
+    	pPosition.setLayout(new BorderLayout());
+        pPosition.add(lPosition, BorderLayout.NORTH);
+        pPosition.add(tPosition, BorderLayout.SOUTH);
 
     	pDescription = new JPanel();
     	pDescription.setLayout(new BoxLayout(pDescription, BoxLayout.PAGE_AXIS));
@@ -46,12 +48,12 @@ public class Example extends ModuleGUI {
         pButton = new JPanel(new GridLayout(1,2));
         
         pButton.add(bCancel, bRequestHelp);
-        pPosition.add(lPosition, tPosition);
+
         pDescription.add(lDescription, tDescription);
         
         main.add(pPosition);
-    	main.add(pDescription);
-    	main.add(pButton);
+    	//main.add(pDescription);
+    	//main.add(pButton);
     	
     	frame.add(main);
     	

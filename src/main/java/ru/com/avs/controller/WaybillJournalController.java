@@ -11,13 +11,7 @@ import java.util.Optional;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -26,10 +20,11 @@ import javafx.stage.Stage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import ru.com.avs.Example;
 import ru.com.avs.model.Metal;
 import ru.com.avs.model.Mode;
 import ru.com.avs.model.Tare;
-import ru.com.avs.model.ViewModel;
+import ru.com.avs.model.WayBillView;
 import ru.com.avs.model.Waybill;
 import ru.com.avs.model.Weighing;
 import ru.com.avs.service.AuthService;
@@ -39,26 +34,28 @@ import ru.com.avs.service.PropertyService;
 import ru.com.avs.service.WaybillService;
 import ru.com.avs.service.WeighingService;
 
+import javax.swing.*;
+
 @Component("WaybillJournalController")
 public class WaybillJournalController extends AbstractController {
 
-    public TableColumn<ViewModel, LocalDate> dateColumn;
-    public TableColumn<ViewModel, LocalTime> timeColumn;
-    public TableColumn<ViewModel, Integer> waybillColumn;
-    public TableColumn<ViewModel, Metal> metalColumn;
-    public TableColumn<ViewModel, String> commentColumn;
-    public TableColumn<ViewModel, String> bruttoColumn;
-    public TableColumn<ViewModel, Tare> tareColumn;
-    public TableColumn<ViewModel, String> nettoColumn;
-    public TableColumn<ViewModel, String> cloggingColumn;
-    public TableColumn<ViewModel, String> trashColumn;
-    public TableColumn<ViewModel, Boolean> modeColumn;
-    public TableColumn<ViewModel, Boolean> completeColumn;
-    public TableColumn<ViewModel, String> stateColumn;
+    public TableColumn<WayBillView, LocalDate> dateColumn;
+    public TableColumn<WayBillView, LocalTime> timeColumn;
+    public TableColumn<WayBillView, Integer> waybillColumn;
+    public TableColumn<WayBillView, Metal> metalColumn;
+    public TableColumn<WayBillView, String> commentColumn;
+    public TableColumn<WayBillView, String> bruttoColumn;
+    public TableColumn<WayBillView, Tare> tareColumn;
+    public TableColumn<WayBillView, String> nettoColumn;
+    public TableColumn<WayBillView, String> cloggingColumn;
+    public TableColumn<WayBillView, String> trashColumn;
+    public TableColumn<WayBillView, Boolean> modeColumn;
+    public TableColumn<WayBillView, Boolean> completeColumn;
+    public TableColumn<WayBillView, String> stateColumn;
 
-    private ViewModel viewModel;
+    private WayBillView viewModel;
     @FXML
-    private TableView<ViewModel> waybillTable;
+    private TableView<WayBillView> waybillTable;
     @FXML
     private DatePicker dateStart;
     @FXML
@@ -144,8 +141,27 @@ public class WaybillJournalController extends AbstractController {
     }
 
     @FXML
-    private void help(){
+    private void help() throws ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException {
+        new Example().preperaGUI();
+    }
 
+    @FXML
+    private void saveitem(){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Information Dialog");
+        alert.setHeaderText("Ok, magic now");
+        alert.setContentText("Ok, magic now");
+
+
+        WayBillView selectedwaybill = waybillTable.getSelectionModel().getSelectedItem();
+
+        alert.showAndWait();
+
+        alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Information Dialog");
+        alert.setHeaderText("Brutto =>");
+        alert.setContentText( selectedwaybill.getMetal().getName());
+        alert.showAndWait();
     }
 
     @FXML
@@ -235,26 +251,26 @@ public class WaybillJournalController extends AbstractController {
     }
 
     private void refreshData() {
-        ObservableList<ViewModel> data = FXCollections.observableArrayList();
+        ObservableList<WayBillView> data = FXCollections.observableArrayList();
         waybillTable.getItems().clear();
         List<Waybill> waybills =
                 waybillService.search(dateStart.getValue(), dateEnd.getValue(), commentFilter.getText());
-        List<ViewModel> viewModels = createModel(waybills);
-        for (ViewModel viewModel : viewModels) {
+        List<WayBillView> viewModels = createModel(waybills);
+        for (WayBillView viewModel : viewModels) {
             data.add(viewModel);
         }
         waybillTable.setItems(data);
     }
 
-    private List<ViewModel> createModel(List<Waybill> waybills) {
-        List<ViewModel> viewModels = new ArrayList<>();
+    private List<WayBillView> createModel(List<Waybill> waybills) {
+        List<WayBillView> viewModels = new ArrayList<>();
         for (Waybill waybill : waybills) {
 
             List<Weighing> weighings = waybill.getWeighings();
 
             List<Mode> modes = modeService.getList();
             for (Weighing weighing : weighings) {
-                ViewModel viewModel = new ViewModel();
+                WayBillView viewModel = new WayBillView();
                 viewModel.setWaybillId(waybill.getId());
                 viewModel.setDateCreate(waybill.getDateCreate());
                 viewModel.setTimeCreate(waybill.getTimeCreate());
