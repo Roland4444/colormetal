@@ -1,5 +1,6 @@
 package ru.com.avs.model;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,7 +11,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "tares")
-public class Tare {
+public class Tare implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

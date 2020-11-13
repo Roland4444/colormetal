@@ -1,5 +1,6 @@
 package ru.com.avs.model;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -18,7 +19,7 @@ import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 @Entity
 @Table(name = "temp_tares")
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class TempTare {
+public class TempTare implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

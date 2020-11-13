@@ -1,10 +1,11 @@
 package ru.com.avs.model;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-public class WayBillView {
+public class WayBillView implements Serializable {
 
     private int waybillId;
     private int weighingId;

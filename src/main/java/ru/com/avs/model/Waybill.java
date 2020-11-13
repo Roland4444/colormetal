@@ -1,5 +1,6 @@
 package ru.com.avs.model;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
@@ -25,7 +26,7 @@ import org.hibernate.annotations.FetchMode;
 @Entity
 @Table(name = "waybills")
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Waybill {
+public class Waybill implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

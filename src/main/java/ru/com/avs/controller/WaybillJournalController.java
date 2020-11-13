@@ -3,6 +3,9 @@ package ru.com.avs.controller;
 import static ru.com.avs.util.UserUtils.fileExists;
 import static ru.com.avs.util.UserUtils.getImage;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -33,6 +36,7 @@ import ru.com.avs.service.ModeService;
 import ru.com.avs.service.PropertyService;
 import ru.com.avs.service.WaybillService;
 import ru.com.avs.service.WeighingService;
+import ru.com.avs.util.WayBillUtil;
 
 import javax.swing.*;
 
@@ -52,6 +56,7 @@ public class WaybillJournalController extends AbstractController {
     public TableColumn<WayBillView, Boolean> modeColumn;
     public TableColumn<WayBillView, Boolean> completeColumn;
     public TableColumn<WayBillView, String> stateColumn;
+    public static final String FileNameDump  = "waybill.bin";
 
     private WayBillView viewModel;
     @FXML
@@ -146,21 +151,23 @@ public class WaybillJournalController extends AbstractController {
     }
 
     @FXML
-    private void saveitem(){
+    private void saveitem() throws IOException {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Information Dialog");
         alert.setHeaderText("Ok, magic now");
         alert.setContentText("Ok, magic now");
 
-
         WayBillView selectedwaybill = waybillTable.getSelectionModel().getSelectedItem();
+        FileOutputStream fos = new FileOutputStream(FileNameDump);
+        fos.write(WayBillUtil.saveWayBillToBytes(selectedwaybill));
+        fos.close();
 
         alert.showAndWait();
 
         alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Information Dialog");
-        alert.setHeaderText("Brutto =>");
-        alert.setContentText( selectedwaybill.getMetal().getName());
+        alert.setHeaderText("WrittenTo=>"+FileNameDump);
+
         alert.showAndWait();
     }
 

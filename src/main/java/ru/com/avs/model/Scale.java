@@ -13,9 +13,11 @@ import javax.persistence.Table;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
 
+import java.io.Serializable;
+
 @Entity
 @Table(name = "SCALES")
-public class Scale {
+public class Scale implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

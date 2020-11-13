@@ -1,5 +1,6 @@
 package ru.com.avs.model;
 
+import java.io.Serializable;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -16,7 +17,7 @@ import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 @Entity
 @Table(name = "mode")
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Mode {
+public class Mode implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -1,6 +1,8 @@
 package ru.com.avs.model;
 
-public enum ScaleType {
+import java.io.Serializable;
+
+public enum ScaleType implements Serializable {
 
     SCALE_3000(9600, "10"),
     SCALE_600(4800, "4A"),
