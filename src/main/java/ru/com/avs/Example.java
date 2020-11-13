@@ -11,7 +11,6 @@ import java.io.IOException;
 import javax.swing.*;
 
 public class Example extends ModuleGUI {
-	public JFrame frame;
     public JPanel DescriptionPanel;
     public JTextArea DescriptionText;
     public JButton RequestHelp;

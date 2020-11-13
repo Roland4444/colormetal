@@ -145,31 +145,22 @@ public class WaybillJournalController extends AbstractController {
         refreshData();
     }
 
-    @FXML
-    private void help() throws ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException {
-        new Example().preperaGUI();
-    }
 
     @FXML
-    private void saveitem() throws IOException {
+    private void help() throws IOException, ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Information Dialog");
-        alert.setHeaderText("Ok, magic now");
-        alert.setContentText("Ok, magic now");
 
         WeighingView selectedwaybill = waybillTable.getSelectionModel().getSelectedItem();
         FileOutputStream fos = new FileOutputStream(FileNameDump);
         fos.write(WayBillUtil.saveWayBillToBytes(selectedwaybill));
         fos.close();
 
-        alert.showAndWait();
-
         alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Information Dialog");
         alert.setHeaderText("WrittenTo=>"+FileNameDump);
 
         alert.showAndWait();
-        new SimpleTableTest();
+        new Example().preperaGUI();
     }
 
     @FXML
