@@ -1,12 +1,9 @@
 package ru.com.avs.util;
 
 import org.junit.Test;
-import ru.com.avs.controller.WaybillJournalController;
 import ru.com.avs.model.WayBillView;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.nio.file.Files;
@@ -22,11 +19,21 @@ public class WayBillUtilTest {
 
     @Test
     public void restoreBytesToWayBill() throws IOException {
-        WayBillView restored = WayBillUtil.restoreBytesToWayBill(Files.readAllBytes(Paths.get(new File(WaybillJournalController.FileNameDump).getPath())));
+        WayBillView restored = WayBillUtil.restoreBytesToWayBill(Files.readAllBytes(Paths.get(new File("waybill_xus.bin").getPath())));
         assertNotEquals(null, restored);
         assertEquals("5А", restored.getMetal().getName());
         assertEquals(2, restored.getWaybill()); //waybill № накладной
         assertEquals("хусаинов", restored.getComment());//комментарий
         assertEquals(new BigDecimal(35.6).floatValue(), restored.getBrutto().floatValue(), 0.2);
+    }
+
+    @Test
+    public void restoreBytesToWayBill2() throws IOException {
+        WayBillView restored = WayBillUtil.restoreBytesToWayBill(Files.readAllBytes(Paths.get(new File("waybill_vit.bin").getPath())));
+        assertNotEquals(null, restored);
+        assertEquals("Алюминий хлам", restored.getMetal().getName());
+        assertEquals(15, restored.getWaybill()); //waybill № накладной
+        assertEquals("витек", restored.getComment());//комментарий
+        assertEquals(new BigDecimal(294.5).floatValue(), restored.getBrutto().floatValue(), 0.2);
     }
 }
