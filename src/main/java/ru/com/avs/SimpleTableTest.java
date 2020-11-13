@@ -1,6 +1,15 @@
 package ru.com.avs;
+import ru.com.avs.controller.WaybillJournalController;
+import ru.com.avs.model.WeighingView;
+import ru.com.avs.service.WeighingServiceImpl;
+import ru.com.avs.util.WayBillUtil;
+
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
 
 public class SimpleTableTest extends JFrame
@@ -17,13 +26,17 @@ public class SimpleTableTest extends JFrame
 
     private Object[] columnsHeaderAVS = new String[] {"Дата","Время", "Накладная №", "Комментарий", "Металл", "Брутто", "Тара", "Засор" ,
             "Примеси", "Нетто", "Режим" , "Завершено" , "Состояние" };
-    public SimpleTableTest() {
+
+
+
+    public SimpleTableTest() throws IOException {
         super("Простой пример с JTable");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         // Простая таблица
         JTable table1 = new JTable(array, columnsHeader);
+        WeighingView restored = WayBillUtil.restoreBytesToWayBill(WaybillJournalController.FileNameDump);
 
-        JTable tableAVS = new JTable((Object[][]) arrayAVS, columnsHeaderAVS);
+        JTable tableAVS = new JTable( WayBillUtil.dataFromObject(restored), columnsHeaderAVS);//arrayAVS
         // Таблица с настройками
         JTable table2 = new JTable(3, 5);
         // Настройка таблицы
@@ -67,7 +80,7 @@ public class SimpleTableTest extends JFrame
         setSize(1200, 400);
         setVisible(true);
     }
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         new SimpleTableTest();
     }
 }

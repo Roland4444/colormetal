@@ -1,65 +1,77 @@
 package ru.com.avs;
 
 import ch.roland.ModuleGUI;
+import ru.com.avs.controller.WaybillJournalController;
+import ru.com.avs.model.WeighingView;
+import ru.com.avs.util.WayBillUtil;
 
 import java.awt.*;
+import java.io.IOException;
 
 import javax.swing.*;
 
 public class Example extends ModuleGUI {
 	public JFrame frame;
-	public JTable tPosition;
-    public JPanel pPosition;
-    public JPanel pDescription;
-    public JTextArea tDescription;
-    public JButton bRequestHelp;
-    public JButton bCancel;
-    public JPanel main;
-    public JPanel pButton;
+    public JPanel DescriptionPanel;
+    public JTextArea DescriptionText;
+    public JButton RequestHelp;
+    public JButton Cancel;
+    public JPanel MainPanel;
+    public JPanel ButtonPanel;
     public JLabel lPosition;
     public JLabel lDescription;
-    
+    public Box contents;
+    public JTable PositionTable;
+    public JScrollPane pane;
+    FlowLayout experimentLayout;
+    public Object[] columnsHeaderAVS = new String[] {"Дата","Время", "Накладная №", "Комментарий", "Металл", "Брутто", "Тара", "Засор" , "Примеси", "Нетто", "Режим" , "Завершено" , "Состояние" };
+    public Example(){
+        frame = new JFrame();
+        WeighingView restored = null;
+        try {
+            restored = WayBillUtil.restoreBytesToWayBill(WaybillJournalController.FileNameDump);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        PositionTable = new JTable( WayBillUtil.dataFromObject(restored), columnsHeaderAVS);
+        contents = new Box(BoxLayout.Y_AXIS);
+        lPosition = new JLabel("Позиция:");
+        lDescription = new JLabel("Опишите проблему");
+        DescriptionText = new JTextArea();
+        pane = new JScrollPane(PositionTable);
+        ButtonPanel = new JPanel(new BorderLayout());
+        RequestHelp =  new JButton("Запросить изменения");
+        Cancel = new JButton("Отмена");
+        DescriptionPanel = new JPanel();
+        experimentLayout = new FlowLayout();
+
+    }
+
     public void preperaGUI() throws ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException {
-    	frame = new JFrame();
-        frame.setSize(600, 400);
-    	tPosition = new JTable();
-    	
-    	lPosition = new JLabel("Position::");
-    	
-    	pPosition = new JPanel();
-    	pPosition.setLayout(new BorderLayout());
-        pPosition.add(lPosition, BorderLayout.NORTH);
-        pPosition.add(tPosition, BorderLayout.SOUTH);
+        contents.add(lPosition);
 
-    	pDescription = new JPanel();
-    	pDescription.setLayout(new BoxLayout(pDescription, BoxLayout.PAGE_AXIS));
-    	
-    	lDescription = new JLabel("Describe your problem");
-    	
-        tDescription = new JTextArea();
-        
-        bRequestHelp = new JButton("Request Help");
-        
-        bCancel = new JButton("Cancel");
-        
-        main = new JPanel();
-        main.setLayout(new BoxLayout(main, BoxLayout.PAGE_AXIS));
-        
-        pButton = new JPanel(new GridLayout(1,2));
-        
-        pButton.add(bCancel, bRequestHelp);
+        PositionTable.setRowHeight(40);
 
-        pDescription.add(lDescription, tDescription);
-        
-        main.add(pPosition);
-    	//main.add(pDescription);
-    	//main.add(pButton);
-    	
-    	frame.add(main);
-    	
-    	initListeners();    	
-    	
-    	frame.setVisible(true);
+        pane.setMaximumSize(new Dimension(1300,100));
+        pane.setPreferredSize(new Dimension(1300,100));
+        pane.setMinimumSize(new Dimension(1300,100));
+
+        ButtonPanel.setLayout(experimentLayout);
+        ButtonPanel.add(RequestHelp);
+        ButtonPanel.add(Cancel);
+
+        DescriptionText.setRows(20);
+        DescriptionText.setColumns(10);
+
+        contents.add(pane);
+        contents.add(lDescription);
+        contents.add(DescriptionText);
+        contents.add(ButtonPanel);
+
+        frame.setContentPane(contents);
+        frame.setSize(1200, 500);
+        frame.setVisible(true);
     }
 
     public void initListeners() {

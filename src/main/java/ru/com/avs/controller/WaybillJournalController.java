@@ -23,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import ru.com.avs.Example;
+import ru.com.avs.SimpleTableTest;
 import ru.com.avs.model.Metal;
 import ru.com.avs.model.Mode;
 import ru.com.avs.model.Tare;
@@ -168,6 +169,7 @@ public class WaybillJournalController extends AbstractController {
         alert.setHeaderText("WrittenTo=>"+FileNameDump);
 
         alert.showAndWait();
+        new SimpleTableTest();
     }
 
     @FXML
