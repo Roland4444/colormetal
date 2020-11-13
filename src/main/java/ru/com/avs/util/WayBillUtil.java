@@ -1,11 +1,11 @@
 package ru.com.avs.util;
 
-import ru.com.avs.model.WayBillView;
+import ru.com.avs.model.WeighingView;
 
 import java.io.*;
 
 public class WayBillUtil {
-    public static byte[] saveWayBillToBytes(WayBillView input) {
+    public static byte[] saveWayBillToBytes(WeighingView input) {
         byte[] Result=null ;
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         ObjectOutput out = null;
@@ -26,7 +26,7 @@ public class WayBillUtil {
         return Result;
     }
 
-    public static WayBillView restoreBytesToWayBill(byte[] input){
+    public static WeighingView restoreBytesToWayBill(byte[] input){
         Object o=null;
         ByteArrayInputStream bis = new ByteArrayInputStream(input);
         ObjectInput in = null;
@@ -46,6 +46,6 @@ public class WayBillUtil {
 
             }
         }
-        return (WayBillView) o;
+        return (WeighingView) o;
     }
 }

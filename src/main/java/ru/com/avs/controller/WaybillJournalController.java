@@ -3,7 +3,6 @@ package ru.com.avs.controller;
 import static ru.com.avs.util.UserUtils.fileExists;
 import static ru.com.avs.util.UserUtils.getImage;
 
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.time.LocalDate;
@@ -27,7 +26,7 @@ import ru.com.avs.Example;
 import ru.com.avs.model.Metal;
 import ru.com.avs.model.Mode;
 import ru.com.avs.model.Tare;
-import ru.com.avs.model.WayBillView;
+import ru.com.avs.model.WeighingView;
 import ru.com.avs.model.Waybill;
 import ru.com.avs.model.Weighing;
 import ru.com.avs.service.AuthService;
@@ -43,24 +42,24 @@ import javax.swing.*;
 @Component("WaybillJournalController")
 public class WaybillJournalController extends AbstractController {
 
-    public TableColumn<WayBillView, LocalDate> dateColumn;
-    public TableColumn<WayBillView, LocalTime> timeColumn;
-    public TableColumn<WayBillView, Integer> waybillColumn;
-    public TableColumn<WayBillView, Metal> metalColumn;
-    public TableColumn<WayBillView, String> commentColumn;
-    public TableColumn<WayBillView, String> bruttoColumn;
-    public TableColumn<WayBillView, Tare> tareColumn;
-    public TableColumn<WayBillView, String> nettoColumn;
-    public TableColumn<WayBillView, String> cloggingColumn;
-    public TableColumn<WayBillView, String> trashColumn;
-    public TableColumn<WayBillView, Boolean> modeColumn;
-    public TableColumn<WayBillView, Boolean> completeColumn;
-    public TableColumn<WayBillView, String> stateColumn;
+    public TableColumn<WeighingView, LocalDate> dateColumn;
+    public TableColumn<WeighingView, LocalTime> timeColumn;
+    public TableColumn<WeighingView, Integer> waybillColumn;
+    public TableColumn<WeighingView, Metal> metalColumn;
+    public TableColumn<WeighingView, String> commentColumn;
+    public TableColumn<WeighingView, String> bruttoColumn;
+    public TableColumn<WeighingView, Tare> tareColumn;
+    public TableColumn<WeighingView, String> nettoColumn;
+    public TableColumn<WeighingView, String> cloggingColumn;
+    public TableColumn<WeighingView, String> trashColumn;
+    public TableColumn<WeighingView, Boolean> modeColumn;
+    public TableColumn<WeighingView, Boolean> completeColumn;
+    public TableColumn<WeighingView, String> stateColumn;
     public static final String FileNameDump  = "waybill.bin";
 
-    private WayBillView viewModel;
+    private WeighingView viewModel;
     @FXML
-    private TableView<WayBillView> waybillTable;
+    private TableView<WeighingView> waybillTable;
     @FXML
     private DatePicker dateStart;
     @FXML
@@ -157,7 +156,7 @@ public class WaybillJournalController extends AbstractController {
         alert.setHeaderText("Ok, magic now");
         alert.setContentText("Ok, magic now");
 
-        WayBillView selectedwaybill = waybillTable.getSelectionModel().getSelectedItem();
+        WeighingView selectedwaybill = waybillTable.getSelectionModel().getSelectedItem();
         FileOutputStream fos = new FileOutputStream(FileNameDump);
         fos.write(WayBillUtil.saveWayBillToBytes(selectedwaybill));
         fos.close();
@@ -258,26 +257,26 @@ public class WaybillJournalController extends AbstractController {
     }
 
     private void refreshData() {
-        ObservableList<WayBillView> data = FXCollections.observableArrayList();
+        ObservableList<WeighingView> data = FXCollections.observableArrayList();
         waybillTable.getItems().clear();
         List<Waybill> waybills =
                 waybillService.search(dateStart.getValue(), dateEnd.getValue(), commentFilter.getText());
-        List<WayBillView> viewModels = createModel(waybills);
-        for (WayBillView viewModel : viewModels) {
+        List<WeighingView> viewModels = createModel(waybills);
+        for (WeighingView viewModel : viewModels) {
             data.add(viewModel);
         }
         waybillTable.setItems(data);
     }
 
-    private List<WayBillView> createModel(List<Waybill> waybills) {
-        List<WayBillView> viewModels = new ArrayList<>();
+    private List<WeighingView> createModel(List<Waybill> waybills) {
+        List<WeighingView> viewModels = new ArrayList<>();
         for (Waybill waybill : waybills) {
 
             List<Weighing> weighings = waybill.getWeighings();
 
             List<Mode> modes = modeService.getList();
             for (Weighing weighing : weighings) {
-                WayBillView viewModel = new WayBillView();
+                WeighingView viewModel = new WeighingView();
                 viewModel.setWaybillId(waybill.getId());
                 viewModel.setDateCreate(waybill.getDateCreate());
                 viewModel.setTimeCreate(waybill.getTimeCreate());

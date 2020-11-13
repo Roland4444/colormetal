@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-public class WayBillView implements Serializable {
+public class WeighingView implements Serializable {
 
     private int waybillId;
     private int weighingId;

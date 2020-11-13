@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import ru.com.avs.model.Metal;
-import ru.com.avs.model.WayBillView;
+import ru.com.avs.model.WeighingView;
 import ru.com.avs.model.Waybill;
 import ru.com.avs.model.Weighing;
 import ru.com.avs.service.MetalService;
@@ -53,7 +53,7 @@ public class WaybillEditController extends AbstractController {
     @Autowired
     private MetalService metalService;
 
-    void initData(WayBillView viewModel) {
+    void initData(WeighingView viewModel) {
         initMetals();
         weighing = weighingService.getById(viewModel.getWeighingId());
         dateText.setValue(weighing.getWaybill().getDateCreate());

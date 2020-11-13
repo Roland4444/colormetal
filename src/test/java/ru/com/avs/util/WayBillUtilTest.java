@@ -1,7 +1,7 @@
 package ru.com.avs.util;
 
 import org.junit.Test;
-import ru.com.avs.model.WayBillView;
+import ru.com.avs.model.WeighingView;
 
 import java.io.File;
 import java.io.IOException;
@@ -19,7 +19,7 @@ public class WayBillUtilTest {
 
     @Test
     public void restoreBytesToWayBill() throws IOException {
-        WayBillView restored = WayBillUtil.restoreBytesToWayBill(Files.readAllBytes(Paths.get(new File("waybill_xus.bin").getPath())));
+        WeighingView restored = WayBillUtil.restoreBytesToWayBill(Files.readAllBytes(Paths.get(new File("waybill_xus.bin").getPath())));
         assertNotEquals(null, restored);
         assertEquals("5А", restored.getMetal().getName());
         assertEquals(2, restored.getWaybill()); //waybill № накладной
@@ -29,7 +29,7 @@ public class WayBillUtilTest {
 
     @Test
     public void restoreBytesToWayBill2() throws IOException {
-        WayBillView restored = WayBillUtil.restoreBytesToWayBill(Files.readAllBytes(Paths.get(new File("waybill_vit.bin").getPath())));
+        WeighingView restored = WayBillUtil.restoreBytesToWayBill(Files.readAllBytes(Paths.get(new File("waybill_vit.bin").getPath())));
         assertNotEquals(null, restored);
         assertEquals("Алюминий хлам", restored.getMetal().getName());
         assertEquals(15, restored.getWaybill()); //waybill № накладной
