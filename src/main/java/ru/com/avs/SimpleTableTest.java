@@ -34,6 +34,7 @@ public class SimpleTableTest extends JFrame
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         // Простая таблица
         JTable table1 = new JTable(array, columnsHeader);
+
         WeighingView restored = WayBillUtil.restoreBytesToWayBill(WaybillJournalController.FileNameDump);
 
         JTable tableAVS = new JTable( WayBillUtil.dataFromObject(restored), columnsHeaderAVS);//arrayAVS

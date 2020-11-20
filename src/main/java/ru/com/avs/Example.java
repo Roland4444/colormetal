@@ -33,7 +33,11 @@ public class Example extends ModuleGUI {
             e.printStackTrace();
         }
 
-        PositionTable = new JTable( WayBillUtil.dataFromObject(restored), columnsHeaderAVS);
+        PositionTable = new JTable( WayBillUtil.dataFromObject(restored), columnsHeaderAVS){
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            };
+        };
         contents = new Box(BoxLayout.Y_AXIS);
         lPosition = new JLabel("Позиция:");
         lDescription = new JLabel("Опишите проблему");

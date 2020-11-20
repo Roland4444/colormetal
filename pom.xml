@@ -20,6 +20,11 @@
     <dependencies>
         <!-- Jetty Embedded -->
         <dependency>
+            <groupId>eu.roland</groupId>
+            <artifactId>JAKtor</artifactId>
+            <version>1.8-ROLLBACK</version>
+        </dependency>
+        <dependency>
             <groupId>ch.roland</groupId>
             <artifactId>ModuleGUI</artifactId>
             <version>1.0.0-SNAPSHOT</version>
