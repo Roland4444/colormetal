@@ -1,7 +1,7 @@
 package ru.com.avs;
 
+
 import ch.roland.ModuleGUI;
-import impl.JAktor;
 import ru.com.avs.controller.WaybillJournalController;
 import ru.com.avs.model.WeighingView;
 import ru.com.avs.util.ServerAktor;
@@ -96,6 +96,7 @@ public class Example extends ModuleGUI {
 
         akt.setAddress("http://127.0.0.1:12215/");
         akt.setCypher(new CypherImpl());
+        System.out.println("\n\n\n*************************\n****Spawning JAKtor******\n*************************\n\n\n\n");
         akt.spawn();
 
     }
