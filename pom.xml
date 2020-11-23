@@ -18,19 +18,19 @@
     </properties>
 
     <dependencies>
-        <!-- Jetty Embedded -->
-        <dependency>
-            <groupId>eu.roland</groupId>
-            <artifactId>JAKtor</artifactId>
-            <version>1.8-ROLLBACK</version>
-        </dependency>
-        <dependency>
-            <groupId>ch.roland</groupId>
-            <artifactId>ModuleGUI</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
-        </dependency>
+        <!--
 
-        <!-- Spring -->
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-server</artifactId>
+            <version>9.2.3.v20140905</version>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-servlet</artifactId>
+            <version>9.2.3.v20140905</version>
+        </dependency>
+       -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-web</artifactId>
