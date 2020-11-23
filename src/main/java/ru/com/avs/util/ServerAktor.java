@@ -1,8 +1,9 @@
 package ru.com.avs.util;
 
 
+import abstractions.Cypher;
 import impl.JAktor;
-import ru.com.avs.util.abstractions.Cypher;
+
 
 import java.io.IOException;
 

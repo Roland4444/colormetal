@@ -1,20 +1,34 @@
 package ru.com.avs;
 
 
+import Message.abstractions.BinaryMessage;
+import abstractions.Cypher;
+import abstractions.RequestMessage;
 import ch.roland.ModuleGUI;
 import ru.com.avs.controller.WaybillJournalController;
 import ru.com.avs.model.WeighingView;
+import ru.com.avs.util.JSONizer;
 import ru.com.avs.util.ServerAktor;
 import ru.com.avs.util.WayBillUtil;
-import ru.com.avs.util.abstractions.Cypher;
+
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.io.IOException;
+import java.net.ConnectException;
+import java.net.UnknownHostException;
+import java.util.concurrent.CompletionException;
 
 import javax.swing.*;
 
+import static javax.swing.JOptionPane.showMessageDialog;
+
 public class Example extends ModuleGUI {
     public ServerAktor akt;
+    public String urlServer = "http://127.0.0.1:12121/";
+    AbstractAction createandsendFatbundle;
+    public String createandsendfatbundle = "createfatbundle";
+    public String createfatbundle_shortcut = "control S";
     public JPanel DescriptionPanel;
     public JTextArea DescriptionText;
     public JButton RequestHelp;
@@ -26,10 +40,11 @@ public class Example extends ModuleGUI {
     public Box contents;
     public JTable PositionTable;
     public JScrollPane pane;
+    public JSONizer jsonizer;
     FlowLayout experimentLayout;
     public Object[] columnsHeaderAVS = new String[] {"Дата","Время", "Накладная №", "Комментарий", "Металл", "Брутто", "Тара", "Засор" , "Примеси", "Нетто", "Режим" , "Завершено" , "Состояние" };
     public Example(){
-
+        jsonizer =  new JSONizer();
 
         frame = new JFrame();
         WeighingView restored = null;
@@ -84,11 +99,46 @@ public class Example extends ModuleGUI {
     }
 
     public void initListeners() {
-
+        RequestHelp.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(createfatbundle_shortcut), createandsendfatbundle);
+        RequestHelp.getActionMap().put(createandsendfatbundle, createandsendFatbundle);
+        RequestHelp.addActionListener(createandsendFatbundle);
     }
 
     public void initActions() {
+        createandsendFatbundle = new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent f) {
+                WeighingView restored = null;
+                try {
+                    restored = WayBillUtil.restoreBytesToWayBill(WaybillJournalController.FileNameDump);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                System.out.println("Description::=>"+DescriptionText.getText());
+                String ID = restored.getDateCreate().toString()+restored.getTimeCreate().toString()+restored.getComment();
+                JOptionPane.showMessageDialog(null, "Отправляю на адрес:"+urlServer);
+                RequestMessage req = new RequestMessage(ID , DescriptionText.getText(), jsonizer.JSONedRestored(restored));
+                try {
+                    req.addressToReply=akt.getURL_thisAktor();
+                } catch (UnknownHostException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    akt.send(BinaryMessage.savedToBLOB(req), urlServer);
+                } catch (UnknownHostException e) {
+                    showMessageDialog(null, "ВОЗНИКЛА ОШИБКА ПРИ ОТПРАВКЕ => ПРОВЕРЬТЕ СЕТЕВЫЕ НАСТРОЙКИ\n"+e);
+                } catch (IOException e) {
+                    showMessageDialog(null, "ВОЗНИКЛА ОШИБКА ПРИ ОТПРАВКЕ => ПРОВЕРЬТЕ СЕТЕВЫЕ НАСТРОЙКИ\n"+e);
+                }
+                catch (CompletionException e){
+                    showMessageDialog(null, "ВОЗНИКЛА ОШИБКА ПРИ ОТПРАВКЕ => ПРОВЕРЬТЕ СЕТЕВЫЕ НАСТРОЙКИ\n"+e);
+                }
+                showMessageDialog(null, "запрос отправлен!!!");
 
+
+            }
+        };
+        initListeners();
     }
 
     public void prepareAktor() throws InterruptedException {
@@ -105,6 +155,7 @@ public class Example extends ModuleGUI {
     	Example ex = new Example();
     	ex.preperaGUI();
     	ex.prepareAktor();
+    	ex.initActions();
     }
 
 
