@@ -1,9 +1,12 @@
 package ru.com.avs;
 
 import ch.roland.ModuleGUI;
+import impl.JAktor;
 import ru.com.avs.controller.WaybillJournalController;
 import ru.com.avs.model.WeighingView;
+import ru.com.avs.util.ServerAktor;
 import ru.com.avs.util.WayBillUtil;
+import ru.com.avs.util.abstractions.Cypher;
 
 import java.awt.*;
 import java.io.IOException;
@@ -11,6 +14,7 @@ import java.io.IOException;
 import javax.swing.*;
 
 public class Example extends ModuleGUI {
+    public ServerAktor akt;
     public JPanel DescriptionPanel;
     public JTextArea DescriptionText;
     public JButton RequestHelp;
@@ -25,6 +29,8 @@ public class Example extends ModuleGUI {
     FlowLayout experimentLayout;
     public Object[] columnsHeaderAVS = new String[] {"Дата","Время", "Накладная №", "Комментарий", "Металл", "Брутто", "Тара", "Засор" , "Примеси", "Нетто", "Режим" , "Завершено" , "Состояние" };
     public Example(){
+
+
         frame = new JFrame();
         WeighingView restored = null;
         try {
@@ -84,9 +90,37 @@ public class Example extends ModuleGUI {
     public void initActions() {
 
     }
-    
-    public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException{
-    	new Example().preperaGUI();
+
+    public void prepareAktor() throws InterruptedException {
+        akt = new ServerAktor();
+
+        akt.setAddress("http://127.0.0.1:12215/");
+        akt.setCypher(new CypherImpl());
+        akt.spawn();
+
     }
     
+    public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException, InterruptedException {
+    	Example ex = new Example();
+    	ex.preperaGUI();
+    	ex.prepareAktor();
+    }
+
+
+    public class CypherImpl implements Cypher {
+
+        @Override
+        public byte[] decrypt(byte[] input) {
+            return input;
+        }
+
+        @Override
+        public byte[] encrypt(byte[] input) {
+            return input;
+        }
+
+    }
+
+
+
 }
