@@ -14,7 +14,9 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.concurrent.CompletionException;
 import javax.swing.*;
+import javax.swing.table.DefaultTableColumnModel;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 
 import static javax.swing.JOptionPane.showMessageDialog;
 
@@ -258,9 +260,22 @@ public class Example2 extends  ModuleGUI {
 
     }
 
+    public class ColumnModelSpezial extends DefaultTableColumnModel{
+        public ColumnModelSpezial(){
+            addColumn(new TableColumn("#1"));
+
+        }
+    }
+
+
     public class TableModelSpezial extends DefaultTableModel {
 
         private static final long serialVersionUID = 1L;
+
+        @Override
+        public int getColumnCount() {
+            return 8;
+        }
 
 
         public boolean isCellEditable(int rowIndex, int columnIndex) {
