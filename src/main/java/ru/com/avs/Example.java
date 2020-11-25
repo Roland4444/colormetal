@@ -1,6 +1,4 @@
 package ru.com.avs;
-
-
 import Message.abstractions.BinaryMessage;
 import abstractions.Cypher;
 import abstractions.RequestMessage;
@@ -9,15 +7,12 @@ import ru.com.avs.controller.WaybillJournalController;
 import ru.com.avs.model.WeighingView;
 import ru.com.avs.util.*;
 import ru.com.avs.util.readfile.Readfile;
-
-
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.concurrent.CompletionException;
-
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
@@ -197,6 +192,8 @@ public class Example extends  ModuleGUI {
                 JOptionPane.showMessageDialog(null, "Отправляю на адрес:" + urlServer);
 
                 RequestMessage req = new RequestMessage(ID, DescriptionText.getText(), jsonizer.JSONedRestored(restored));
+
+                System.out.println("\n\n\nJSON to send::"+ req.JSONed);
                 req.Description = DescriptionText.getText();
                 req.type = RequestMessage.Type.request;
                 try {

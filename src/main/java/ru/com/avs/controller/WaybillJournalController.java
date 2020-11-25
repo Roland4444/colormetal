@@ -3,8 +3,7 @@ package ru.com.avs.controller;
 import static ru.com.avs.util.UserUtils.fileExists;
 import static ru.com.avs.util.UserUtils.getImage;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -22,8 +21,6 @@ import javafx.stage.Stage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import ru.com.avs.Example;
-import ru.com.avs.SimpleTableTest;
 import ru.com.avs.model.Metal;
 import ru.com.avs.model.Mode;
 import ru.com.avs.model.Tare;
@@ -36,6 +33,8 @@ import ru.com.avs.service.ModeService;
 import ru.com.avs.service.PropertyService;
 import ru.com.avs.service.WaybillService;
 import ru.com.avs.service.WeighingService;
+import ru.com.avs.util.CmdRunner;
+import ru.com.avs.util.ExampleTask;
 import ru.com.avs.util.WayBillUtil;
 
 import javax.swing.*;
@@ -57,6 +56,10 @@ public class WaybillJournalController extends AbstractController {
     public TableColumn<WeighingView, Boolean> completeColumn;
     public TableColumn<WeighingView, String> stateColumn;
     public static final String FileNameDump  = "waybill.bin";
+
+    public TableView<WeighingView> getTable(){
+        return waybillTable;
+    }
 
     private WeighingView viewModel;
     @FXML
@@ -148,7 +151,7 @@ public class WaybillJournalController extends AbstractController {
 
     @FXML
     private void help() throws IOException, ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+       Alert alert = new Alert(Alert.AlertType.INFORMATION);
 
         WeighingView selectedwaybill = waybillTable.getSelectionModel().getSelectedItem();
         FileOutputStream fos = new FileOutputStream(FileNameDump);
@@ -160,7 +163,9 @@ public class WaybillJournalController extends AbstractController {
         alert.setHeaderText("WrittenTo=>"+FileNameDump);
 
         alert.showAndWait();
-        new Example().preperaGUI();
+    //   new Example().preperaGUI();
+
+        new CmdRunner().run();
     }
 
     @FXML
