@@ -14,9 +14,9 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.concurrent.CompletionException;
 import javax.swing.*;
-import javax.swing.table.DefaultTableColumnModel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
+import javax.swing.text.Position;
 
 import static javax.swing.JOptionPane.showMessageDialog;
 
@@ -25,6 +25,9 @@ public class Example2 extends  ModuleGUI {
     public String urlServer;
     AbstractAction createinitialrequest;
     AbstractAction saveChanges;
+    AbstractAction checkAction;
+    public String checkaction = "checkaction";
+    public String checkaction_shortcut = "control Z";
     public String createandsendfatbundle = "createfatbundle";
     public String createfatbundle_shortcut = "control R";
 
@@ -35,6 +38,7 @@ public class Example2 extends  ModuleGUI {
     public JButton RequestHelp;
     public JButton Cancel;
     public JButton SaveChanges;
+    public JButton CheckButton;
     public Box contents;
 
     public JPanel MainPanel;
@@ -50,7 +54,7 @@ public class Example2 extends  ModuleGUI {
     FlowLayout experimentLayout;
     public Object[] columnsHeaderAVS = new String[]{"Дата", "Время", "Накладная №", "Комментарий", "Металл", "Брутто", "Тара", "Засор", "Примеси", "Нетто", "Режим", "Завершено", "Состояние"};
 
-    public Example2() {
+    public Example2() throws IOException {
         jsonizer = new JSONizer();
         readfile = new Readfile("setts.ini");
         urlServer = readfile.readField("urlServer");
@@ -62,7 +66,7 @@ public class Example2 extends  ModuleGUI {
             e.printStackTrace();
         }
 
-        PositionTable = new JTable(WayBillUtil.dataFromObject(restored), columnsHeaderAVS);
+        PositionTable = new JTable(new TableModelSpezial());
 
 
         //fireTableDataChanged()
@@ -79,10 +83,13 @@ public class Example2 extends  ModuleGUI {
         ButtonPanel = new JPanel(new BorderLayout());
         RequestHelp = new JButton("Запросить изменения");
         SaveChanges = new JButton("Сохранить изменения");
+        CheckButton = new JButton("Проверить");
 
         Cancel = new JButton("Отмена");
         DescriptionPanel = new JPanel();
         experimentLayout = new FlowLayout();
+
+
 
         popupMenu = new JPopupMenu();
         JMenuItem menuItemAdd = new JMenuItem("Add New Row");
@@ -109,6 +116,7 @@ public class Example2 extends  ModuleGUI {
         ButtonPanel.add(RequestHelp);
         ButtonPanel.add(Cancel);
         ButtonPanel.add(SaveChanges);
+        ButtonPanel.add(CheckButton);
 
         DescriptionText.setRows(20);
         DescriptionText.setColumns(10);
@@ -130,6 +138,7 @@ public class Example2 extends  ModuleGUI {
 
         //    PositionTable.setEnabled(false);
         //    SaveChanges.setEnabled(false);
+
     }
 
     public void initListeners() {
@@ -141,9 +150,37 @@ public class Example2 extends  ModuleGUI {
         SaveChanges.getActionMap().put(savechanges, saveChanges);
         SaveChanges.addActionListener(saveChanges);
 
+        CheckButton.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(checkaction_shortcut), checkaction);
+        CheckButton.getActionMap().put(checkaction, checkAction);
+        CheckButton.addActionListener(checkAction);
+
     }
 
     public void initActions() {
+        checkAction = new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                StringBuffer bf  =  new StringBuffer();
+                for (int i = 0; i <= 12; i++) {
+                    bf.append("Position #"+ i +"data:: "+PositionTable.getModel().getValueAt(0, i)+"\n");
+                }
+                showMessageDialog(null, bf.toString());
+                Editor editor = new Editor();
+                editor.positiontable = PositionTable;
+                try {
+                    editor.preperaGUI();
+                } catch (ClassNotFoundException classNotFoundException) {
+                    classNotFoundException.printStackTrace();
+                } catch (UnsupportedLookAndFeelException unsupportedLookAndFeelException) {
+                    unsupportedLookAndFeelException.printStackTrace();
+                } catch (InstantiationException instantiationException) {
+                    instantiationException.printStackTrace();
+                } catch (IllegalAccessException illegalAccessException) {
+                    illegalAccessException.printStackTrace();
+                }
+            }
+        };
+
         saveChanges = new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -238,7 +275,7 @@ public class Example2 extends  ModuleGUI {
 
     }
 
-    public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException, InterruptedException {
+    public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException, InterruptedException, IOException {
         Example2 ex = new Example2();
         ex.preperaGUI();
         ex.prepareAktor();
@@ -260,22 +297,30 @@ public class Example2 extends  ModuleGUI {
 
     }
 
-    public class ColumnModelSpezial extends DefaultTableColumnModel{
-        public ColumnModelSpezial(){
-            addColumn(new TableColumn("#1"));
-
-        }
-    }
 
 
     public class TableModelSpezial extends DefaultTableModel {
+        private String[] columnNames = new String[]{"Дата", "Время", "Накладная №", "Комментарий", "Металл", "Брутто", "Тара", "Засор", "Примеси", "Нетто", "Режим", "Завершено", "Состояние"};
+        WeighingView restored = WayBillUtil.restoreBytesToWayBill(WaybillJournalController.FileNameDump);
 
-        private static final long serialVersionUID = 1L;
+        private Object[][] data=WayBillUtil.dataFromObject(restored);
 
+        public TableModelSpezial() throws IOException {
+            WeighingView restored = null;
+            try {
+                restored = WayBillUtil.restoreBytesToWayBill(WaybillJournalController.FileNameDump);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            data =WayBillUtil.dataFromObject(restored);
+            addRow(data[0]);
+        }
         @Override
         public int getColumnCount() {
-            return 8;
+            return columnNames.length;
         }
+
+
 
 
         public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -294,26 +339,7 @@ public class Example2 extends  ModuleGUI {
         }
 
         public String getColumnName(int columnIndex) {
-            switch (columnIndex) {
-                case 0:
-                    return "Дата";
-                case 1:
-                    return "Время";
-                case 2:
-                    return "Накладная №";
-                case 3:
-                    return "Комментарий";
-                case 4:
-                    return "Металл";
-                case 5:
-                    return "Брутто";
-                case 6:
-                    return "Тара";
-                case 7:
-                    return "Засор";
-            }
-            return "";
-
+            return columnNames[columnIndex];
         }
         // {"Дата", "Время", "Накладная №", "Комментарий", "Металл", "Брутто", "Тара", "Засор", "Примеси", "Нетто", "Режим", "Завершено", "Состояние"}
     }
