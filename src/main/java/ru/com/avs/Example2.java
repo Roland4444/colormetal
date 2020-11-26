@@ -14,6 +14,7 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.concurrent.CompletionException;
 import javax.swing.*;
+import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import javax.swing.text.Position;
@@ -65,8 +66,8 @@ public class Example2 extends  ModuleGUI {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        PositionTable = new JTable(new TableModelSpezial());
+        PositionTable = new JTable(WayBillUtil.dataFromObject(restored), columnsHeaderAVS);
+        //PositionTable = new JTable(new TableModelSpezial());
 
 
         //fireTableDataChanged()
@@ -313,8 +314,18 @@ public class Example2 extends  ModuleGUI {
                 e.printStackTrace();
             }
             data =WayBillUtil.dataFromObject(restored);
+
+
             addRow(data[0]);
+
+           // addRow(convertToVector(rowData));
         }
+
+        @Override
+        public int getRowCount() {
+            return 0;
+        }
+
         @Override
         public int getColumnCount() {
             return columnNames.length;
@@ -325,6 +336,11 @@ public class Example2 extends  ModuleGUI {
 
         public boolean isCellEditable(int rowIndex, int columnIndex) {
             return true; //falls Änderung auf eine Zeile beschränkt wird, zb 1. dann columnIndex==0;
+        }
+
+        @Override
+        public Object getValueAt(int rowIndex, int columnIndex) {
+            return null;
         }
 
 
