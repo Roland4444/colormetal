@@ -1,7 +1,5 @@
 package ru.com.avs;
-
 import ch.roland.ModuleGUI;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -76,9 +74,7 @@ public class Editor extends ModuleGUI {
         MetalLabelPanel = new JPanel(new BorderLayout());
         MetalItemPanel = new JPanel(new BorderLayout());
 
-
         buttonPanel =  new JPanel();
-
 
         frame = new JFrame("Накладная номер #"+ number+ " @"+ date);
         Comment = new JTextField("",15);
@@ -125,8 +121,6 @@ public class Editor extends ModuleGUI {
 
     @Override
     public void preperaGUI() throws ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException {
-    //    CommentPanel.add(LComment);
-    //    CommentPanel.add(Comment);
         CommentTextPanel.add(Comment, BorderLayout.WEST);
         CommentLabelPanel.add(LComment, BorderLayout.EAST);
         CommentPanel.add(CommentLabelPanel);
@@ -162,35 +156,6 @@ public class Editor extends ModuleGUI {
         MetalPanel.add(MetalLabelPanel);
         MetalPanel.add(MetalItemPanel);
 
-
-
-
-
-
-        ////////////////////////
-        ///////////////////////
-/*
-        BruttoPanel.add(LBrutto);
-        BruttoPanel.add(Brutto);
-
-//        JPanel intermediate = new JPanel(new BorderLayout());
-//        intermediate.add(CommentPanel, BorderLayout.SOUTH);
-
-        NettoPanel.add(LNetto);
-        NettoPanel.add(Netto);
-
-        CloggingPanel.add(LClogging);
-        CloggingPanel.add(Clogging);
-
-        TrashPanel.add(LTrash);
-        TrashPanel.add(Trash);
-
-        TaraPanel.add(LTara);
-        TaraPanel.add(Tara);
-
-        MetalPanel.add(LMetal);
-        MetalPanel.add(Metal);
-*/
         buttonPanel.add(Save);
 
         containerPanel.add(CommentPanel);
@@ -202,22 +167,11 @@ public class Editor extends ModuleGUI {
         containerPanel.add(MetalPanel);
 
         containerPanel.add(buttonPanel);
-/*
-        springLayoutPanel.add(LComment);
-        springLayoutPanel.add(Comment);
-        LComment.setLabelFor(Comment);
-
-        springLayoutPanel.add(LBrutto);
-        springLayoutPanel.add(Brutto);
-        LBrutto.setLabelFor(Brutto);
-*/
-  //      frame.setContentPane(springLayoutPanel);
 
         frame.setContentPane(containerPanel);
         frame.setSize(500, 450);
         frame.setVisible(true);
         initActions();
-
     }
 
     @Override
@@ -255,10 +209,6 @@ public class Editor extends ModuleGUI {
                 positiontable.setValueAt(Tara.getText(), 0, 6);
                 positiontable.setValueAt(Clogging.getText(), 0, 7);
                 positiontable.setValueAt(Trash.getText(), 0, 8);
-            //    positiontable.setValueAt(Comment.getText(), 0, 9);
-
-             //   positiontable
-
                 positiontable.updateUI();
             }
         };
