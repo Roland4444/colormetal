@@ -254,8 +254,6 @@ public class Example2 extends  ModuleGUI {
                 JOptionPane.showMessageDialog(null, "Сохраняю измнения");
                 ArrayList data = new ArrayList();
                 PositionTable.updateUI();
-
-
                 for (int i = 0; i <= 12; i++) {
                     System.out.println(i + "index@Value::" + PositionTable.getModel().getValueAt(0, i));
                     data.add(PositionTable.getModel().getValueAt(0, i));
@@ -272,9 +270,7 @@ public class Example2 extends  ModuleGUI {
                 } catch (IOException ioException) {
                     ioException.printStackTrace();
                 }
-            }
-
-            ;
+            };
         };
         createinitialrequest = new AbstractAction() {
             @Override

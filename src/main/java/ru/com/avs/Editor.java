@@ -202,7 +202,6 @@ public class Editor extends ModuleGUI {
         updateAction = new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(null, "Сохраняю измнения");
                 positiontable.setValueAt(Comment.getText(), 0, 3);
                 positiontable.setValueAt(Metal.getSelectedItem(), 0, 4);
                 positiontable.setValueAt(Brutto.getText(), 0, 5);
@@ -210,6 +209,8 @@ public class Editor extends ModuleGUI {
                 positiontable.setValueAt(Clogging.getText(), 0, 7);
                 positiontable.setValueAt(Trash.getText(), 0, 8);
                 positiontable.updateUI();
+                JOptionPane.showMessageDialog(null, "Сохраняю измнения");
+                frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
             }
         };
 
