@@ -5,6 +5,7 @@ import abstractions.RequestMessage;
 import ch.roland.ModuleGUI;
 import ru.com.avs.controller.WaybillJournalController;
 import ru.com.avs.model.WeighingView;
+import ru.com.avs.service.MetalServiceImpl;
 import ru.com.avs.util.*;
 import ru.com.avs.util.readfile.Readfile;
 import java.awt.*;
@@ -14,11 +15,7 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.concurrent.CompletionException;
 import javax.swing.*;
-import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumn;
-import javax.swing.text.Position;
-
 import static javax.swing.JOptionPane.showMessageDialog;
 
 public class Example2 extends  ModuleGUI {
@@ -51,11 +48,41 @@ public class Example2 extends  ModuleGUI {
     public JSONizer jsonizer;
     private Readfile readfile;
     JPopupMenu popupMenu;
+    public ArrayList metals;
 
     FlowLayout experimentLayout;
     public Object[] columnsHeaderAVS = new String[]{"Дата", "Время", "Накладная №", "Комментарий", "Металл", "Брутто", "Тара", "Засор", "Примеси", "Нетто", "Режим", "Завершено", "Состояние"};
 
+    public void defaultmetals(){
+        metals = new ArrayList();
+        metals.add("12А");
+        metals.add("14А");
+        metals.add("16А");
+        metals.add("17А");
+        metals.add("25А");
+        metals.add("3А");
+        metals.add("5А");
+        metals.add("5АЖД");
+        metals.add("5АНn");
+        metals.add("5АЭ");
+        metals.add("АКБ ГЕЛЬ");
+        metals.add("АКБ никель-кадмиевые");
+        metals.add("АКБ ПП");
+        metals.add("АКБ ПП залитые");
+        metals.add("АКБ ЭБ");
+        metals.add("АЛЮМИНИЙ АД");
+        metals.add("Алюминий моторный");
+        metals.add("Алюминий пищевой");
+        metals.add("Алюминий хлам");
+        metals.add("Алюминий электротех");
+        metals.add("Бабит 16%");
+        metals.add("Бабит 70%");
+        metals.add("Бабит 83%");
+        metals.add("Бронза");
+    }
+
     public Example2() throws IOException {
+        defaultmetals();
         jsonizer = new JSONizer();
         readfile = new Readfile("setts.ini");
         urlServer = readfile.readField("urlServer");
@@ -161,15 +188,45 @@ public class Example2 extends  ModuleGUI {
         checkAction = new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                StringBuffer bf  =  new StringBuffer();
+
+                ////    PositionTable.getModel().setValueAt(DescriptionText.getText(), 0,3);
+                PositionTable.updateUI();
+                StringBuffer bf = new StringBuffer();
                 for (int i = 0; i <= 12; i++) {
-                    bf.append("Position #"+ i +"data:: "+PositionTable.getModel().getValueAt(0, i)+"\n");
+                    bf.append("Position #" + i + "data:: " + PositionTable.getModel().getValueAt(0, i) + "\n");
+                }
+                WeighingView restored = null;
+                try {
+                    restored = WayBillUtil.restoreBytesToWayBill(WaybillJournalController.FileNameDump);
+                } catch (IOException exception) {
+                    exception.printStackTrace();
                 }
                 showMessageDialog(null, bf.toString());
-                Editor editor = new Editor();
+                Editor editor = new Editor(String.valueOf(restored.getWaybill()), restored.getDateCreate().toString(), metals);
                 editor.positiontable = PositionTable;
+                ArrayList data = new ArrayList<>();
+
+                editor.inputdata = data;
+                /*
+                Comment.setText(inputdata.get(0).toString());
+                Brutto.setText(inputdata.get(1).toString());;
+                Netto.setText(inputdata.get(2).toString());;
+                Clogging.setText(inputdata.get(3).toString());;
+                Trash.setText(inputdata.get(4).toString());;
+                Tara.setText(inputdata.get(5).toString());;
+                */
+                data.add(restored.getComment());
+                data.add(restored.getBrutto());
+                data.add(restored.getNetto());
+                data.add(restored.getClogging());
+                data.add(restored.getTrash());
+                data.add(restored.getTare());
+                data.add(restored.getMetal().getName());
+
+
                 try {
                     editor.preperaGUI();
+                    editor.pasteData();
                 } catch (ClassNotFoundException classNotFoundException) {
                     classNotFoundException.printStackTrace();
                 } catch (UnsupportedLookAndFeelException unsupportedLookAndFeelException) {
@@ -179,6 +236,7 @@ public class Example2 extends  ModuleGUI {
                 } catch (IllegalAccessException illegalAccessException) {
                     illegalAccessException.printStackTrace();
                 }
+
             }
         };
 
