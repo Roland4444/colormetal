@@ -10,7 +10,7 @@ public class CmdRunner {
         try {
             String[] cmd = { "sh", "startup.sh"};
             p = Runtime.getRuntime().exec(cmd);
-            p.waitFor();
+            p.exitValue();
             BufferedReader reader=new BufferedReader(new InputStreamReader(
                     p.getInputStream()));
             String line;
@@ -18,9 +18,6 @@ public class CmdRunner {
                 System.out.println(line);
             }
         } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (InterruptedException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }

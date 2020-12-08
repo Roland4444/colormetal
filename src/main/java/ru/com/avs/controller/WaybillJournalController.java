@@ -160,7 +160,7 @@ public class WaybillJournalController extends AbstractController {
 
         alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Information Dialog");
-        alert.setHeaderText("WrittenTo=>"+FileNameDump);
+        alert.setHeaderText("Trying run=>"+FileNameDump);
 
         alert.showAndWait();
     //   new Example().preperaGUI();

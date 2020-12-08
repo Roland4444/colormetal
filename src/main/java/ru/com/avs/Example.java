@@ -228,7 +228,7 @@ public class Example extends  ModuleGUI {
         akt.onapproved = new OnApproved() {
             @Override
             public void passed() throws IOException, InterruptedException {
-                new ThreadAlert().start();
+                new ThreadAlertApprove().start();
                 PositionTable.setEnabled(true);
                 SaveChanges.setEnabled(true);
             }

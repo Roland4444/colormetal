@@ -38,7 +38,7 @@
           </descriptorRefs>
           <archive>
             <manifest>
-              <mainClass>ru.com.avs.WindowedApplication</mainClass>
+              <mainClass>ru.com.avs.Example2</mainClass>
             </manifest>
           </archive>
         </configuration>
@@ -55,7 +55,7 @@
             <configuration>
               <transformers>
                 <transformer>
-                  <mainClass>ru.com.avs.WindowedApplication</mainClass>
+                  <mainClass>ru.com.avs.Example2</mainClass>
                 </transformer>
               </transformers>
             </configuration>

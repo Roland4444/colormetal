@@ -5,7 +5,6 @@ import abstractions.RequestMessage;
 import ch.roland.ModuleGUI;
 import ru.com.avs.controller.WaybillJournalController;
 import ru.com.avs.model.WeighingView;
-import ru.com.avs.service.MetalServiceImpl;
 import ru.com.avs.util.*;
 import ru.com.avs.util.readfile.Readfile;
 import java.awt.*;
@@ -23,7 +22,7 @@ public class Example2 extends  ModuleGUI {
     public String urlServer;
     AbstractAction createinitialrequest;
     AbstractAction saveChanges;
-    AbstractAction checkAction;
+    AbstractAction editAction;
     public String checkaction = "checkaction";
     public String checkaction_shortcut = "control Z";
     public String createandsendfatbundle = "createfatbundle";
@@ -36,7 +35,7 @@ public class Example2 extends  ModuleGUI {
     public JButton RequestHelp;
     public JButton Cancel;
     public JButton SaveChanges;
-    public JButton CheckButton;
+    public JButton EditButton;
     public Box contents;
 
     public JPanel MainPanel;
@@ -111,7 +110,7 @@ public class Example2 extends  ModuleGUI {
         ButtonPanel = new JPanel(new BorderLayout());
         RequestHelp = new JButton("Запросить изменения");
         SaveChanges = new JButton("Сохранить изменения");
-        CheckButton = new JButton("Проверить");
+        EditButton = new JButton("Редактировать");
 
         Cancel = new JButton("Отмена");
         DescriptionPanel = new JPanel();
@@ -130,10 +129,20 @@ public class Example2 extends  ModuleGUI {
 
 
     }
+    public void onProd(){
+        SaveChanges.setEnabled(false);
+        EditButton.setEnabled(false);
+    };
 
+    public void enableEdit(){
+        SaveChanges.setEnabled(true);
+        showMessageDialog(null, "включаю кнопку редактирования");
+        EditButton.setEnabled(true);
+    };
     public void preperaGUI() throws ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException {
+        onProd();
         contents.add(lPosition);
-
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         PositionTable.setRowHeight(40);
 
         pane.setMaximumSize(new Dimension(1300, 100));
@@ -144,7 +153,7 @@ public class Example2 extends  ModuleGUI {
         ButtonPanel.add(RequestHelp);
         ButtonPanel.add(Cancel);
         ButtonPanel.add(SaveChanges);
-        ButtonPanel.add(CheckButton);
+        ButtonPanel.add(EditButton);
 
         DescriptionText.setRows(20);
         DescriptionText.setColumns(10);
@@ -178,14 +187,14 @@ public class Example2 extends  ModuleGUI {
         SaveChanges.getActionMap().put(savechanges, saveChanges);
         SaveChanges.addActionListener(saveChanges);
 
-        CheckButton.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(checkaction_shortcut), checkaction);
-        CheckButton.getActionMap().put(checkaction, checkAction);
-        CheckButton.addActionListener(checkAction);
+        EditButton.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(checkaction_shortcut), checkaction);
+        EditButton.getActionMap().put(checkaction, editAction);
+        EditButton.addActionListener(editAction);
 
     }
 
     public void initActions() {
-        checkAction = new AbstractAction() {
+        editAction = new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
 
@@ -202,7 +211,7 @@ public class Example2 extends  ModuleGUI {
                     exception.printStackTrace();
                 }
                 showMessageDialog(null, bf.toString());
-                Editor editor = new Editor(String.valueOf(restored.getWaybill()), restored.getDateCreate().toString(), metals);
+                Editor editor = new Editor(String.valueOf(restored.getWaybill()), restored.getDateCreate().toString(), metals, SaveChanges);
                 editor.positiontable = PositionTable;
                 ArrayList data = new ArrayList<>();
 
@@ -293,18 +302,23 @@ public class Example2 extends  ModuleGUI {
                 try {
                     req.addressToReply = akt.getURL_thisAktor();
                 } catch (UnknownHostException e) {
-                    e.printStackTrace();
+                    RequestHelp.setEnabled(true);;
                 }
                 try {
                     akt.send(BinaryMessage.savedToBLOB(req), urlServer);
                 } catch (UnknownHostException e) {
                     showMessageDialog(null, "ВОЗНИКЛА ОШИБКА ПРИ ОТПРАВКЕ => ПРОВЕРЬТЕ СЕТЕВЫЕ НАСТРОЙКИ\n" + e);
+                    RequestHelp.setEnabled(true);
                 } catch (IOException e) {
                     showMessageDialog(null, "ВОЗНИКЛА ОШИБКА ПРИ ОТПРАВКЕ => ПРОВЕРЬТЕ СЕТЕВЫЕ НАСТРОЙКИ\n" + e);
+                    RequestHelp.setEnabled(true);
                 } catch (CompletionException e) {
                     showMessageDialog(null, "ВОЗНИКЛА ОШИБКА ПРИ ОТПРАВКЕ => ПРОВЕРЬТЕ СЕТЕВЫЕ НАСТРОЙКИ\n" + e);
+                    RequestHelp.setEnabled(true);
                 }
                 showMessageDialog(null, "запрос отправлен!!!");
+       //in production=>
+                RequestHelp.setEnabled(false);
 
 
             }
@@ -314,19 +328,37 @@ public class Example2 extends  ModuleGUI {
 
     public void prepareAktor() throws InterruptedException {
         akt = new ServerAktor();
-
+        akt.frame = this.frame;
+        akt.editButton = EditButton;
         akt.setAddress("http://127.0.0.1:12215/");
         akt.setCypher(new CypherImpl());
         System.out.println("\n\n\n*************************\n****Spawning JAKtor******\n*************************\n\n\n\n");
-        akt.spawn();
+
+        akt.activateGUI =  new enableLambda() {
+            @Override
+            public void activate() {
+                enableEdit();
+            }
+        };
+
+        akt.ondeclined = new OnDeclined() {
+            @Override
+            public void declined() throws IOException, InterruptedException {
+                new ThreadAlertDecline().start();
+            //    frame.setVisible(false);
+            //    frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
+
+            }
+        };
         akt.onapproved = new OnApproved() {
             @Override
             public void passed() throws IOException, InterruptedException {
-                new ThreadAlert().start();
-                PositionTable.setEnabled(true);
-                SaveChanges.setEnabled(true);
+                enableEdit();
+                new ThreadAlertApprove().start();
+
             }
         };
+        akt.spawn();
 
     }
 

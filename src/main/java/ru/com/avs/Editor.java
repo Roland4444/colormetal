@@ -44,8 +44,11 @@ public class Editor extends ModuleGUI {
     private String[] data1 = { "Чай" ,"Кофе"  ,"Минеральная","Морс", "Алюминий хлам"};
     public ArrayList metals;
     public JPanel CommentRootPanel;
+    public JButton saver;
 
-    public Editor(String number, String date, ArrayList data1){
+    public Editor(String number, String date, ArrayList data1, JButton saver){
+        this.saver = saver;
+        saver.setEnabled(true);
         CommentPanel = new JPanel(new GridLayout());
         CommentLabelPanel = new JPanel(new BorderLayout());
         CommentTextPanel = new JPanel(new BorderLayout());
@@ -202,12 +205,15 @@ public class Editor extends ModuleGUI {
         updateAction = new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                JOptionPane.showMessageDialog(null, "NETTO::"+Netto.getText());
+
                 positiontable.setValueAt(Comment.getText(), 0, 3);
                 positiontable.setValueAt(Metal.getSelectedItem(), 0, 4);
                 positiontable.setValueAt(Brutto.getText(), 0, 5);
                 positiontable.setValueAt(Tara.getText(), 0, 6);
                 positiontable.setValueAt(Clogging.getText(), 0, 7);
                 positiontable.setValueAt(Trash.getText(), 0, 8);
+                positiontable.setValueAt(Netto.getText(), 0, 9);
                 positiontable.updateUI();
                 JOptionPane.showMessageDialog(null, "Сохраняю измнения");
                 frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
@@ -225,6 +231,6 @@ public class Editor extends ModuleGUI {
         initListeners();
     }
     public static void main(String[] args) throws ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException {
-        new Editor("  3   ", "  26.11.2020   ", null).preperaGUI();
+        new Editor("  3   ", "  26.11.2020   ", null, null).preperaGUI();
     }
 }
