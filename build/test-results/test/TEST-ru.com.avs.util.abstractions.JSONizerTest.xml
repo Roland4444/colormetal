@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="ru.com.avs.util.abstractions.JSONizerTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2020-12-09T05:32:20" hostname="romanx-pc" time="0.002">
+  <properties/>
+  <testcase name="JSONedRestored" classname="ru.com.avs.util.abstractions.JSONizerTest" time="0.001"/>
+  <testcase name="returnField" classname="ru.com.avs.util.abstractions.JSONizerTest" time="0.0"/>
+  <system-out><![CDATA[{"Date":"2020-12-01",
+"Time":"16:21:45",
+"Waybill_number":"2",
+"Comment":"тест2",
+"Metall":"17А",
+"Brutto":"0.0",
+"Tara":"0.0",
+"Clogging":"0.0",
+"Trash":"0.0",
+"Netto":"0.00",
+"Mode":"Приемка",
+"Complete":"Да",
+"Condition":"Выгружен"
+}
+"name":"roman",
+"name":"roman"
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="ru.com.avs.WindowedApplicationTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2020-12-09T05:32:14" hostname="romanx-pc" time="5.181">
+  <properties/>
+  <testcase name="testMain" classname="ru.com.avs.WindowedApplicationTest" time="5.181"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
