@@ -159,10 +159,10 @@ public class WaybillJournalController extends AbstractController {
         fos.close();
 
         alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Information Dialog");
-        alert.setHeaderText("Trying run=>"+FileNameDump);
+    //    alert.setTitle("Information Dialog");
+    //    alert.setHeaderText("Trying run=>"+FileNameDump);
 
-        alert.showAndWait();
+    //    alert.showAndWait();
     //   new Example().preperaGUI();
 
         new CmdRunner().run();

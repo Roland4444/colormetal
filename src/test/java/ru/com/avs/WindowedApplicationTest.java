@@ -18,7 +18,7 @@ public class WindowedApplicationTest  {
         assertEquals(4,4);
         app app = new app();
         app.start();
-        Thread.sleep(5000);
+        Thread.sleep(1);
     }
 
     class app {

@@ -18,6 +18,7 @@ import javax.swing.table.DefaultTableModel;
 import static javax.swing.JOptionPane.showMessageDialog;
 
 public class Example2 extends  ModuleGUI {
+    public final String version = "0.0.4";
     public ServerAktor akt;
     public String urlServer;
     AbstractAction createinitialrequest;
@@ -85,7 +86,7 @@ public class Example2 extends  ModuleGUI {
         jsonizer = new JSONizer();
         readfile = new Readfile("setts.ini");
         urlServer = readfile.readField("urlServer");
-        frame = new JFrame();
+        frame = new JFrame("АВС помошник. Версия "+version);
         WeighingView restored = null;
         try {
             restored = WayBillUtil.restoreBytesToWayBill(WaybillJournalController.FileNameDump);
@@ -109,7 +110,7 @@ public class Example2 extends  ModuleGUI {
         pane = new JScrollPane(PositionTable);
         ButtonPanel = new JPanel(new BorderLayout());
         RequestHelp = new JButton("Запросить изменения");
-        SaveChanges = new JButton("Сохранить изменения");
+        SaveChanges = new JButton("Записать изменения");
         EditButton = new JButton("Редактировать");
 
         Cancel = new JButton("Отмена");
@@ -136,7 +137,7 @@ public class Example2 extends  ModuleGUI {
 
     public void enableEdit(){
         SaveChanges.setEnabled(true);
-        showMessageDialog(null, "включаю кнопку редактирования");
+      //  showMessageDialog(null, "включаю кнопку редактирования");
         EditButton.setEnabled(true);
     };
     public void preperaGUI() throws ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException {
@@ -210,7 +211,7 @@ public class Example2 extends  ModuleGUI {
                 } catch (IOException exception) {
                     exception.printStackTrace();
                 }
-                showMessageDialog(null, bf.toString());
+            //    showMessageDialog(null, bf.toString());
                 Editor editor = new Editor(String.valueOf(restored.getWaybill()), restored.getDateCreate().toString(), metals, SaveChanges);
                 editor.positiontable = PositionTable;
                 ArrayList data = new ArrayList<>();
@@ -292,8 +293,8 @@ public class Example2 extends  ModuleGUI {
                 }
                 System.out.println("Description::=>" + DescriptionText.getText());
                 String ID = restored.getDateCreate().toString() + restored.getTimeCreate().toString() + restored.getComment();
-                JOptionPane.showMessageDialog(null, "Отправляю на адрес:" + urlServer);
-
+                //JOptionPane.showMessageDialog(null, "Отправляю на адрес:" + urlServer);
+                //JOptionPane.showMessageDialog(null, "Отправляю запрос" );
                 RequestMessage req = new RequestMessage(ID, DescriptionText.getText(), jsonizer.JSONedRestored(restored));
 
                 System.out.println("\n\n\nJSON to send::" + req.JSONed);
@@ -316,7 +317,7 @@ public class Example2 extends  ModuleGUI {
                     showMessageDialog(null, "ВОЗНИКЛА ОШИБКА ПРИ ОТПРАВКЕ => ПРОВЕРЬТЕ СЕТЕВЫЕ НАСТРОЙКИ\n" + e);
                     RequestHelp.setEnabled(true);
                 }
-                showMessageDialog(null, "запрос отправлен!!!");
+                showMessageDialog(null, "запрос отправлен! ожидайте одобрения");
        //in production=>
                 RequestHelp.setEnabled(false);
 

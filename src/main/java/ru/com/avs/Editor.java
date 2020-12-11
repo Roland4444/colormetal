@@ -205,7 +205,7 @@ public class Editor extends ModuleGUI {
         updateAction = new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(null, "NETTO::"+Netto.getText());
+            //    JOptionPane.showMessageDialog(null, "NETTO::"+Netto.getText());
 
                 positiontable.setValueAt(Comment.getText(), 0, 3);
                 positiontable.setValueAt(Metal.getSelectedItem(), 0, 4);
