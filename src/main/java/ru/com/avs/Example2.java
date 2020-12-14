@@ -9,6 +9,10 @@ import ru.com.avs.util.*;
 import ru.com.avs.util.readfile.Readfile;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
@@ -18,7 +22,10 @@ import javax.swing.table.DefaultTableModel;
 import static javax.swing.JOptionPane.showMessageDialog;
 
 public class Example2 extends  ModuleGUI {
-    public final String version = "0.0.4";
+    public final String version = "0.0.27";
+    public final String approve_lock = "ap.lock";
+    public final String applock = "app.lock";
+    public final String req_lock = "request.lock";
     public ServerAktor akt;
     public String urlServer;
     AbstractAction createinitialrequest;
@@ -81,7 +88,19 @@ public class Example2 extends  ModuleGUI {
         metals.add("Бронза");
     }
 
-    public Example2() throws IOException {
+    public void cleanup(){
+        Utils.safeDelete(WaybillJournalController.FileNameDump);
+        Utils.safeDelete(approve_lock);
+        Utils.safeDelete(req_lock);
+    }
+
+    public Example2() throws IOException, InterruptedException {
+        if (new File(applock).exists())
+            return;
+        FileOutputStream fos = new FileOutputStream(applock);
+        fos.write("schon".getBytes());
+        fos.close();
+        Thread.sleep(300);
         defaultmetals();
         jsonizer = new JSONizer();
         readfile = new Readfile("setts.ini");
@@ -139,11 +158,11 @@ public class Example2 extends  ModuleGUI {
         SaveChanges.setEnabled(true);
       //  showMessageDialog(null, "включаю кнопку редактирования");
         EditButton.setEnabled(true);
+    //    this.frame.setVisible(true);
     };
     public void preperaGUI() throws ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException {
         onProd();
         contents.add(lPosition);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         PositionTable.setRowHeight(40);
 
         pane.setMaximumSize(new Dimension(1300, 100));
@@ -173,10 +192,19 @@ public class Example2 extends  ModuleGUI {
 // sets the popup menu for the table
         PositionTable.setComponentPopupMenu(popupMenu);
 
-
+        if (new File(req_lock).exists()) {
+            showMessageDialog(null, "запрос уже создан");
+            RequestHelp.setEnabled(false);
+         //   enableEdit();
+            onProd();
+        }
         //    PositionTable.setEnabled(false);
-        //    SaveChanges.setEnabled(false);
 
+        if (new File(approve_lock).exists()) {
+            showMessageDialog(null, "Завершите предыдущий запрос");
+            RequestHelp.setEnabled(false);
+            enableEdit();
+        }
     }
 
     public void initListeners() {
@@ -277,6 +305,9 @@ public class Example2 extends  ModuleGUI {
                 }
                 try {
                     akt.send(BinaryMessage.savedToBLOB(req), urlServer);
+                    cleanup();
+                    showMessageDialog(null, "Транзакция завершена");
+                 ///   frame.dispose();
                 } catch (IOException ioException) {
                     ioException.printStackTrace();
                 }
@@ -325,11 +356,18 @@ public class Example2 extends  ModuleGUI {
             }
         };
         initListeners();
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {
+               Utils.safeDelete(applock);
+               akt.terminate();
+           //     frame.setVisible(false);
+            }
+        });
     }
 
     public void prepareAktor() throws InterruptedException {
         akt = new ServerAktor();
-        akt.frame = this.frame;
         akt.editButton = EditButton;
         akt.setAddress("http://127.0.0.1:12215/");
         akt.setCypher(new CypherImpl());
@@ -338,13 +376,14 @@ public class Example2 extends  ModuleGUI {
         akt.activateGUI =  new enableLambda() {
             @Override
             public void activate() {
-                enableEdit();
+
             }
         };
 
         akt.ondeclined = new OnDeclined() {
             @Override
             public void declined() throws IOException, InterruptedException {
+                cleanup();
                 new ThreadAlertDecline().start();
             //    frame.setVisible(false);
             //    frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
@@ -355,6 +394,9 @@ public class Example2 extends  ModuleGUI {
             @Override
             public void passed() throws IOException, InterruptedException {
                 enableEdit();
+                FileOutputStream fos = new FileOutputStream(approve_lock);
+                fos.write("schon".getBytes());
+                fos.close();
                 new ThreadAlertApprove().start();
 
             }

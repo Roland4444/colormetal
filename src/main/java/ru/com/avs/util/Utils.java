@@ -2,6 +2,8 @@ package ru.com.avs.util;
 
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
+import java.io.File;
+
 import javafx.application.Platform;
 import javafx.beans.property.ObjectProperty;
 import javafx.embed.swing.SwingFXUtils;
@@ -67,6 +69,11 @@ public final class Utils {
      * @param original the {@link Mat} object in BGR or grayscale
      * @return the corresponding {@link BufferedImage}
      */
+
+    public  static void safeDelete(String filename){
+        if (new File(filename).exists())
+            new File(filename).delete();
+    };
     private static BufferedImage matToBufferedImage(Mat original) {
         // init
         BufferedImage image;

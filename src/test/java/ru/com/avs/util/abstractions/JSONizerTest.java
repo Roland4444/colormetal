@@ -11,7 +11,7 @@ import java.io.IOException;
 import static org.junit.Assert.*;
 
 public class JSONizerTest {
-    WeighingView restored = WayBillUtil.restoreBytesToWayBill(WaybillJournalController.FileNameDump);;
+    WeighingView restored = WayBillUtil.restoreBytesToWayBill("waybill_vit.bin");;
     JSONizer json = new JSONizer();
 
     public JSONizerTest() throws IOException {

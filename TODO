@@ -31,3 +31,6 @@ JTables => http://java-online.ru/swing-jtable.xhtml
 https://docs.oracle.com/javase/tutorial/uiswing/components/table.html
 editable
 https://www.codejava.net/java-se/swing/editable-jtable-example
+
+ij connect:
+connect  'jdbc:derby:/home/romanx/extend/Documents/bitbucket/scales-non-ferrous/scales-rest-service-db';

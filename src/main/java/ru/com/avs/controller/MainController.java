@@ -1,5 +1,6 @@
 package ru.com.avs.controller;
 
+import java.io.File;
 import java.util.List;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -30,6 +31,7 @@ import ru.com.avs.service.ThreadService;
 import ru.com.avs.thread.CameraThread;
 import ru.com.avs.thread.ExportThread;
 import ru.com.avs.thread.ScaleThread;
+import ru.com.avs.util.CmdRunner;
 
 @Component("MainController")
 public class MainController extends AbstractController {
@@ -204,7 +206,10 @@ public class MainController extends AbstractController {
 
     @FXML
     private void openWaybillJournal() {
+
         runController("waybillJournal", "Журнал сделок", true, true, true);
+    //    if (new File(WaybillJournalController.FileNameDump).exists())
+    //        new CmdRunner().run();
     }
 
     @FXML

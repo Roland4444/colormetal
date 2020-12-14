@@ -11,10 +11,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.com.avs.config.ShutdownBaseBean;
 import ru.com.avs.controller.MainController;
+import ru.com.avs.controller.WaybillJournalController;
 import ru.com.avs.thread.HttpServerThread;
+import ru.com.avs.util.CmdRunner;
 import ru.com.avs.util.SpringLoader;
 
 import javax.swing.*;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.BindException;
@@ -32,7 +35,6 @@ public class WindowedApplication extends Application {
      */
     private static void runDatabaseMigrations() {
         String host = null;
-
         try (InputStream input =
                      WindowedApplication.class.getClassLoader().getResourceAsStream("application.properties")) {
             Properties property = new Properties();
@@ -56,9 +58,11 @@ public class WindowedApplication extends Application {
      * @param args String[]
      */
     public static void main(String[] args) {
+
         checkIfRunning();
         runDatabaseMigrations();
         launch(args);
+
     }
 
     private static void checkIfRunning() {
@@ -91,7 +95,6 @@ public class WindowedApplication extends Application {
         stageMain.setMinWidth(810);
         stageMain.setMinHeight(700);
         controller.setStage(stageMain);
-
         stageMain.setOnCloseRequest(event -> {
                     ShutdownBaseBean bean = (ShutdownBaseBean) SpringLoader.getBean(ShutdownBaseBean.class);
                     bean.shutdown();

@@ -12,7 +12,7 @@ import java.io.IOException;
 
 public class ServerAktor extends JAktor {
     private Cypher cypher;
-    public JFrame frame;
+
     public JButton editButton;
     public OnApproved onapproved;
     public OnDeclined ondeclined;
