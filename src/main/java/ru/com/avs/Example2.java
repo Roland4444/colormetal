@@ -22,7 +22,7 @@ import javax.swing.table.DefaultTableModel;
 import static javax.swing.JOptionPane.showMessageDialog;
 
 public class Example2 extends  ModuleGUI {
-    public final String version = "0.0.27";
+    public final String version = "0.0.28";
     public final String approve_lock = "ap.lock";
     public final String applock = "app.lock";
     public final String req_lock = "request.lock";
@@ -299,7 +299,7 @@ public class Example2 extends  ModuleGUI {
                 RequestMessage req = new RequestMessage(ID, DescriptionText.getText(), jsonizer.JSONedRestored(data));
                 req.type = RequestMessage.Type.update;
                 try {
-                    req.addressToReply = akt.getURL_thisAktor();
+                    req.addressToReply = akt.rollbackAdressURL();
                 } catch (UnknownHostException p) {
                     p.printStackTrace();
                 }
@@ -332,7 +332,7 @@ public class Example2 extends  ModuleGUI {
                 req.Description = DescriptionText.getText();
                 req.type = RequestMessage.Type.request;
                 try {
-                    req.addressToReply = akt.getURL_thisAktor();
+                    req.addressToReply = akt.rollbackAdressURL();
                 } catch (UnknownHostException e) {
                     RequestHelp.setEnabled(true);;
                 }
@@ -407,8 +407,8 @@ public class Example2 extends  ModuleGUI {
 
     public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException, InterruptedException, IOException {
         Example2 ex = new Example2();
-        ex.preperaGUI();
         ex.prepareAktor();
+        ex.preperaGUI();
         ex.initActions();
     }
 

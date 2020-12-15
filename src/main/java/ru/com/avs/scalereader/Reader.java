@@ -9,6 +9,9 @@ public abstract class Reader {
     Reader(Scale scale) {
         this.scale = scale;
     }
+    Reader() {
+            }
+
 
     protected abstract byte[] getCommand();
 

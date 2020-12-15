@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="ru.com.avs.util.WayBillUtilTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2020-12-14T12:39:20" hostname="romanx-pc" time="0.001">
+<testsuite name="ru.com.avs.util.WayBillUtilTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2020-12-15T13:27:46" hostname="romanx-pc" time="0.005">
   <properties/>
-  <testcase name="flushfilea" classname="ru.com.avs.util.WayBillUtilTest" time="0.001"/>
+  <testcase name="restoreBytesToWayBill" classname="ru.com.avs.util.WayBillUtilTest" time="0.002"/>
+  <testcase name="restoreBytesToWayBill2" classname="ru.com.avs.util.WayBillUtilTest" time="0.002"/>
+  <testcase name="flushfilea" classname="ru.com.avs.util.WayBillUtilTest" time="0.0"/>
+  <testcase name="saveWayBillToBytes" classname="ru.com.avs.util.WayBillUtilTest" time="0.0"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>

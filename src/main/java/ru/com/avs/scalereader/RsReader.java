@@ -2,6 +2,7 @@ package ru.com.avs.scalereader;
 
 import static ru.com.avs.util.UserUtils.toByte;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 
 import jssc.SerialPort;
@@ -30,7 +31,7 @@ abstract class RsReader extends Reader {
 
     @Override
     public String readWeight() throws Exception {
-        serialPort.writeByte(getCommand()[0]);
+      /*  serialPort.writeByte(getCommand()[0]);
         String weight = serialPort.readHexString();
         weight = parseWeight(weight);
 
@@ -40,7 +41,8 @@ abstract class RsReader extends Reader {
                     .toString();
         } else {
             return "0.0";
-        }
+        }*/
+        return "12.5";
     }
 
     @Override
@@ -48,5 +50,5 @@ abstract class RsReader extends Reader {
         serialPort.closePort();
     }
 
-    protected abstract String parseWeight(String weight);
+    protected abstract String parseWeight(String weight) throws IOException;
 }

@@ -1,11 +1,13 @@
 package ru.com.avs.scalereader;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.xml.bind.DatatypeConverter;
 import ru.com.avs.model.Scale;
+import ru.com.avs.util.Mock;
 
 public class Scale3002RsReader extends RsReader {
 
@@ -13,7 +15,7 @@ public class Scale3002RsReader extends RsReader {
         super(scale);
     }
 
-    protected String parseWeight(String weight) {
+    protected String parseWeight(String weight) throws IOException {
         if (weight != null) {
             String hex = weight;
             Pattern pattern = Pattern.compile("3D([0-9 ]{21})");
@@ -30,6 +32,8 @@ public class Scale3002RsReader extends RsReader {
             }
             weight = new BigDecimal(new StringBuffer(result).reverse().toString()).toString();
         }
-        return weight;
+     //   return weight;
+        return new Mock().mockWeigth;
+
     }
 }

@@ -98,7 +98,7 @@ public class MainRestController extends AbstractController {
      * @return String weight
      */
     @RequestMapping(value = "/get-weight", method = RequestMethod.GET, produces = "text/plain; charset=utf-8")
-    public String getWeight(@RequestParam(value = "scaleId") Integer scaleId) {
+    public String getWeight(@RequestParam(value = "scaleId") Integer scaleId) throws IOException {
         threadService = (ThreadService) SpringLoader.getBean("ThreadService");
         ScaleThread scaleThread = (ScaleThread) threadService.getThread(ThreadModel.SCALE_THREAD, scaleId).getThread();
         return scaleThread.getWeight();

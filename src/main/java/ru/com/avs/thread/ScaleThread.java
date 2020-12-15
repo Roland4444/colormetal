@@ -9,7 +9,10 @@ import org.springframework.stereotype.Component;
 import ru.com.avs.model.Scale;
 import ru.com.avs.scalereader.Reader;
 import ru.com.avs.scalereader.ReaderFactory;
+import ru.com.avs.util.Mock;
 import ru.com.avs.util.Utils;
+
+import java.io.IOException;
 
 @Component("ScaleThread")
 @Scope("prototype")
@@ -62,8 +65,9 @@ public class ScaleThread extends Thread {
     /**
      * Getting weight.
      */
-    public String getWeight() {
-        return weight;
+    public String getWeight() throws IOException {
+        return new Mock().mockWeigth;
+       // return weight;
     }
 
     /**

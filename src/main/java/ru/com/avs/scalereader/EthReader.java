@@ -10,6 +10,8 @@ abstract class EthReader extends Reader {
     EthReader(Scale scale) {
         super(scale);
     }
+    EthReader() {
+    };
 
     @Override
     protected byte[] getCommand() {

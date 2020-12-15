@@ -1,6 +1,9 @@
 package ru.com.avs.scalereader;
 
 import ru.com.avs.model.Scale;
+import ru.com.avs.util.Mock;
+
+import java.io.IOException;
 
 public class Scale600RsReader extends RsReader {
 
@@ -8,7 +11,7 @@ public class Scale600RsReader extends RsReader {
         super(scale);
     }
 
-    protected String parseWeight(String weight) {
+    protected String parseWeight(String weight) throws IOException {
         if (weight != null) {
             String[] results = weight.split(" ");
             if (results.length >= 4) {
@@ -16,6 +19,7 @@ public class Scale600RsReader extends RsReader {
                 weight = String.valueOf((Integer.parseInt(hx, 16)) * 0.1);
             }
         }
-        return weight;
+       // return weight;
+        return new Mock().mockWeigth;
     }
 }
