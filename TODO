@@ -34,3 +34,26 @@ https://www.codejava.net/java-se/swing/editable-jtable-example
 
 ij connect:
 connect  'jdbc:derby:/home/romanx/extend/Documents/bitbucket/scales-non-ferrous/scales-rest-service-db';
+
+ij> describe scales;
+COLUMN_NAME         |TYPE_NAME|DEC&|NUM&|COLUM&|COLUMN_DEF|CHAR_OCTE&|IS_NULL&
+
+COLUMNS NOT NULL MUST BE!
+
+------------------------------------------------------------------------------
+ID                  |INTEGER  |0   |10  |10    |AUTOINCRE&|NULL      |NO
+NAME                |VARCHAR  |NULL|NULL|255   |NULL      |510       |YES
+PORT                |VARCHAR  |NULL|NULL|255   |NULL      |510       |YES
+TYPE                |INTEGER  |0   |10  |10    |NULL      |NULL      |YES
+CAMERA              |VARCHAR  |NULL|NULL|255   |NULL      |510       |YES
+MODE_ID             |INTEGER  |0   |10  |10    |NULL      |NULL      |YES
+CONNECTION_TYPE     |VARCHAR  |NULL|NULL|10    |'rs232'   |20        |YES
+IP                  |VARCHAR  |NULL|NULL|20    |''        |40        |YES
+ETH_PORT            |INTEGER  |0   |10  |10    |0         |NULL      |YES
+ETH_CMD             |VARCHAR  |NULL|NULL|50    |''        |100       |YES
+
+     |1          |ethernet  |                    |0          |
+insert into scales(name, port) values ('scale60', 'com12');
+insert into scales(name, port) values ('scale60', 'com12');
+
+insert into scales (NAME, PORT, TYPE, CAMERA, MODE_ID, CONNECTION_TYPE, IP, ETH_PORT, ETH_CMD)   values('r60', 'com600', 3, 'rtsp://admin:[avs1982]@192.168.33.202:554/cam/realmonitor?channel=1&subtype=1',1, 'ethernet', '192.168.0.126', 13255, 'hello');
