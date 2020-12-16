@@ -1,7 +1,6 @@
 package ru.com.avs.util;
 
 public class ThreadCheckStatus extends Thread{
-    ServerAktor akt;
     OnCheckCycle check;
     boolean responced = false;
     public void run(){

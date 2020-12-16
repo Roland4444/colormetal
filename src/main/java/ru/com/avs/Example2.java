@@ -22,6 +22,8 @@ import javax.swing.table.DefaultTableModel;
 import static javax.swing.JOptionPane.showMessageDialog;
 
 public class Example2 extends  ModuleGUI {
+    public ThreadCheckStatus checker;
+    public OnCheckCycle checkcycle;
     public String ID="";
     public final String version = "0.0.52";
     public final String approve_lock = "ap.lock";
