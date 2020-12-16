@@ -58,7 +58,10 @@ public class WayBillUtilTest {
         if (new File(req_lock).exists())
             new File(req_lock).delete();
         assertEquals(false, new File(req_lock).exists());
+    }
 
-
+    @Test
+    public void restoreBinfile() throws IOException {
+        Files.copy(new File("waybill_vit.bin").toPath(), new File("waybill.bin").toPath());
     }
 }

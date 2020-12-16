@@ -22,15 +22,21 @@ import javax.swing.table.DefaultTableModel;
 import static javax.swing.JOptionPane.showMessageDialog;
 
 public class Example2 extends  ModuleGUI {
-    public final String version = "0.0.28";
+    public String ID="";
+    public final String version = "0.0.52";
     public final String approve_lock = "ap.lock";
+    public final String decline_lock = "de.lock";
     public final String applock = "app.lock";
     public final String req_lock = "request.lock";
+    public final String wait_lock = "wait.lock";
     public ServerAktor akt;
     public String urlServer;
     AbstractAction createinitialrequest;
     AbstractAction saveChanges;
     AbstractAction editAction;
+    AbstractAction cancelAction;
+    public String cancelaction = "cancelaction";
+    public String cancelaction_shortcut = "control X";
     public String checkaction = "checkaction";
     public String checkaction_shortcut = "control Z";
     public String createandsendfatbundle = "createfatbundle";
@@ -94,13 +100,19 @@ public class Example2 extends  ModuleGUI {
         Utils.safeDelete(req_lock);
     }
 
-    public Example2() throws IOException, InterruptedException {
-        if (new File(applock).exists())
-            return;
-        FileOutputStream fos = new FileOutputStream(applock);
-        fos.write("schon".getBytes());
-        fos.close();
-        Thread.sleep(300);
+    public boolean checkInitialRequest(){
+        return new File(WaybillJournalController.FileNameDump).exists();
+    };
+
+    public boolean checkHaveResponce(){
+        return new File(approve_lock).exists() || new File(decline_lock).exists();
+    };
+
+    public boolean waitReponce(){
+        return new File(wait_lock).exists();
+    }
+
+    public void initComponents(){
         defaultmetals();
         jsonizer = new JSONizer();
         readfile = new Readfile("setts.ini");
@@ -112,15 +124,8 @@ public class Example2 extends  ModuleGUI {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        ID = restored.getDateCreate().toString() + restored.getTimeCreate().toString() + restored.getComment();
         PositionTable = new JTable(WayBillUtil.dataFromObject(restored), columnsHeaderAVS);
-        //PositionTable = new JTable(new TableModelSpezial());
-
-
-        //fireTableDataChanged()
-        // public boolean isCellEditable(int row, int column) {
-        //     return false;
-        //   };
-        //   };
 
         contents = new Box(BoxLayout.Y_AXIS);
         lPosition = new JLabel("Позиция:");
@@ -137,7 +142,6 @@ public class Example2 extends  ModuleGUI {
         experimentLayout = new FlowLayout();
 
 
-
         popupMenu = new JPopupMenu();
         JMenuItem menuItemAdd = new JMenuItem("Add New Row");
         JMenuItem menuItemRemove = new JMenuItem("Remove Current Row");
@@ -147,9 +151,19 @@ public class Example2 extends  ModuleGUI {
         popupMenu.add(menuItemRemove);
         popupMenu.add(menuItemRemoveAll);
 
+    }
+
+    public Example2() throws IOException, InterruptedException {
+
+        if (new File(applock).exists()){}
+        initComponents();
+
+        FileOutputStream fos = new FileOutputStream(applock);
+        fos.write("schon".getBytes());
+        fos.close();
 
     }
-    public void onProd(){
+    public void disableEdit(){
         SaveChanges.setEnabled(false);
         EditButton.setEnabled(false);
     };
@@ -161,7 +175,7 @@ public class Example2 extends  ModuleGUI {
     //    this.frame.setVisible(true);
     };
     public void preperaGUI() throws ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException {
-        onProd();
+
         contents.add(lPosition);
         PositionTable.setRowHeight(40);
 
@@ -186,26 +200,21 @@ public class Example2 extends  ModuleGUI {
         frame.setContentPane(contents);
         frame.setSize(1200, 500);
         frame.setVisible(true);
-
-// set data model for the table...
-
-// sets the popup menu for the table
         PositionTable.setComponentPopupMenu(popupMenu);
 
-        if (new File(req_lock).exists()) {
-            showMessageDialog(null, "запрос уже создан");
+        if (waitReponce()){
+            disableEdit();
             RequestHelp.setEnabled(false);
-         //   enableEdit();
-            onProd();
-        }
-        //    PositionTable.setEnabled(false);
-
-        if (new File(approve_lock).exists()) {
-            showMessageDialog(null, "Завершите предыдущий запрос");
-            RequestHelp.setEnabled(false);
-            enableEdit();
+            System.out.println("CHECK STATUS NOW");
         }
     }
+
+    public void askServer() throws IOException {
+        RequestMessage req = new RequestMessage(ID, DescriptionText.getText(), null);
+        req.type = RequestMessage.Type.ask;
+        req.addressToReply = akt.getURL_thisAktor();
+        akt.send(BinaryMessage.savedToBLOB(req), urlServer);
+    };
 
     public void initListeners() {
         RequestHelp.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(createfatbundle_shortcut), createandsendfatbundle);
@@ -220,9 +229,31 @@ public class Example2 extends  ModuleGUI {
         EditButton.getActionMap().put(checkaction, editAction);
         EditButton.addActionListener(editAction);
 
+        Cancel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(cancelaction_shortcut), cancelaction);
+        Cancel.getActionMap().put(cancelaction, cancelAction);
+        Cancel.addActionListener(cancelAction);
+
+    }
+
+    void createFile(String filename) throws IOException {
+        FileOutputStream fos = new FileOutputStream(filename);
+        fos.write("".getBytes());
+        fos.close();
     }
 
     public void initActions() {
+        cancelAction = new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Utils.safeDelete(WaybillJournalController.FileNameDump);
+                Utils.safeDelete(approve_lock);
+                Utils.safeDelete(req_lock);
+                Utils.safeDelete(applock);
+                Utils.safeDelete(WaybillJournalController.FileNameDump);
+                akt.terminate();
+                System.exit(1);
+            }
+        };
         editAction = new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -288,7 +319,6 @@ public class Example2 extends  ModuleGUI {
                     u.printStackTrace();
                 }
                 System.out.println("Description::=>" + DescriptionText.getText());
-                String ID = restored.getDateCreate().toString() + restored.getTimeCreate().toString() + restored.getComment();
                 JOptionPane.showMessageDialog(null, "Сохраняю измнения");
                 ArrayList data = new ArrayList();
                 PositionTable.updateUI();
@@ -299,7 +329,7 @@ public class Example2 extends  ModuleGUI {
                 RequestMessage req = new RequestMessage(ID, DescriptionText.getText(), jsonizer.JSONedRestored(data));
                 req.type = RequestMessage.Type.update;
                 try {
-                    req.addressToReply = akt.rollbackAdressURL();
+                    req.addressToReply = akt.getURL_thisAktor();
                 } catch (UnknownHostException p) {
                     p.printStackTrace();
                 }
@@ -307,7 +337,6 @@ public class Example2 extends  ModuleGUI {
                     akt.send(BinaryMessage.savedToBLOB(req), urlServer);
                     cleanup();
                     showMessageDialog(null, "Транзакция завершена");
-                 ///   frame.dispose();
                 } catch (IOException ioException) {
                     ioException.printStackTrace();
                 }
@@ -323,16 +352,12 @@ public class Example2 extends  ModuleGUI {
                     e.printStackTrace();
                 }
                 System.out.println("Description::=>" + DescriptionText.getText());
-                String ID = restored.getDateCreate().toString() + restored.getTimeCreate().toString() + restored.getComment();
-                //JOptionPane.showMessageDialog(null, "Отправляю на адрес:" + urlServer);
-                //JOptionPane.showMessageDialog(null, "Отправляю запрос" );
                 RequestMessage req = new RequestMessage(ID, DescriptionText.getText(), jsonizer.JSONedRestored(restored));
-
                 System.out.println("\n\n\nJSON to send::" + req.JSONed);
                 req.Description = DescriptionText.getText();
                 req.type = RequestMessage.Type.request;
                 try {
-                    req.addressToReply = akt.rollbackAdressURL();
+                    req.addressToReply = akt.getURL_thisAktor();
                 } catch (UnknownHostException e) {
                     RequestHelp.setEnabled(true);;
                 }
@@ -348,8 +373,12 @@ public class Example2 extends  ModuleGUI {
                     showMessageDialog(null, "ВОЗНИКЛА ОШИБКА ПРИ ОТПРАВКЕ => ПРОВЕРЬТЕ СЕТЕВЫЕ НАСТРОЙКИ\n" + e);
                     RequestHelp.setEnabled(true);
                 }
+                try {
+                    createFile(wait_lock);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 showMessageDialog(null, "запрос отправлен! ожидайте одобрения");
-       //in production=>
                 RequestHelp.setEnabled(false);
 
 
@@ -410,6 +439,8 @@ public class Example2 extends  ModuleGUI {
         ex.prepareAktor();
         ex.preperaGUI();
         ex.initActions();
+
+
     }
 
 
