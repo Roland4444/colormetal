@@ -33,7 +33,6 @@ public class Editor extends ModuleGUI {
     public JButton UpdateComment;
     public JPanel containerPanel;
     public JTable positiontable;
-    public JPanel springLayoutPanel;
     AbstractAction updateAction;
     public String updateaction = "checkaction";
     JButton Save;
@@ -43,7 +42,6 @@ public class Editor extends ModuleGUI {
     public ArrayList inputdata;
     private String[] data1 = { "Чай" ,"Кофе"  ,"Минеральная","Морс", "Алюминий хлам"};
     public ArrayList metals;
-    public JPanel CommentRootPanel;
     public JButton saver;
 
     public Editor(String number, String date, ArrayList data1, JButton saver){
@@ -206,7 +204,6 @@ public class Editor extends ModuleGUI {
             @Override
             public void actionPerformed(ActionEvent e) {
             //    JOptionPane.showMessageDialog(null, "NETTO::"+Netto.getText());
-
                 positiontable.setValueAt(Comment.getText(), 0, 3);
                 positiontable.setValueAt(Metal.getSelectedItem(), 0, 4);
                 positiontable.setValueAt(Brutto.getText(), 0, 5);

@@ -269,8 +269,6 @@ public class Example2 extends  ModuleGUI {
         editAction = new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
-                ////    PositionTable.getModel().setValueAt(DescriptionText.getText(), 0,3);
                 PositionTable.updateUI();
                 StringBuffer bf = new StringBuffer();
                 for (int i = 0; i <= 12; i++) {
@@ -282,20 +280,10 @@ public class Example2 extends  ModuleGUI {
                 } catch (IOException exception) {
                     exception.printStackTrace();
                 }
-            //    showMessageDialog(null, bf.toString());
                 Editor editor = new Editor(String.valueOf(restored.getWaybill()), restored.getDateCreate().toString(), metals, SaveChanges);
                 editor.positiontable = PositionTable;
                 ArrayList data = new ArrayList<>();
-
                 editor.inputdata = data;
-                /*
-                Comment.setText(inputdata.get(0).toString());
-                Brutto.setText(inputdata.get(1).toString());;
-                Netto.setText(inputdata.get(2).toString());;
-                Clogging.setText(inputdata.get(3).toString());;
-                Trash.setText(inputdata.get(4).toString());;
-                Tara.setText(inputdata.get(5).toString());;
-                */
                 data.add(restored.getComment());
                 data.add(restored.getBrutto());
                 data.add(restored.getNetto());
@@ -303,8 +291,6 @@ public class Example2 extends  ModuleGUI {
                 data.add(restored.getTrash());
                 data.add(restored.getTare());
                 data.add(restored.getMetal().getName());
-
-
                 try {
                     editor.preperaGUI();
                     editor.pasteData();
@@ -324,12 +310,6 @@ public class Example2 extends  ModuleGUI {
         saveChanges = new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                WeighingView restored = null;
-                try {
-                    restored = WayBillUtil.restoreBytesToWayBill(WaybillJournalController.FileNameDump);
-                } catch (IOException u) {
-                    u.printStackTrace();
-                }
                 System.out.println("Description::=>" + DescriptionText.getText());
                 JOptionPane.showMessageDialog(null, "Сохраняю измнения");
                 ArrayList data = new ArrayList();
@@ -392,8 +372,6 @@ public class Example2 extends  ModuleGUI {
                 }
                 showMessageDialog(null, "запрос отправлен! ожидайте одобрения");
                 RequestHelp.setEnabled(false);
-
-
             }
         };
         initListeners();
@@ -402,7 +380,6 @@ public class Example2 extends  ModuleGUI {
             public void windowClosing(WindowEvent e) {
                Utils.safeDelete(applock);
                akt.terminate();
-           //     frame.setVisible(false);
             }
         });
     }
@@ -426,9 +403,6 @@ public class Example2 extends  ModuleGUI {
             public void declined() throws IOException, InterruptedException {
                 cleanup();
                 new ThreadAlertDecline().start();
-            //    frame.setVisible(false);
-            //    frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
-
             }
         };
         akt.onapproved = new OnApproved() {
@@ -459,17 +433,14 @@ public class Example2 extends  ModuleGUI {
 
 
     public class CypherImpl implements Cypher {
-
         @Override
         public byte[] decrypt(byte[] input) {
             return input;
         }
-
         @Override
         public byte[] encrypt(byte[] input) {
             return input;
         }
-
     }
 
 
@@ -488,11 +459,7 @@ public class Example2 extends  ModuleGUI {
                 e.printStackTrace();
             }
             data =WayBillUtil.dataFromObject(restored);
-
-
             addRow(data[0]);
-
-           // addRow(convertToVector(rowData));
         }
 
         @Override
@@ -504,9 +471,6 @@ public class Example2 extends  ModuleGUI {
         public int getColumnCount() {
             return columnNames.length;
         }
-
-
-
 
         public boolean isCellEditable(int rowIndex, int columnIndex) {
             return true; //falls Änderung auf eine Zeile beschränkt wird, zb 1. dann columnIndex==0;

@@ -7,7 +7,6 @@ import java.util.ArrayList;
 public class JSONizer {
     public String JSONedRestored(WeighingView input){
         StringBuilder buf = new StringBuilder();
-      //  buf.append(input.)
         buf.append("{");
         buf.append(returnField("Date", input.getDateCreate().toString())+'\n');
         buf.append(returnField("Time", input.getTimeCreate().toString())+'\n');
