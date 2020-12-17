@@ -25,7 +25,7 @@ public class Example2 extends  ModuleGUI {
     public ThreadCheckStatus checker;
     public OnCheckCycle checkcycle;
     public String ID="";
-    public final String version = "0.0.52";
+    public final String version = "0.0.55";
     public final String approve_lock = "ap.lock";
     public final String decline_lock = "de.lock";
     public final String applock = "app.lock";
@@ -153,6 +153,14 @@ public class Example2 extends  ModuleGUI {
         popupMenu.add(menuItemRemove);
         popupMenu.add(menuItemRemoveAll);
 
+        checkcycle = new OnCheckCycle() {
+            @Override
+            public void check() throws IOException {
+                System.out.println("CHECK CHECK");
+                askServer();
+            }
+        };
+
     }
 
     public Example2() throws IOException, InterruptedException {
@@ -172,12 +180,11 @@ public class Example2 extends  ModuleGUI {
 
     public void enableEdit(){
         SaveChanges.setEnabled(true);
-      //  showMessageDialog(null, "включаю кнопку редактирования");
         EditButton.setEnabled(true);
-    //    this.frame.setVisible(true);
     };
-    public void preperaGUI() throws ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException {
 
+    public void preperaGUI() throws ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException {
+        disableEdit();
         contents.add(lPosition);
         PositionTable.setRowHeight(40);
 
@@ -208,6 +215,9 @@ public class Example2 extends  ModuleGUI {
             disableEdit();
             RequestHelp.setEnabled(false);
             System.out.println("CHECK STATUS NOW");
+            checker = new ThreadCheckStatus();
+            checker.check = checkcycle;
+            checker.start();
         }
     }
 
@@ -429,6 +439,8 @@ public class Example2 extends  ModuleGUI {
                 fos.write("schon".getBytes());
                 fos.close();
                 new ThreadAlertApprove().start();
+                checker.interrupt();
+                checker.stop();
 
             }
         };

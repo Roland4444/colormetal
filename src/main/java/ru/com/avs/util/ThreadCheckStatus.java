@@ -1,16 +1,24 @@
 package ru.com.avs.util;
 
+import java.io.IOException;
+
 public class ThreadCheckStatus extends Thread{
-    OnCheckCycle check;
+    public OnCheckCycle check;
     boolean responced = false;
     public void run(){
         while (!responced){
             try {
-                Thread.sleep(20000);
+                Thread.sleep(2000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            check.check();;
+            try {
+                check.check();
+            } catch (IOException e) {
+                System.out.println("SERVER NOT RESPONCED!");
+                e.printStackTrace();
+            }
+            ;
         }
     };
 }
