@@ -12,6 +12,8 @@ public class Checker {
 
 
     public boolean isnumber(String input){
+        if (input.length()<1)
+            return false;
         for (int i=0; i<input.length();i++){
             if (dictionary.get(input.charAt(i)) == null)
                 return false;

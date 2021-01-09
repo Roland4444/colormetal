@@ -141,42 +141,42 @@ public class Example extends  ModuleGUI {
 
     }
 
+    public void saveChanges(){
+        WeighingView restored = null;
+        try {
+            restored = WayBillUtil.restoreBytesToWayBill(WaybillJournalController.FileNameDump);
+        } catch (IOException u) {
+            u.printStackTrace();
+        }
+        System.out.println("Description::=>" + DescriptionText.getText());
+        String ID = restored.getDateCreate().toString() + restored.getTimeCreate().toString() + restored.getComment();
+        JOptionPane.showMessageDialog(null, "Сохраняю измнения");
+        ArrayList data = new ArrayList();
+        PositionTable.updateUI();
+        for (int i = 0; i <= 12; i++) {
+            System.out.println(i + "index@Value::" + PositionTable.getModel().getValueAt(0, i));
+            data.add(PositionTable.getModel().getValueAt(0, i));
+        }
+        RequestMessage req = new RequestMessage(ID, DescriptionText.getText(), jsonizer.JSONedRestored(data));
+        req.type = RequestMessage.Type.update;
+        try {
+            req.addressToReply = akt.getURL_thisAktor();
+        } catch (UnknownHostException p) {
+            p.printStackTrace();
+        }
+        try {
+            akt.send(BinaryMessage.savedToBLOB(req), urlServer);
+        } catch (IOException ioException) {
+            ioException.printStackTrace();
+        }
+    }
+
     public void initActions() {
         saveChanges = new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                WeighingView restored = null;
-                try {
-                    restored = WayBillUtil.restoreBytesToWayBill(WaybillJournalController.FileNameDump);
-                } catch (IOException u) {
-                    u.printStackTrace();
-                }
-                System.out.println("Description::=>" + DescriptionText.getText());
-                String ID = restored.getDateCreate().toString() + restored.getTimeCreate().toString() + restored.getComment();
-                JOptionPane.showMessageDialog(null, "Сохраняю измнения");
-                ArrayList data = new ArrayList();
-                PositionTable.updateUI();
-
-
-                for (int i = 0; i <= 12; i++) {
-                    System.out.println(i + "index@Value::" + PositionTable.getModel().getValueAt(0, i));
-                    data.add(PositionTable.getModel().getValueAt(0, i));
-                }
-                RequestMessage req = new RequestMessage(ID, DescriptionText.getText(), jsonizer.JSONedRestored(data));
-                req.type = RequestMessage.Type.update;
-                try {
-                    req.addressToReply = akt.getURL_thisAktor();
-                } catch (UnknownHostException p) {
-                    p.printStackTrace();
-                }
-                try {
-                    akt.send(BinaryMessage.savedToBLOB(req), urlServer);
-                } catch (IOException ioException) {
-                    ioException.printStackTrace();
-                }
-            }
-
-            ;
+                saveChanges();
+            };
         };
         createinitialrequest = new AbstractAction() {
             @Override

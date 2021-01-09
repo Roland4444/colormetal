@@ -34,7 +34,7 @@
         <dependency>
             <groupId>eu.roland</groupId>
             <artifactId>JAKtor</artifactId>
-            <version>1.8-ROLLBACK</version>
+            <version>1.9-ROLLBACK</version>
         </dependency>
         <dependency>
             <groupId>ch.roland</groupId>
@@ -46,8 +46,6 @@
             <artifactId>MessagingAVS</artifactId>
             <version>1.2-SNAPSHOT</version>
         </dependency>
-
-
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-web</artifactId>
@@ -136,6 +134,7 @@
             <artifactId>jta</artifactId>
             <version>1.1</version>
         </dependency>
+
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>

@@ -15,4 +15,8 @@ public class CheckerTest {
         assertEquals(true, check.isnumber(isnumber));
 
     }
+
+    @Test
+    public void testIsnumber() {
+    }
 }

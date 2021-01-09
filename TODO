@@ -57,7 +57,11 @@ insert into scales(name, port) values ('scale60', 'com12');
 insert into scales(name, port) values ('scale60', 'com12');
 
 insert into scales (NAME, PORT, TYPE, CAMERA, MODE_ID, CONNECTION_TYPE, IP, ETH_PORT, ETH_CMD)   values('r60', 'com600', 3, 'rtsp://admin:[avs1982]@192.168.33.202:554/cam/realmonitor?channel=1&subtype=1',1, 'ethernet', '192.168.0.126', 13255, 'hello');
+INSERT INTO newTable SELECT * FROM oldTable
 
 
+////<<<<<<<<<<<>>>>>>>>>>>>>>>>////     inserted us1
 
-////<<<<<<<<<<<>>>>>>>>>>>>>>>>////     inserted us
+create table cars(id INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1), name varchar(50), weight double, deleted boolean);
+
+create table temp_cars(id INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1), name varchar(50), weight double, WAYBILL_ID  integer);

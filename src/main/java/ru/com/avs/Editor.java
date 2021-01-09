@@ -1,5 +1,8 @@
 package ru.com.avs;
 import ch.roland.ModuleGUI;
+import ru.com.avs.util.Callback;
+import ru.com.avs.util.Checker;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -8,6 +11,8 @@ import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 
 public class Editor extends ModuleGUI {
+    public Checker checker;
+    public Callback callback;
     public JPanel CommentPanel, CommentLabelPanel, CommentTextPanel,
             BruttoPanel, BruttoLabelPanel, BruttoTextPanel,
             NettoPanel, NettoLabelPanel, NettoTextPanel,
@@ -43,8 +48,9 @@ public class Editor extends ModuleGUI {
     private String[] data1 = { "Чай" ,"Кофе"  ,"Минеральная","Морс", "Алюминий хлам"};
     public ArrayList metals;
     public JButton saver;
-
+    public String errorDescription;
     public Editor(String number, String date, ArrayList data1, JButton saver){
+        checker = new Checker();
         this.saver = saver;
         saver.setEnabled(true);
         CommentPanel = new JPanel(new GridLayout());
@@ -195,8 +201,49 @@ public class Editor extends ModuleGUI {
         Trash.setText(inputdata.get(4).toString());
         Tara.setText(inputdata.get(5).toString());
         Metal.setSelectedItem(inputdata.get(6).toString());
-
     };
+
+    public boolean checkInput(){
+        if (!checker.isnumber(Brutto.getText())) {
+            errorDescription = "Брутто";
+            return false;
+        }
+        if (!checker.isnumber(Tara.getText())) {
+            errorDescription = "Тара";
+            return false;
+        }
+        if (!checker.isnumber(Clogging.getText())) {
+            errorDescription = "Засор";
+            return false;
+        }
+        if (!checker.isnumber(Trash.getText())) {
+            errorDescription = "Примесь";
+            return false;
+        }
+        if (!checker.isnumber(Netto.getText())) {
+            errorDescription = "Нетто";
+            return false;
+        }
+        return true;
+    };
+
+    public void update(){
+        if (!checkInput()) {
+            JOptionPane.showMessageDialog(null, "Проверьте ввод чисел. Ошибка в поле "+errorDescription);
+            return;
+        }
+        positiontable.setValueAt(Comment.getText(), 0, 3);
+        positiontable.setValueAt(Metal.getSelectedItem(), 0, 4);
+        positiontable.setValueAt(Brutto.getText(), 0, 5);
+        positiontable.setValueAt(Tara.getText(), 0, 6);
+        positiontable.setValueAt(Clogging.getText(), 0, 7);
+        positiontable.setValueAt(Trash.getText(), 0, 8);
+        positiontable.setValueAt(Netto.getText(), 0, 9);
+        positiontable.updateUI();
+        JOptionPane.showMessageDialog(null, "Сохраняю измнения");
+        frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
+        callback.call();
+    }
 
     @Override
     public void initActions() {
@@ -204,16 +251,8 @@ public class Editor extends ModuleGUI {
             @Override
             public void actionPerformed(ActionEvent e) {
             //    JOptionPane.showMessageDialog(null, "NETTO::"+Netto.getText());
-                positiontable.setValueAt(Comment.getText(), 0, 3);
-                positiontable.setValueAt(Metal.getSelectedItem(), 0, 4);
-                positiontable.setValueAt(Brutto.getText(), 0, 5);
-                positiontable.setValueAt(Tara.getText(), 0, 6);
-                positiontable.setValueAt(Clogging.getText(), 0, 7);
-                positiontable.setValueAt(Trash.getText(), 0, 8);
-                positiontable.setValueAt(Netto.getText(), 0, 9);
-                positiontable.updateUI();
-                JOptionPane.showMessageDialog(null, "Сохраняю измнения");
-                frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
+            update();
+
             }
         };
 

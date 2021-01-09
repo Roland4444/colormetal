@@ -12,6 +12,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.UnknownHostException;
@@ -25,7 +26,7 @@ public class Example2 extends  ModuleGUI {
     public ThreadCheckStatus checker;
     public OnCheckCycle checkcycle;
     public String ID="";
-    public final String version = "0.0.55";
+    public final String version = "0.0.75";
     public final String approve_lock = "ap.lock";
     public final String decline_lock = "de.lock";
     public final String applock = "app.lock";
@@ -100,6 +101,8 @@ public class Example2 extends  ModuleGUI {
         Utils.safeDelete(WaybillJournalController.FileNameDump);
         Utils.safeDelete(approve_lock);
         Utils.safeDelete(req_lock);
+        Utils.safeDelete(wait_lock);
+        Utils.safeDelete(decline_lock);
     }
 
     public boolean checkInitialRequest(){
@@ -142,7 +145,6 @@ public class Example2 extends  ModuleGUI {
         Cancel = new JButton("Отмена");
         DescriptionPanel = new JPanel();
         experimentLayout = new FlowLayout();
-
 
         popupMenu = new JPopupMenu();
         JMenuItem menuItemAdd = new JMenuItem("Add New Row");
@@ -197,6 +199,7 @@ public class Example2 extends  ModuleGUI {
         ButtonPanel.add(Cancel);
         ButtonPanel.add(SaveChanges);
         ButtonPanel.add(EditButton);
+        SaveChanges.setVisible(false);
 
         DescriptionText.setRows(20);
         DescriptionText.setColumns(10);
@@ -253,17 +256,48 @@ public class Example2 extends  ModuleGUI {
         fos.close();
     }
 
+    public void saveChanges(){
+        System.out.println("Description::=>" + DescriptionText.getText());
+    //    JOptionPane.showMessageDialog(null, "Сохраняю измнения");
+        ArrayList data = new ArrayList();
+        PositionTable.updateUI();
+        for (int i = 0; i <= 12; i++) {
+            System.out.println(i + "index@Value::" + PositionTable.getModel().getValueAt(0, i));
+            data.add(PositionTable.getModel().getValueAt(0, i));
+        }
+        RequestMessage req = new RequestMessage(ID, DescriptionText.getText(), jsonizer.JSONedRestored(data));
+        req.type = RequestMessage.Type.update;
+        try {
+            req.addressToReply = akt.getURL_thisAktor();
+        } catch (UnknownHostException p) {
+            p.printStackTrace();
+        }
+        try {
+            akt.send(BinaryMessage.savedToBLOB(req), urlServer);
+            cleanup();
+            showMessageDialog(null, "Транзакция завершена");
+        //    akt.terminate();
+        } catch (IOException ioException) {
+            ioException.printStackTrace();
+        }
+    };
+
+    public void cleanAndexit(){
+        Utils.safeDelete(approve_lock);
+        Utils.safeDelete(req_lock);
+        Utils.safeDelete(applock);
+        Utils.safeDelete(WaybillJournalController.FileNameDump);
+        Utils.safeDelete(wait_lock);
+        akt.terminate();
+        frame.dispose();
+        System.exit(1);
+    }
+
     public void initActions() {
         cancelAction = new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Utils.safeDelete(WaybillJournalController.FileNameDump);
-                Utils.safeDelete(approve_lock);
-                Utils.safeDelete(req_lock);
-                Utils.safeDelete(applock);
-                Utils.safeDelete(WaybillJournalController.FileNameDump);
-                akt.terminate();
-                System.exit(1);
+                cleanAndexit();
             }
         };
         editAction = new AbstractAction() {
@@ -282,6 +316,12 @@ public class Example2 extends  ModuleGUI {
                 }
                 Editor editor = new Editor(String.valueOf(restored.getWaybill()), restored.getDateCreate().toString(), metals, SaveChanges);
                 editor.positiontable = PositionTable;
+                editor.callback = new Callback() {
+                    @Override
+                    public void call() {
+                        saveChanges();
+                    }
+                };
                 ArrayList data = new ArrayList<>();
                 editor.inputdata = data;
                 data.add(restored.getComment());
@@ -310,29 +350,9 @@ public class Example2 extends  ModuleGUI {
         saveChanges = new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("Description::=>" + DescriptionText.getText());
-                JOptionPane.showMessageDialog(null, "Сохраняю измнения");
-                ArrayList data = new ArrayList();
-                PositionTable.updateUI();
-                for (int i = 0; i <= 12; i++) {
-                    System.out.println(i + "index@Value::" + PositionTable.getModel().getValueAt(0, i));
-                    data.add(PositionTable.getModel().getValueAt(0, i));
-                }
-                RequestMessage req = new RequestMessage(ID, DescriptionText.getText(), jsonizer.JSONedRestored(data));
-                req.type = RequestMessage.Type.update;
-                try {
-                    req.addressToReply = akt.getURL_thisAktor();
-                } catch (UnknownHostException p) {
-                    p.printStackTrace();
-                }
-                try {
-                    akt.send(BinaryMessage.savedToBLOB(req), urlServer);
-                    cleanup();
-                    showMessageDialog(null, "Транзакция завершена");
-                } catch (IOException ioException) {
-                    ioException.printStackTrace();
-                }
-            };
+                saveChanges();
+                cleanAndexit();
+        };
         };
         createinitialrequest = new AbstractAction() {
             @Override
@@ -384,6 +404,29 @@ public class Example2 extends  ModuleGUI {
         });
     }
 
+    public void onjaktorPassed() throws IOException {
+        enableEdit();
+        FileOutputStream fos = new FileOutputStream(approve_lock);
+        fos.write("schon".getBytes());
+        fos.close();
+        showMessageDialog(null, "редактирование разрешено");
+        //new ThreadAlertApprove().start();
+        checker.interrupt();
+        checker.stop();
+    };
+
+    public void onjaktorDecline() throws IOException {
+        FileOutputStream fos = new FileOutputStream(decline_lock);
+        fos.write("schon".getBytes());
+        fos.close();
+        showMessageDialog(null, "редактирование запрещено");
+        //new ThreadAlertApprove().start();
+        checker.interrupt();
+        checker.stop();
+        cleanup();
+        //new ThreadAlertDecline().start();
+    }
+
     public void prepareAktor() throws InterruptedException {
         akt = new ServerAktor();
         akt.editButton = EditButton;
@@ -401,21 +444,13 @@ public class Example2 extends  ModuleGUI {
         akt.ondeclined = new OnDeclined() {
             @Override
             public void declined() throws IOException, InterruptedException {
-                cleanup();
-                new ThreadAlertDecline().start();
+                onjaktorDecline();
             }
         };
         akt.onapproved = new OnApproved() {
             @Override
             public void passed() throws IOException, InterruptedException {
-                enableEdit();
-                FileOutputStream fos = new FileOutputStream(approve_lock);
-                fos.write("schon".getBytes());
-                fos.close();
-                new ThreadAlertApprove().start();
-                checker.interrupt();
-                checker.stop();
-
+                onjaktorPassed();
             }
         };
         akt.spawn();
