@@ -16,6 +16,7 @@ public class WayBillUtilTest {
     public final String applock = "app.lock";
     public final String FileNameDump  = "waybill.bin";
     public final String req_lock = "request.lock";
+    public final String wait_lock = "wait.lock";
 
     @Test
     public void saveWayBillToBytes() {
@@ -58,6 +59,10 @@ public class WayBillUtilTest {
         if (new File(req_lock).exists())
             new File(req_lock).delete();
         assertEquals(false, new File(req_lock).exists());
+
+        if (new File(wait_lock).exists())
+            new File(wait_lock).delete();
+        assertEquals(false, new File(wait_lock).exists());
     }
 
     @Test
