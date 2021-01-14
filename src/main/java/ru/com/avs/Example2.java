@@ -1,9 +1,10 @@
 package ru.com.avs;
 import Message.abstractions.BinaryMessage;
 import abstractions.Cypher;
+import abstractions.ExchangeView;
 import abstractions.RequestMessage;
 import ch.roland.ModuleGUI;
-import ru.com.avs.controller.WaybillJournalController;
+
 import ru.com.avs.model.WeighingView;
 import ru.com.avs.util.*;
 import ru.com.avs.util.readfile.Readfile;
@@ -44,7 +45,7 @@ public class Example2 extends  ModuleGUI {
     public String checkaction_shortcut = "control Z";
     public String createandsendfatbundle = "createfatbundle";
     public String createfatbundle_shortcut = "control R";
-
+    public final String FileNameDump  = "waybill.bin";
     public String savechanges = "saveChanges";
     public String savechanges_shortcut = "control S";
     public JPanel DescriptionPanel;
@@ -65,7 +66,7 @@ public class Example2 extends  ModuleGUI {
     private Readfile readfile;
     JPopupMenu popupMenu;
     public ArrayList metals;
-
+    public ExchangeView restored;
     FlowLayout experimentLayout;
     public Object[] columnsHeaderAVS = new String[]{"Дата", "Время", "Накладная №", "Комментарий", "Металл", "Брутто", "Тара", "Засор", "Примеси", "Нетто", "Режим", "Завершено", "Состояние"};
 
@@ -98,7 +99,7 @@ public class Example2 extends  ModuleGUI {
     }
 
     public void cleanup(){
-        Utils.safeDelete(WaybillJournalController.FileNameDump);
+        Utils.safeDelete(FileNameDump);
         Utils.safeDelete(approve_lock);
         Utils.safeDelete(req_lock);
         Utils.safeDelete(wait_lock);
@@ -106,7 +107,7 @@ public class Example2 extends  ModuleGUI {
     }
 
     public boolean checkInitialRequest(){
-        return new File(WaybillJournalController.FileNameDump).exists();
+        return new File(FileNameDump).exists();
     };
 
     public boolean checkHaveResponce(){
@@ -123,9 +124,9 @@ public class Example2 extends  ModuleGUI {
         readfile = new Readfile("setts.ini");
         urlServer = readfile.readField("urlServer");
         frame = new JFrame("АВС помошник. Версия "+version);
-        WeighingView restored = null;
+        restored = null;
         try {
-            restored = WayBillUtil.restoreBytesToWayBill(WaybillJournalController.FileNameDump);
+            restored = WayBillUtil.restoreBytesToWayBill(FileNameDump);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -287,7 +288,7 @@ public class Example2 extends  ModuleGUI {
         Utils.safeDelete(approve_lock);
         Utils.safeDelete(req_lock);
         Utils.safeDelete(applock);
-        Utils.safeDelete(WaybillJournalController.FileNameDump);
+        Utils.safeDelete(FileNameDump);
         Utils.safeDelete(wait_lock);
         akt.terminate();
         frame.dispose();
@@ -309,9 +310,9 @@ public class Example2 extends  ModuleGUI {
                 for (int i = 0; i <= 12; i++) {
                     bf.append("Position #" + i + "data:: " + PositionTable.getModel().getValueAt(0, i) + "\n");
                 }
-                WeighingView restored = null;
+                ExchangeView restored = null;
                 try {
-                    restored = WayBillUtil.restoreBytesToWayBill(WaybillJournalController.FileNameDump);
+                    restored = WayBillUtil.restoreBytesToWayBill(FileNameDump);
                 } catch (IOException exception) {
                     exception.printStackTrace();
                 }
@@ -331,7 +332,7 @@ public class Example2 extends  ModuleGUI {
                 data.add(restored.getClogging());
                 data.add(restored.getTrash());
                 data.add(restored.getTare());
-                data.add(restored.getMetal().getName());
+                data.add(restored.getMetal());
                 try {
                     editor.preperaGUI();
                     editor.pasteData();
@@ -358,9 +359,9 @@ public class Example2 extends  ModuleGUI {
         createinitialrequest = new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent f) {
-                WeighingView restored = null;
+                restored = null;
                 try {
-                    restored = WayBillUtil.restoreBytesToWayBill(WaybillJournalController.FileNameDump);
+                    restored = WayBillUtil.restoreBytesToWayBill(FileNameDump);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -483,14 +484,14 @@ public class Example2 extends  ModuleGUI {
 
     public class TableModelSpezial extends DefaultTableModel {
         private String[] columnNames = new String[]{"Дата", "Время", "Накладная №", "Комментарий", "Металл", "Брутто", "Тара", "Засор", "Примеси", "Нетто", "Режим", "Завершено", "Состояние"};
-        WeighingView restored = WayBillUtil.restoreBytesToWayBill(WaybillJournalController.FileNameDump);
+        ExchangeView restored = WayBillUtil.restoreBytesToWayBill(FileNameDump);
 
         private Object[][] data=WayBillUtil.dataFromObject(restored);
 
         public TableModelSpezial() throws IOException {
-            WeighingView restored = null;
+            ExchangeView restored = null;
             try {
-                restored = WayBillUtil.restoreBytesToWayBill(WaybillJournalController.FileNameDump);
+                restored = WayBillUtil.restoreBytesToWayBill(FileNameDump);
             } catch (IOException e) {
                 e.printStackTrace();
             }

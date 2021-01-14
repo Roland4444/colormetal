@@ -5,6 +5,9 @@ import ru.com.avs.service.WeighingServiceImpl;
 import ru.com.avs.util.WayBillUtil;
 
 import javax.swing.*;
+
+import abstractions.ExchangeView;
+
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
@@ -35,7 +38,7 @@ public class SimpleTableTest extends JFrame
         // Простая таблица
         JTable table1 = new JTable(array, columnsHeader);
 
-        WeighingView restored = WayBillUtil.restoreBytesToWayBill(WaybillJournalController.FileNameDump);
+        ExchangeView restored = WayBillUtil.restoreBytesToWayBill(WaybillJournalController.FileNameDump);
 
         JTable tableAVS = new JTable( WayBillUtil.dataFromObject(restored), columnsHeaderAVS);//arrayAVS
         // Таблица с настройками

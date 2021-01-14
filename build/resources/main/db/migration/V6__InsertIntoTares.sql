@@ -1,1 +1,0 @@
-INSERT INTO TARES (name, weight, deleted) VALUES ('Нет', 0.0, false);

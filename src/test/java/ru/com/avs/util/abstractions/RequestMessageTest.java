@@ -1,6 +1,8 @@
 package ru.com.avs.util.abstractions;
 
 import org.junit.Test;
+
+import abstractions.ExchangeView;
 import ru.com.avs.controller.WaybillJournalController;
 import ru.com.avs.model.WeighingView;
 import ru.com.avs.util.WayBillUtil;
@@ -10,7 +12,7 @@ import java.io.IOException;
 import static org.junit.Assert.*;
 
 public class RequestMessageTest {
-    WeighingView restored;
+    ExchangeView restored;
 
     public RequestMessageTest() {
 

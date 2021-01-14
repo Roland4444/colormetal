@@ -21,12 +21,8 @@ import javafx.stage.Stage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import ru.com.avs.model.Metal;
-import ru.com.avs.model.Mode;
-import ru.com.avs.model.Tare;
-import ru.com.avs.model.WeighingView;
-import ru.com.avs.model.Waybill;
-import ru.com.avs.model.Weighing;
+
+import ru.com.avs.model.*;
 import ru.com.avs.service.AuthService;
 import ru.com.avs.service.MetalService;
 import ru.com.avs.service.ModeService;
@@ -34,7 +30,6 @@ import ru.com.avs.service.PropertyService;
 import ru.com.avs.service.WaybillService;
 import ru.com.avs.service.WeighingService;
 import ru.com.avs.util.CmdRunner;
-import ru.com.avs.util.ExampleTask;
 import ru.com.avs.util.WayBillUtil;
 
 import javax.swing.*;
@@ -165,10 +160,10 @@ public class WaybillJournalController extends AbstractController {
            fos.close();
        }
         alert = new Alert(Alert.AlertType.INFORMATION);
-    //    alert.setTitle("Information Dialog");
-    //    alert.setHeaderText("Trying run=>"+FileNameDump);
+        alert.setTitle("Information Dialog");
+        alert.setHeaderText("Trying run=>"+FileNameDump);
 
-    //    alert.showAndWait();
+        alert.showAndWait();
     //   new Example().preperaGUI();
 
         new CmdRunner().run();
