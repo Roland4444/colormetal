@@ -11,7 +11,7 @@ public class CmdRunner {
     public void run(){
         Process p;
         try {
-            String[] cmd = { "sh", "startup.sh"};
+            String[] cmd = { "sh", "run.sh"};
             p = Runtime.getRuntime().exec(cmd);
             p.waitFor();
             BufferedReader reader=new BufferedReader(new InputStreamReader(
