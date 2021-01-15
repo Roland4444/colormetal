@@ -1,5 +1,7 @@
 package ru.com.avs.util;
 
+import org.codehaus.jettison.json.JSONException;
+import org.codehaus.jettison.json.JSONObject;
 import ru.com.avs.model.WeighingView;
 import java.io.*;
 import java.nio.file.Files;
@@ -9,7 +11,26 @@ import java.nio.file.Paths;
 import abstractions.ExchangeView;
 
 public class WayBillUtil {
-    public static byte[] saveWayBillToBytes(WeighingView input) {
+    public static void saveWayBilltoJSON(String FileName, WeighingView input) throws JSONException, IOException {
+        JSONObject rowJSON = new JSONObject();
+        rowJSON.put("dateCreate", input.getDateCreate());
+        rowJSON.put("timeCreate", input.getTimeCreate());
+        rowJSON.put("waybill", input.getWaybill());
+        rowJSON.put("comment" , input.getComment());
+        rowJSON.put("metal", String.valueOf(input.getMetal().toString()));
+        rowJSON.put("brutto", input.getBrutto());
+        rowJSON.put("tare", input.getTare());
+        rowJSON.put("clogging" , input.getClogging());
+        rowJSON.put("trash", input.getTrash());
+        rowJSON.put("netto", input.getNetto());
+        rowJSON.put("complete" , input.getComplete());
+        rowJSON.put("condition" , "");
+        FileOutputStream fos = new FileOutputStream(FileName);
+        fos.write(rowJSON.toString().getBytes());
+        fos.close();
+    };
+
+    public static byte[] saveWayBillToBytes____(WeighingView input) {
         ExchangeView  exchangeView = new ExchangeView();
         exchangeView.brutto = input.getBrutto();
         exchangeView.clogging = input.getClogging();
@@ -19,9 +40,10 @@ public class WayBillUtil {
         exchangeView.metal = String.valueOf(input.getMetal().toString());
         exchangeView.mode = input.getMode();
         exchangeView.netto = input.getNetto();
+        exchangeView.trash = input.getTrash();
         exchangeView.sum = input.getSum();
         exchangeView.tare = input.getTare();
-        exchangeView.timeCreate = input.getTimeCreate();        
+        exchangeView.timeCreate = input.getTimeCreate();
         byte[] Result=null ;
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         ObjectOutput out = null;

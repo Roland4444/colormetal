@@ -19,13 +19,13 @@ public class JSONizerTest {
     public JSONizerTest() throws IOException {
     }
 
-    @Test
+
     public void JSONedRestored() {
         assertNotEquals(null, json.JSONedRestored(restored));
         System.out.println(json.JSONedRestored(restored));
     }
 
-    @Test
+
     public void returnField() {
         String etalon = "\"name\":\"roman\",";
         String etalonlast = "\"name\":\"roman\"";

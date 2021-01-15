@@ -18,6 +18,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
+import org.codehaus.jettison.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -51,6 +52,7 @@ public class WaybillJournalController extends AbstractController {
     public TableColumn<WeighingView, Boolean> completeColumn;
     public TableColumn<WeighingView, String> stateColumn;
     public static final String FileNameDump  = "waybill.bin";
+    public static final String FileNameDumpJSON  = "waybill.json";
 
     public TableView<WeighingView> getTable(){
         return waybillTable;
@@ -145,13 +147,14 @@ public class WaybillJournalController extends AbstractController {
 
 
     @FXML
-    private void help() throws IOException, ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException {
+    private void help() throws IOException, ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException, JSONException {
        Alert alert = new Alert(Alert.AlertType.INFORMATION);
        if (!new File(FileNameDump).exists()) {
            WeighingView selectedwaybill = waybillTable.getSelectionModel().getSelectedItem();
-           FileOutputStream fos = new FileOutputStream(FileNameDump);
-           fos.write(WayBillUtil.saveWayBillToBytes(selectedwaybill));
-           fos.close();
+       //    FileOutputStream fos = new FileOutputStream(FileNameDump);
+       //    fos.write();
+                   WayBillUtil.saveWayBilltoJSON(FileNameDumpJSON, selectedwaybill);
+       //    fos.close();
        }
        else
        {
@@ -163,7 +166,7 @@ public class WaybillJournalController extends AbstractController {
         alert.setTitle("Information Dialog");
         alert.setHeaderText("Trying run=>"+FileNameDump);
 
-        alert.showAndWait();
+     //   alert.showAndWait();
     //   new Example().preperaGUI();
 
         new CmdRunner().run();

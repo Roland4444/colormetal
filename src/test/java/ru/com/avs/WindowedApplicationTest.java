@@ -1,12 +1,7 @@
 package ru.com.avs;
 
-
-import javafx.application.Application;
-import javafx.stage.Stage;
 import org.junit.Test;
-
 import javax.swing.*;
-
 import java.awt.*;
 
 import static org.junit.Assert.assertEquals;
