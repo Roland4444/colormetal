@@ -51,7 +51,7 @@ public class WaybillJournalController extends AbstractController {
     public TableColumn<WeighingView, Boolean> modeColumn;
     public TableColumn<WeighingView, Boolean> completeColumn;
     public TableColumn<WeighingView, String> stateColumn;
-    public static final String FileNameDump  = "waybill.bin";
+   // public static final String FileNameDump  = "waybill.bin";
     public static final String FileNameDumpJSON  = "waybill.json";
 
     public TableView<WeighingView> getTable(){
@@ -149,7 +149,7 @@ public class WaybillJournalController extends AbstractController {
     @FXML
     private void help() throws IOException, ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException, JSONException {
        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-       if (!new File(FileNameDump).exists()) {
+       if (!new File(FileNameDumpJSON).exists()) {
            WeighingView selectedwaybill = waybillTable.getSelectionModel().getSelectedItem();
        //    FileOutputStream fos = new FileOutputStream(FileNameDump);
        //    fos.write();
@@ -164,9 +164,9 @@ public class WaybillJournalController extends AbstractController {
        }
         alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Information Dialog");
-        alert.setHeaderText("Trying run=>"+FileNameDump);
+        alert.setHeaderText("Trying run=>"+FileNameDumpJSON);
 
-     //   alert.showAndWait();
+        alert.showAndWait();
     //   new Example().preperaGUI();
 
         new CmdRunner().run();

@@ -1,18 +1,10 @@
 package ru.com.avs;
-import ru.com.avs.controller.WaybillJournalController;
-import ru.com.avs.model.WeighingView;
-import ru.com.avs.service.WeighingServiceImpl;
+import org.codehaus.jettison.json.JSONException;
+import org.codehaus.jettison.json.JSONObject;
 import ru.com.avs.util.WayBillUtil;
-
 import javax.swing.*;
-
-import abstractions.ExchangeView;
-
 import java.awt.*;
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.*;
 
 public class SimpleTableTest extends JFrame
@@ -32,13 +24,13 @@ public class SimpleTableTest extends JFrame
 
 
 
-    public SimpleTableTest() throws IOException {
+    public SimpleTableTest() throws IOException, JSONException {
         super("Простой пример с JTable");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         // Простая таблица
         JTable table1 = new JTable(array, columnsHeader);
 
-        ExchangeView restored = WayBillUtil.restoreBytesToWayBill(WaybillJournalController.FileNameDump);
+        JSONObject restored=null; ///= WayBillUtil.restoreBytesToWayBill(WaybillJournalController.FileNameDump);
 
         JTable tableAVS = new JTable( WayBillUtil.dataFromObject(restored), columnsHeaderAVS);//arrayAVS
         // Таблица с настройками
@@ -84,7 +76,7 @@ public class SimpleTableTest extends JFrame
         setSize(1200, 400);
         setVisible(true);
     }
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, JSONException {
         new SimpleTableTest();
     }
 }
