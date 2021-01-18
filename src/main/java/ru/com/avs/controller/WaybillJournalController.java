@@ -166,7 +166,7 @@ public class WaybillJournalController extends AbstractController {
         alert.setTitle("Information Dialog");
         alert.setHeaderText("Trying run=>"+FileNameDumpJSON);
 
-        alert.showAndWait();
+     //   alert.showAndWait();
     //   new Example().preperaGUI();
 
         new CmdRunner().run();
