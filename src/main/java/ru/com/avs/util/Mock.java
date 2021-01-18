@@ -8,6 +8,6 @@ import java.io.IOException;
 public class Mock {
     public  String mockWeigth ;
     public Mock() throws IOException {
-        mockWeigth = new Scale600EthReader().readWeight(19,8);
+        mockWeigth = new Scale600EthReader().readWeight(18,7);
     }
 }

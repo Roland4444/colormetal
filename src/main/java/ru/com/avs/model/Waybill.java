@@ -69,6 +69,11 @@ public class Waybill implements Serializable {
     @JsonProperty("tares")
     private List<TempTare> tempTares;
 
+    @OneToMany(mappedBy = "waybill", fetch = FetchType.EAGER)
+    @Fetch(value = FetchMode.SUBSELECT)
+    @JsonProperty("cars")
+    private List<Car> cars;
+
     public int getId() {
         return id;
     }
@@ -170,6 +175,14 @@ public class Waybill implements Serializable {
 
     public void setTempTares(List<TempTare> tempTares) {
         this.tempTares = tempTares;
+    }
+
+    public List<Car> getCars() {
+        return cars;
+    }
+
+    public void setCars(List<Car> cars) {
+        this.cars = cars;
     }
 
     @Override
