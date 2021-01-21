@@ -42,10 +42,10 @@ public class WayBillUtil {
         FileOutputStream fos1 = new FileOutputStream("temp");
         fos1.write(String.valueOf(input.getWeighingId()).getBytes());
         fos1.close();
-        if (System.getProperty("os.name").equals("Linux"))
-            fos.write(rowJSON.toString().getBytes());
-        else
-            fos.write(rowJSON.toString().getBytes("windows-1251"));
+        /*if (System.getProperty("os.name").equals("Linux"))*/
+            fos.write(rowJSON.toString().getBytes("UTF-8"));
+     /*   else
+            fos.write(rowJSON.toString().getBytes("windows-1251"));*/
         fos.close();
     };
 
