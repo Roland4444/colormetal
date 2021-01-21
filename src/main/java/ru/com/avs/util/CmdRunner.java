@@ -11,16 +11,35 @@ public class CmdRunner {
     public void run(){
         Process p;
         try {
-            String[] cmd = { "sh", "run.sh"};
+            String[] cmd = {"run.bat"};
             p = Runtime.getRuntime().exec(cmd);
-          //  p.waitFor();////p.waitFor();
+            // Get input streams
+           /* BufferedReader stdInput = new BufferedReader(new InputStreamReader(p.getInputStream()));
+            BufferedReader stdError = new BufferedReader(new InputStreamReader(p.getErrorStream()));
+
+            // Read command standard output
+            String s;
+            System.out.println("Standard output: ");
+            while ((s = stdInput.readLine()) != null) {
+                System.out.println(s);
+            }
+
+            // Read command errors
+            System.out.println("Standard error: ");
+            while ((s = stdError.readLine()) != null) {
+                System.out.println(s);
+            }
+        } catch (Exception e) {
+            e.printStackTrace(System.err);
+        }
+           /* p.waitFor();
             BufferedReader reader=new BufferedReader(new InputStreamReader(
                     p.getInputStream()));
             String line;
             while((line = reader.readLine()) != null) {
                 System.out.println(line);
-            }
-        } catch (IOException e) {
+            }*/
+        } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }

@@ -25,7 +25,7 @@ public class SimpleThreadTest {
         new File("DB.json").delete();
     }
 
-    @Test
+   /* @Test
     public void connectToderby() throws ClassNotFoundException, IllegalAccessException, InstantiationException, SQLException {
 
         Properties props = new Properties();
@@ -39,5 +39,5 @@ public class SimpleThreadTest {
             System.out.println(metals.getObject("id"));
 
 
-    };
+    };*/
 }

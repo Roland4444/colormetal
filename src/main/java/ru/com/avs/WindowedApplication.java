@@ -45,6 +45,7 @@ public class WindowedApplication extends Application {
 
         Flyway.configure()
                 .dataSource(host, null, null)
+                .validateOnMigrate(false)
                 .locations("classpath:db/migration")
                 .load()
                 .migrate();

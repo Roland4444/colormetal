@@ -39,7 +39,9 @@ public class WayBillUtil {
         rowJSON.put("Complete" , input.getComplete());
         rowJSON.put("Condition" , "");
         FileOutputStream fos = new FileOutputStream(FileName);
-        System.out.println(System.getProperty("os.name"));
+        FileOutputStream fos1 = new FileOutputStream("temp");
+        fos1.write(String.valueOf(input.getWeighingId()).getBytes());
+        fos1.close();
         if (System.getProperty("os.name").equals("Linux"))
             fos.write(rowJSON.toString().getBytes());
         else

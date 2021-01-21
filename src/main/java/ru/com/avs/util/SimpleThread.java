@@ -1,27 +1,23 @@
 package ru.com.avs.util;
 
-import org.json.simple.parser.ParseException;
-import ru.com.avs.controller.WaybillEditController;
 
 import java.io.File;
-import java.io.IOException;
 
-public class SimpleThread extends  Thread{
+public class SimpleThread extends Thread {
     @Override
     public void run() {
-        while(true) {
+        while (true) {
             try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
+                Thread.sleep(15000);
+                if (new File("DB.json").exists()) {
+                    UpdateDBHelper.runDatabaseUpdate();
+                    new File("DB.json").delete();
+                }
+            } catch (Exception e) {
                 e.printStackTrace();
             }
-            if (new File("DB.json").exists()) {
-                try {
-                    WaybillEditController.saveJSON("");
-                } catch (IOException | ParseException e) {
-                    e.printStackTrace();
-                }
-            }
+
+
         }
     }
 }

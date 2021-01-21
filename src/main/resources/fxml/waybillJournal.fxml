@@ -22,7 +22,6 @@
 
         <Button fx:id="buttonSearch" layoutX="477.0" layoutY="34.0" mnemonicParsing="false" onAction="#search" text="Поиск" />
         <Button fx:id="buttonHelp" layoutX="700.0" layoutY="34.0" mnemonicParsing="false" onAction="#help" text="Запросить помощь" />
-        <Button fx:id="importHelp" layoutX="700.0" layoutY="34.0" mnemonicParsing="false" onAction="#import__" text="Обновить данные в БД" />
 
         <AnchorPane layoutX="6.0" layoutY="76.0" prefHeight="388.0" prefWidth="847.0" AnchorPane.bottomAnchor="368.0" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="80.0">
             <children>

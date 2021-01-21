@@ -19,10 +19,10 @@ import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
 import org.codehaus.jettison.json.JSONException;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-
 import ru.com.avs.model.*;
 import ru.com.avs.service.AuthService;
 import ru.com.avs.service.MetalService;
@@ -144,15 +144,6 @@ public class WaybillJournalController extends AbstractController {
     private void search() {
         refreshData();
     }
-
-@FXML
-private void import__(){
-    Alert alert = new Alert(Alert.AlertType.INFORMATION);
-    alert.setTitle("Information Dialog");
-    alert.setHeaderText("IMPORT @ JSON...=>"+FileNameDumpJSON);
-
-       alert.showAndWait();
-    };
 
 
     @FXML

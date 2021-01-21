@@ -32,6 +32,11 @@
         </dependency>
        -->
         <dependency>
+            <groupId>com.googlecode.json-simple</groupId>
+            <artifactId>json-simple</artifactId>
+            <version>1.1.1</version>
+        </dependency>
+        <dependency>
             <groupId>fr.roland</groupId>
             <artifactId>Executor</artifactId>
             <version>1.0.5</version>
@@ -201,7 +206,7 @@
                     </descriptorRefs>
                     <archive>
                         <manifest>
-                            <mainClass>ru.com.avs.Example2</mainClass>
+                            <mainClass>ru.com.avs.WindowedApplication</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
@@ -227,7 +232,7 @@
                         <configuration>
                             <transformers>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>ru.com.avs.Example2</mainClass>
+                                    <mainClass>ru.com.avs.WindowedApplication</mainClass>
                                 </transformer>
                             </transformers>
                         </configuration>
