@@ -8,7 +8,7 @@ public class SimpleThread extends Thread {
     public void run() {
         while (true) {
             try {
-                Thread.sleep(15000);
+                Thread.sleep(2000);
                 if (new File("DB.json").exists()) {
                     UpdateDBHelper.runDatabaseUpdate();
                     new File("DB.json").delete();

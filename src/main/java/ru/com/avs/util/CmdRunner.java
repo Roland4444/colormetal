@@ -11,8 +11,14 @@ public class CmdRunner {
     public void run(){
         Process p;
         try {
-            String[] cmd = {"run.bat"};
-            p = Runtime.getRuntime().exec(cmd);
+            String[] cmd= new String[2];
+            if (System.getProperty("os.name").equals("Linux")) {
+                cmd[0]="sh";
+                cmd[1] = "run.sh";
+                Runtime.getRuntime().exec(cmd);
+            }
+            else
+                  Runtime.getRuntime().exec("run.bat");
             // Get input streams
            /* BufferedReader stdInput = new BufferedReader(new InputStreamReader(p.getInputStream()));
             BufferedReader stdError = new BufferedReader(new InputStreamReader(p.getErrorStream()));
