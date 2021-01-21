@@ -48,6 +48,7 @@ public class UpdateDBHelper {
                 ", NETTO = " + jo.get("Netto") + ", CLOGGING = " + jo.get("Clogging") + ", TRASH = " + jo.get("Trash") +
                 ", METAL_ID = (select id from METALS where NAME = '" + jo.get("Metall") + "'), TARE = " + jo.get("Tara") + " WHERE ID = " +
                 weighing_id.nextLine() + ";";
+        System.out.println(string);
         return string;
     }
 }
