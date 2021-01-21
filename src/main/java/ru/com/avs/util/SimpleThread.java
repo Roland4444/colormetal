@@ -1,5 +1,6 @@
 package ru.com.avs.util;
 
+import org.json.simple.parser.ParseException;
 import ru.com.avs.controller.WaybillEditController;
 
 import java.io.File;
@@ -17,7 +18,7 @@ public class SimpleThread extends  Thread{
             if (new File("DB.json").exists()) {
                 try {
                     WaybillEditController.saveJSON("");
-                } catch (IOException e) {
+                } catch (IOException | ParseException e) {
                     e.printStackTrace();
                 }
             }

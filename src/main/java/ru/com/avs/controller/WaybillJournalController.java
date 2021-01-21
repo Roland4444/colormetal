@@ -145,6 +145,15 @@ public class WaybillJournalController extends AbstractController {
         refreshData();
     }
 
+@FXML
+private void import__(){
+    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+    alert.setTitle("Information Dialog");
+    alert.setHeaderText("IMPORT @ JSON...=>"+FileNameDumpJSON);
+
+       alert.showAndWait();
+    };
+
 
     @FXML
     private void help() throws IOException, ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException, JSONException {

@@ -83,9 +83,9 @@ public class WaybillEditController extends AbstractController {
 
     public static   void  saveJSON(String filenamejson) throws IOException, ParseException {
         System.out.println("SAVE CALLED");
-        FileInputStream fis = new FileInputStream(filenamejson);
-        byte[] data = Files.readAllBytes(Paths.get(filenamejson));
-        String json = new String(data);
+      //  FileInputStream fis = new FileInputStream(filenamejson);
+      //  byte[] data = Files.readAllBytes(Paths.get(filenamejson));
+      //  String json = new String(data);
 /*
        JSONObject jo = (JSONObject) new JSONParser().parse(json);
         pj.Date = (String) jo.get("Date");
