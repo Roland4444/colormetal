@@ -32,6 +32,11 @@
         </dependency>
        -->
         <dependency>
+            <groupId>fr.roland</groupId>
+            <artifactId>Executor</artifactId>
+            <version>1.0.5</version>
+        </dependency>
+        <dependency>
             <groupId>com.googlecode.json-simple</groupId>
             <artifactId>json-simple</artifactId>
             <version>1.1.1</version>
@@ -88,11 +93,11 @@
             <artifactId>jersey-bundle</artifactId>
             <version>1.19.4</version>
         </dependency>
-        <!--dependency>
+        <dependency>
             <groupId>com.sun.jersey</groupId>
             <artifactId>jersey-json</artifactId>
             <version>1.19.4</version>
-        </dependency-->
+        </dependency>
         <!-- OpenCv -->
         <dependency>
             <groupId>org</groupId>

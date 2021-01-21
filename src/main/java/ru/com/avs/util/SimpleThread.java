@@ -3,6 +3,7 @@ package ru.com.avs.util;
 import ru.com.avs.controller.WaybillEditController;
 
 import java.io.File;
+import java.io.IOException;
 
 public class SimpleThread extends  Thread{
     @Override
@@ -14,7 +15,11 @@ public class SimpleThread extends  Thread{
                 e.printStackTrace();
             }
             if (new File("DB.json").exists()) {
-                WaybillEditController.saveJSON("");
+                try {
+                    WaybillEditController.saveJSON("");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }

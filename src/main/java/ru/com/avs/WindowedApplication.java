@@ -58,7 +58,7 @@ public class WindowedApplication extends Application {
     public static void main(String[] args) {
 
         checkIfRunning();
-        runDatabaseMigrations();
+     //   runDatabaseMigrations();
         launch(args);
 
     }

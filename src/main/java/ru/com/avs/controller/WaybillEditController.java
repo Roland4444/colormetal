@@ -7,9 +7,9 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 
-import jdk.nashorn.internal.objects.Global;
-import jdk.nashorn.internal.parser.JSONParser;
-import jdk.nashorn.internal.runtime.*;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ru.com.avs.model.Metal;
@@ -25,12 +25,13 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.LocalDate;
 import java.util.List;
 
 @Component("WaybillEditController")
 public class WaybillEditController extends AbstractController {
 
-    private Weighing weighing;
+    public Weighing weighing;
 
     @FXML
     private DatePicker dateText;
@@ -80,30 +81,32 @@ public class WaybillEditController extends AbstractController {
      * @return
      */
 
-    public static Object parseJSON(String json){
-        String     str    = JSType.toString(json);
-        Global global = Context.getGlobal();
-        JSONParser parser = new JSONParser(str, global, true);
-        Object     value;
-
-        try {
-            value = parser.parse();
-        } catch (final ParserException e) {
-            throw ECMAErrors.syntaxError(e, "invalid.json", e.getMessage());
-        }
-
-        return value;
-    }
-
-    public static   void  saveJSON(String filenamejson) throws IOException {
+    public static   void  saveJSON(String filenamejson) throws IOException, ParseException {
         System.out.println("SAVE CALLED");
         FileInputStream fis = new FileInputStream(filenamejson);
         byte[] data = Files.readAllBytes(Paths.get(filenamejson));
         String json = new String(data);
+/*
+       JSONObject jo = (JSONObject) new JSONParser().parse(json);
+        pj.Date = (String) jo.get("Date");
+        Waybill newWaybill = new Waybill();
+        newWaybill.setWaybill(Integer.parseInt((String) jo.get("Waybill_number")));
+        newWaybill.setComment((String) jo.get("Comment"));
+        newWaybill.setDateCreate((LocalDate) jo.get("Date"));
+        Waybill oldWaybill = weighing.getWaybill();
 
-      //  JSONObject jo = new JSONParser().parse(json);
-     //   ParcedJSON pj = new ParcedJSON();
-     //   pj.Date = (String) jo.get("Date");
+        if (!newWaybill.equals(oldWaybill)) {
+            oldWaybill.concat(newWaybill);
+            waybillService.save(oldWaybill);
+        }
+        weighing.setBrutto(bruttoText.getDecimal());
+        weighing.setNetto(nettoText.getDecimal());
+        weighing.setClogging(cloggingText.getDecimal());
+        weighing.setTrash(trashText.getDecimal());
+        weighing.setTare(tareText.getDecimal());
+        weighing.setMetal(metalBox.getSelectionModel().getSelectedItem().getId());
+        weighingService.save(weighing);
+  */
     };
 
     @FXML
