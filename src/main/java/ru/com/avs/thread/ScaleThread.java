@@ -66,8 +66,8 @@ public class ScaleThread extends Thread {
      * Getting weight.
      */
     public String getWeight() throws IOException {
-        return new Mock().mockWeigth;
-       // return weight;
+     //   return new Mock().mockWeigth;
+        return weight;
     }
 
     /**

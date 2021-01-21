@@ -28,9 +28,9 @@ public class Scale600EthReader extends EthReader {
         String weightHex = hex7 + hex6;
         float weight = (float) Integer.parseInt(weightHex, 16) / 10;
        // return String.valueOf(weight);
-    //    return String.valueOf(weight);
+        return String.valueOf(weight);
        // return Mock.mockWeigth;
-        return new Mock().mockWeigth;
+      /////  return new Mock().mockWeigth;
 
     }
 

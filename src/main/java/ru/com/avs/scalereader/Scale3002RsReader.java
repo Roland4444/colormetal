@@ -32,8 +32,8 @@ public class Scale3002RsReader extends RsReader {
             }
             weight = new BigDecimal(new StringBuffer(result).reverse().toString()).toString();
         }
-     //   return weight;
-        return new Mock().mockWeigth;
+        return weight;
+       /// return new Mock().mockWeigth;
 
     }
 }

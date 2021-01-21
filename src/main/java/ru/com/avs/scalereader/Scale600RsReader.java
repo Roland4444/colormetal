@@ -19,7 +19,7 @@ public class Scale600RsReader extends RsReader {
                 weight = String.valueOf((Integer.parseInt(hx, 16)) * 0.1);
             }
         }
-       // return weight;
-        return new Mock().mockWeigth;
+        return weight;
+    ///    return new Mock().mockWeigth;
     }
 }
