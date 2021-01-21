@@ -13,14 +13,14 @@ public class CmdRunner {
         try {
             String[] cmd = { "sh", "run.sh"};
             p = Runtime.getRuntime().exec(cmd);
-            p.waitFor();
+          //  p.waitFor();////p.waitFor();
             BufferedReader reader=new BufferedReader(new InputStreamReader(
                     p.getInputStream()));
             String line;
             while((line = reader.readLine()) != null) {
                 System.out.println(line);
             }
-        } catch (IOException | InterruptedException e) {
+        } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }

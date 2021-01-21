@@ -11,13 +11,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.com.avs.config.ShutdownBaseBean;
 import ru.com.avs.controller.MainController;
-import ru.com.avs.controller.WaybillJournalController;
 import ru.com.avs.thread.HttpServerThread;
-import ru.com.avs.util.CmdRunner;
+import ru.com.avs.util.SimpleThread;
 import ru.com.avs.util.SpringLoader;
 
 import javax.swing.*;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.BindException;
@@ -102,6 +100,7 @@ public class WindowedApplication extends Application {
                 }
         );
         stageMain.show();
+        new SimpleThread().start();
         new HttpServerThread().start();
 
 

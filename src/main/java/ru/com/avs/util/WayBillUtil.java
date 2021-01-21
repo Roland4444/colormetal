@@ -39,7 +39,11 @@ public class WayBillUtil {
         rowJSON.put("Complete" , input.getComplete());
         rowJSON.put("Condition" , "");
         FileOutputStream fos = new FileOutputStream(FileName);
-        fos.write(rowJSON.toString().getBytes());
+        System.out.println(System.getProperty("os.name"));
+        if (System.getProperty("os.name").equals("Linux"))
+            fos.write(rowJSON.toString().getBytes());
+        else
+            fos.write(rowJSON.toString().getBytes("windows-1251"));
         fos.close();
     };
 
