@@ -12,7 +12,7 @@ import static org.junit.Assert.*;
 
 public class SimpleThreadTest {
 
-    public String protocol = "jdbc:derby:scales-rest-service-db;create=true";
+    public String protocol = "jdbc:derby:scales-rest-service-db;";
 
 
     @Test

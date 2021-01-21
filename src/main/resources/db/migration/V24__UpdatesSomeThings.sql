@@ -1,0 +1,7 @@
+INSERT INTO UPDATES(id) values(1);
+INSERT INTO UPDATES(id) values(2);
+INSERT INTO UPDATES(id) values(3);
+INSERT INTO UPDATES(id) values(4);
+INSERT INTO UPDATES(id) values(5);
+INSERT INTO UPDATES(id) values(6);
+INSERT INTO UPDATES(id) values(7);
