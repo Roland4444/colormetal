@@ -8,7 +8,7 @@
 
 <AnchorPane prefHeight="584.0" prefWidth="174.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.com.avs.controller.PrintController">
     <children>
-        <AnchorPane fx:id="draftAnchor" layoutX="5.0" layoutY="2.0" prefHeight="500.0" prefWidth="180.0" styleClass="draft" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="0.0">
+        <AnchorPane fx:id="draftAnchor" layoutX="5.0" layoutY="2.0" prefHeight="500.0" prefWidth="180.0" styleClass="draft" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="0.0" style="-fx-background-color: white;">
             <children>
                 <Label fx:id="waybillText" layoutX="35.0" layoutY="6.0" prefHeight="40.0" prefWidth="122.0" styleClass="draft-label-header" text="Чек" />
                 <Label fx:id="commentText" layoutX="10.0" layoutY="74.0" prefHeight="20.0" prefWidth="150.0" styleClass="draft-label" text="Клиент:" />
