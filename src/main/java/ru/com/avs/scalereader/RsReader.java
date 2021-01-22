@@ -31,7 +31,7 @@ abstract class RsReader extends Reader {
 
     @Override
     public String readWeight() throws Exception {
-      /*  serialPort.writeByte(getCommand()[0]);
+        serialPort.writeByte(getCommand()[0]);
         String weight = serialPort.readHexString();
         weight = parseWeight(weight);
 
@@ -41,8 +41,8 @@ abstract class RsReader extends Reader {
                     .toString();
         } else {
             return "0.0";
-        }*/
-        return "12.5";
+        }
+       
     }
 
     @Override

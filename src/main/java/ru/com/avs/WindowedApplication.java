@@ -83,7 +83,7 @@ public class WindowedApplication extends Application {
         Platform.setImplicitExit(false);
 
         Stage stageMain = new Stage();
-        stageMain.setTitle("Весовая");
+        stageMain.setTitle("Весовая  412");
         MainController controller = (MainController) SpringLoader.loadControllerFxml("/fxml/main.fxml");
         Scene scene = new Scene((Parent) controller.getView());
         scene.getStylesheets().add((getClass().getResource("/css/mainStyle.css")).toExternalForm());
