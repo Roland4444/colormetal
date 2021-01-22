@@ -60,7 +60,7 @@ public class PrintController extends AbstractController {
             Metal metal = metalService.find(weighing.getMetal());
             nameColumn.getItems().add(metal.getName());
             weightColumn.getItems().add(" " + weighing.getNetto().toString() + " кг");
-            height += 25;
+            height += 30;
         }
         nameColumn.setPrefHeight(height);
         weightColumn.setPrefHeight(height);
