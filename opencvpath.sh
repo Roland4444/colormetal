@@ -1,0 +1,1 @@
+-Djava.library.path="/home/romanx/Downloads/opencv-3.4.2/build/lib"
