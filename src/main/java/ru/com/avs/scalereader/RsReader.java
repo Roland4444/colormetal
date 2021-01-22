@@ -42,7 +42,7 @@ abstract class RsReader extends Reader {
         } else {
             return "0.0";
         }
-       
+
     }
 
     @Override
