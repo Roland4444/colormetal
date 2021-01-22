@@ -1,7 +1,7 @@
 package ru.com.avs.scalereader;
 
 import ru.com.avs.model.Scale;
-import ru.com.avs.util.Mock;
+
 
 import java.io.IOException;
 
