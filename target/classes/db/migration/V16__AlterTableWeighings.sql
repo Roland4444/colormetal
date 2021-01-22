@@ -1,2 +1,0 @@
-ALTER TABLE WEIGHINGS
-    ADD COLUMN deleted BOOLEAN default false;

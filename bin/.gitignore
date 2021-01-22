@@ -1,7 +1,0 @@
-/.idea/
-/scales-rest-service.iml
-/target/
-/scales-rest-service-db/
-/derby.log
-/application.log*
-*.iml

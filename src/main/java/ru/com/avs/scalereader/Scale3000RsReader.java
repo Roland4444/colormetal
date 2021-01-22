@@ -9,7 +9,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.xml.bind.DatatypeConverter;
 import ru.com.avs.model.Scale;
-import ru.com.avs.util.Mock;
 
 public class Scale3000RsReader extends RsReader {
 
@@ -24,10 +23,9 @@ public class Scale3000RsReader extends RsReader {
             Matcher matcher = pattern.matcher(hex);
             if (matcher.find()) {
                 byte[] bytes = DatatypeConverter.parseHexBinary(matcher.group(1));
-               // weight = new BigDecimal(new String(bytes, StandardCharsets.UTF_8)).toString();
+                weight = new BigDecimal(new String(bytes, StandardCharsets.UTF_8)).toString();
             }
         }
-        weight="12";
         return weight;
 
 

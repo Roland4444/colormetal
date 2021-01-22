@@ -1,7 +1,6 @@
 package ru.com.avs.scalereader;
 
 import ru.com.avs.model.Scale;
-import ru.com.avs.util.Mock;
 
 import java.io.IOException;
 
@@ -20,6 +19,5 @@ public class Scale600RsReader extends RsReader {
             }
         }
         return weight;
-    ///    return new Mock().mockWeigth;
     }
 }

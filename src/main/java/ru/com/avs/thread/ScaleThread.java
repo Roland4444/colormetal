@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 import ru.com.avs.model.Scale;
 import ru.com.avs.scalereader.Reader;
 import ru.com.avs.scalereader.ReaderFactory;
-import ru.com.avs.util.Mock;
 import ru.com.avs.util.Utils;
 
 import java.io.IOException;

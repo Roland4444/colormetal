@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import ru.com.avs.model.Scale;
-import ru.com.avs.util.Mock;
 
 public class Scale600EthReader extends EthReader {
 
@@ -27,10 +26,7 @@ public class Scale600EthReader extends EthReader {
         String hex7 = Integer.toHexString(decimal7);
         String weightHex = hex7 + hex6;
         float weight = (float) Integer.parseInt(weightHex, 16) / 10;
-       // return String.valueOf(weight);
         return String.valueOf(weight);
-       // return Mock.mockWeigth;
-      /////  return new Mock().mockWeigth;
 
     }
 
@@ -40,8 +36,6 @@ public class Scale600EthReader extends EthReader {
         String weightHex = hex7 + hex6;
         float weight = (float) Integer.parseInt(weightHex, 16) / 10;
         return String.valueOf(weight);
-        //    return String.valueOf(weight);
-        // return Mock.mockWeigth;
 
     }
 
