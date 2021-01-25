@@ -86,7 +86,7 @@ public class Weighing {
      */
     @JsonIgnore
     public BigDecimal getNetto() {
-        this.brutto.subtract(this.tare);
+       /// this.brutto.subtract(this.tare);
         BigDecimal sub = brutto.subtract(tare).subtract(trash);
         BigDecimal percentage = clogging
                 .divide(new BigDecimal("100.00"))
