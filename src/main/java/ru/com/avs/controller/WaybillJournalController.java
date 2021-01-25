@@ -9,6 +9,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -19,8 +20,6 @@ import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
 import org.codehaus.jettison.json.JSONException;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ru.com.avs.model.*;
@@ -51,10 +50,11 @@ public class WaybillJournalController extends AbstractController {
     public TableColumn<WeighingView, Boolean> modeColumn;
     public TableColumn<WeighingView, Boolean> completeColumn;
     public TableColumn<WeighingView, String> stateColumn;
-   // public static final String FileNameDump  = "waybill.bin";
-    public static final String FileNameDumpJSON  = "waybill.json";
+    public PrintController controller = new PrintController();
+    // public static final String FileNameDump  = "waybill.bin";
+    public static final String FileNameDumpJSON = "waybill.json";
 
-    public TableView<WeighingView> getTable(){
+    public TableView<WeighingView> getTable() {
         return waybillTable;
     }
 
@@ -148,26 +148,24 @@ public class WaybillJournalController extends AbstractController {
 
     @FXML
     private void help() throws IOException, ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException, JSONException {
-       Alert alert = new Alert(Alert.AlertType.INFORMATION);
-       if (!new File(FileNameDumpJSON).exists()) {
-           WeighingView selectedwaybill = waybillTable.getSelectionModel().getSelectedItem();
-       //    FileOutputStream fos = new FileOutputStream(FileNameDump);
-       //    fos.write();
-                   WayBillUtil.saveWayBilltoJSON(FileNameDumpJSON, selectedwaybill);
-       //    fos.close();
-       }
-       else
-       {
-           FileOutputStream fos = new FileOutputStream("request.lock");
-           fos.write("schon".getBytes());
-           fos.close();
-       }
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        if (!new File(FileNameDumpJSON).exists()) {
+            WeighingView selectedwaybill = waybillTable.getSelectionModel().getSelectedItem();
+            //    FileOutputStream fos = new FileOutputStream(FileNameDump);
+            //    fos.write();
+            WayBillUtil.saveWayBilltoJSON(FileNameDumpJSON, selectedwaybill);
+            //    fos.close();
+        } else {
+            FileOutputStream fos = new FileOutputStream("request.lock");
+            fos.write("schon".getBytes());
+            fos.close();
+        }
         alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Information Dialog");
-        alert.setHeaderText("Trying run=>"+FileNameDumpJSON);
+        alert.setHeaderText("Trying run=>" + FileNameDumpJSON);
 
-     //   alert.showAndWait();
-    //   new Example().preperaGUI();
+        //   alert.showAndWait();
+        //   new Example().preperaGUI();
 
         new CmdRunner().run();
     }
@@ -230,19 +228,20 @@ public class WaybillJournalController extends AbstractController {
     @FXML
     private void print() {
         Waybill waybill = waybillService.getById(viewModel.getWaybillId());
-        if (waybill.isComplete()) {
-            PrintController controller =
-                    (PrintController) runController("printForm", "Чек", true);
+        if (controller == null || !controller.getStage().isShowing())
+            if (waybill.isComplete()) {
+                controller =
+                        (PrintController) runController("printForm", "Чек", true);
 
-            controller.initData(waybill, false);
-            Stage stage = controller.getStage();
-            stage.setOnCloseRequest(we -> {
-                deactivateButtons(true);
-            });
-        } else {
-            alert("Невозможно напечатаь чек\n" +
-                    "Сделка еще не завершена!", "Ошибка", Alert.AlertType.ERROR);
-        }
+                controller.initData(waybill, false);
+                Stage stage = controller.getStage();
+                stage.setOnCloseRequest(we -> {
+                    deactivateButtons(true);
+                });
+            } else {
+                alert("Невозможно напечатаь чек\n" +
+                        "Сделка еще не завершена!", "Ошибка", Alert.AlertType.ERROR);
+            }
     }
 
     private void adminMode(boolean enable) {
