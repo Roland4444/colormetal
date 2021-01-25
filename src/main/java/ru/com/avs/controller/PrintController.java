@@ -9,6 +9,7 @@ import javafx.print.PageOrientation;
 import javafx.print.Paper;
 import javafx.print.Printer;
 import javafx.print.PrinterJob;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.image.ImageView;
@@ -33,6 +34,8 @@ public class PrintController extends AbstractController {
     private Label waybillText;
     @FXML
     private Label commentText;
+    @FXML
+    private Button buttonPrint;
     @FXML
     private Label dateText;
     @FXML
@@ -83,6 +86,8 @@ public class PrintController extends AbstractController {
 
     @FXML
     private boolean print() {
+        if (buttonPrint != null)
+        buttonPrint.setDisable(true);
         PrinterJob job = PrinterJob.createPrinterJob();
         Printer printer = job.getPrinter();
         JobSettings jobSettings = job.getJobSettings();
@@ -91,9 +96,12 @@ public class PrintController extends AbstractController {
         if (job != null) {
             boolean success = job.printPage(draftAnchor);
             if (success) {
+                closeThisWindow();
                 return job.endJob();
             }
         }
+        if (buttonPrint != null)
+        buttonPrint.setDisable(false);
         return false;
     }
 }

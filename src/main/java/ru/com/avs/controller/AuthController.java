@@ -22,7 +22,7 @@ public class AuthController extends AbstractController {
     @FXML
     private void login() {
 
-        if (!authService.isSuccessAuth(password.getText())) {
+        if (authService.isSuccessAuth(password.getText())) {
             authService.setAdminMode(true);
             this.getStage().getOnCloseRequest()
                     .handle(new WindowEvent(this.getStage(), WindowEvent.WINDOW_CLOSE_REQUEST));

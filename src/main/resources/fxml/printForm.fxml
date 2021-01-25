@@ -18,7 +18,7 @@
                 <ImageView fx:id="qrImage" fitHeight="150.0" fitWidth="150.0" layoutX="17.0" layoutY="335.0" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="17.0" AnchorPane.rightAnchor="11.0" AnchorPane.topAnchor="335.0" />
             </children>
         </AnchorPane>
-        <Button layoutX="14.0" layoutY="545.0" mnemonicParsing="false" onAction="#print" text="Печать" />
+        <Button fx:id="buttonPrint" layoutX="14.0" layoutY="545.0" mnemonicParsing="false" onAction="#print" text="Печать" />
         <Button layoutX="108.0" layoutY="545.0" mnemonicParsing="false" onAction="#cancel" text="Отмена" />
     </children>
 </AnchorPane>
