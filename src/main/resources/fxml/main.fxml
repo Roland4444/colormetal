@@ -6,7 +6,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane fx:id="anchorPane" maxHeight="645.0" maxWidth="801.0" minHeight="321.0" minWidth="293.0" prefHeight="645.0" prefWidth="794.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.com.avs.controller.MainController">
+<AnchorPane fx:id="mainAnchorPane" maxHeight="645.0" maxWidth="801.0" minHeight="321.0" minWidth="293.0" prefHeight="645.0" prefWidth="794.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.com.avs.controller.MainController">
 
     <ButtonBar layoutX="6.0" layoutY="10.0" prefHeight="44.0" prefWidth="770.0" AnchorPane.leftAnchor="6.0" AnchorPane.rightAnchor="6.0">
         <buttons>

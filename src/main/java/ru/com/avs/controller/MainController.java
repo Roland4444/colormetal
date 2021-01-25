@@ -46,6 +46,8 @@ public class MainController extends AbstractController {
     private ButtonBar modeBox;
     @FXML
     private AnchorPane scalePane;
+    @FXML
+    private AnchorPane mainAnchorPane;
 
     @Autowired
     private PropertyService propertyService;
@@ -117,7 +119,8 @@ public class MainController extends AbstractController {
             scalePane.getChildren().add(anchorPane);
             x += 390;
         }
-
+        System.out.println("START!!!!!!!!\n\n\n!!!!!!!!!!!!!!!!!");
+        mainAnchorPane.setMinWidth(x);
         if (this.getStage() != null && x > 700) {
             this.getStage().setMinWidth(x + 20);
             this.getStage().setWidth(x + 20);
