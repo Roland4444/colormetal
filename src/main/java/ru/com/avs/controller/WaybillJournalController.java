@@ -50,7 +50,7 @@ public class WaybillJournalController extends AbstractController {
     public TableColumn<WeighingView, Boolean> modeColumn;
     public TableColumn<WeighingView, Boolean> completeColumn;
     public TableColumn<WeighingView, String> stateColumn;
-    public PrintController controller = new PrintController();
+    public PrintController controller;
     // public static final String FileNameDump  = "waybill.bin";
     public static final String FileNameDumpJSON = "waybill.json";
 
