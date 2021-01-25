@@ -4,6 +4,8 @@ import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 import ru.com.avs.model.WeighingView;
 import java.io.*;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 public class WayBillUtil {
     public static Object[][] dataFromObject(JSONObject input) throws JSONException {
@@ -24,6 +26,12 @@ public class WayBillUtil {
         return result;
     }
 
+    public static String trimApply(String input){
+        BigDecimal bd = new BigDecimal(input);
+        BigDecimal result  =  bd.setScale(2, RoundingMode.HALF_UP);
+        return String.valueOf(result);
+    };
+
     public static void saveWayBilltoJSON(String FileName, WeighingView input) throws JSONException, IOException {
         JSONObject rowJSON = new JSONObject();
         rowJSON.put("Date", input.getDateCreate());
@@ -31,11 +39,11 @@ public class WayBillUtil {
         rowJSON.put("Waybill_number", input.getWaybill());
         rowJSON.put("Comment" , input.getComment());
         rowJSON.put("Metall", String.valueOf(input.getMetal().toString()));
-        rowJSON.put("Brutto", input.getBrutto());
-        rowJSON.put("Tara", input.getTare());
-        rowJSON.put("Clogging" , input.getClogging());
-        rowJSON.put("Trash", input.getTrash());
-        rowJSON.put("Netto", input.getNetto());
+        rowJSON.put("Brutto", trimApply(String.valueOf(input.getBrutto())));
+        rowJSON.put("Tara", trimApply(String.valueOf(input.getTare())));
+        rowJSON.put("Clogging" , trimApply(String.valueOf(input.getClogging())));
+        rowJSON.put("Trash", trimApply(String.valueOf(input.getTrash())));
+        rowJSON.put("Netto", trimApply(String.valueOf(input.getNetto())));
         rowJSON.put("Complete" , input.getComplete());
         rowJSON.put("Condition" , "");
         FileOutputStream fos = new FileOutputStream(FileName);
@@ -43,7 +51,7 @@ public class WayBillUtil {
         fos1.write(String.valueOf(input.getWeighingId()).getBytes());
         fos1.close();
         /*if (System.getProperty("os.name").equals("Linux"))*/
-            fos.write(rowJSON.toString().getBytes("UTF-8"));
+        fos.write(rowJSON.toString().getBytes("UTF-8"));
      /*   else
             fos.write(rowJSON.toString().getBytes("windows-1251"));*/
         fos.close();
