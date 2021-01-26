@@ -1,6 +1,5 @@
 package ru.com.avs.controller;
 
-import java.io.File;
 import java.util.List;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -31,7 +30,6 @@ import ru.com.avs.service.ThreadService;
 import ru.com.avs.thread.CameraThread;
 import ru.com.avs.thread.ExportThread;
 import ru.com.avs.thread.ScaleThread;
-import ru.com.avs.util.CmdRunner;
 
 @Component("MainController")
 public class MainController extends AbstractController {
@@ -63,6 +61,7 @@ public class MainController extends AbstractController {
     private ThreadService threadService;
 
     private ExportThread exportThread;
+    private WaybillJournalController controller;
 
     /**
      * Initialize construct.
@@ -119,7 +118,6 @@ public class MainController extends AbstractController {
             scalePane.getChildren().add(anchorPane);
             x += 390;
         }
-        System.out.println("START!!!!!!!!\n\n\n!!!!!!!!!!!!!!!!!");
         mainAnchorPane.setMinWidth(x);
         if (this.getStage() != null && x > 700) {
             this.getStage().setMinWidth(x + 20);
@@ -209,10 +207,12 @@ public class MainController extends AbstractController {
 
     @FXML
     private void openWaybillJournal() {
-
-        runController("waybillJournal", "Журнал сделок", true, true, true);
-    //    if (new File(WaybillJournalController.FileNameDump).exists())
-    //        new CmdRunner().run();
+        if (controller == null || !controller.getStage().isShowing()) {
+            controller =
+                    (WaybillJournalController) runController("waybillJournal", "Журнал сделок", true, true, true);
+            //    if (new File(WaybillJournalController.FileNameDump).exists())
+            //        new CmdRunner().run();
+        }
     }
 
     @FXML
