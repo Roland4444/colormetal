@@ -30,6 +30,7 @@ import ru.com.avs.service.PropertyService;
 import ru.com.avs.service.WaybillService;
 import ru.com.avs.service.WeighingService;
 import ru.com.avs.util.CmdRunner;
+import ru.com.avs.util.UserUtils;
 import ru.com.avs.util.WayBillUtil;
 
 import javax.swing.*;
@@ -226,7 +227,7 @@ public class WaybillJournalController extends AbstractController {
     }
 
     @FXML
-    private void print() {
+    private void print() throws IllegalAccessException, NoSuchFieldException, ClassNotFoundException {
         Waybill waybill = waybillService.getById(viewModel.getWaybillId());
         if (controller == null || !controller.getStage().isShowing())
             if (waybill.isComplete()) {
@@ -242,6 +243,10 @@ public class WaybillJournalController extends AbstractController {
                 alert("Невозможно напечатаь чек\n" +
                         "Сделка еще не завершена!", "Ошибка", Alert.AlertType.ERROR);
             }
+        else {
+            Stage window = controller.getStage();
+            UserUtils.focusWindow(window);
+        }
     }
 
     private void adminMode(boolean enable) {

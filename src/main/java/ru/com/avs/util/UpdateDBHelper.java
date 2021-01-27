@@ -10,7 +10,6 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Properties;
-import java.util.Scanner;
 
 public class UpdateDBHelper {
 
@@ -42,7 +41,7 @@ public class UpdateDBHelper {
                 jo.get("Time") + "' AND WAYBILL = " + jo.get("Waybill_number") + " ;\n" + "UPDATE weighings SET BRUTTO = " + jo.get("Brutto") +
                 ", NETTO = " + jo.get("Netto") + ", CLOGGING = " + jo.get("Clogging") + ", TRASH = " + jo.get("Trash") +
                 ", METAL_ID = (select id from METALS where NAME = '" + jo.get("Metall") + "'), TARE = " + jo.get("Tara") + " WHERE ID = " +
-                jo.get("weighing_id") + ";";
+                jo.get("Weighing_id") + ";";
         String out = new String(string.getBytes("Windows-1251"), "UTF-8");
         System.out.println(out);
         return out;

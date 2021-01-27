@@ -7,9 +7,12 @@ import java.nio.file.Files;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
+
 import javafx.scene.image.Image;
+
 import javax.xml.bind.DatatypeConverter;
 
+import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -100,6 +103,7 @@ public class UserUtils {
 
     /**
      * Get image by path.
+     *
      * @param path Path of image
      * @return weighing photo
      */
@@ -113,5 +117,16 @@ public class UserUtils {
         }
 
         return new Image(file.toURI().toString());
+    }
+
+    public static void focusWindow(Stage stage) throws ClassNotFoundException, NoSuchFieldException, IllegalAccessException {
+        Class c = Class.forName("com.sun.javafx.tk.quantum.WindowStage");
+        java.lang.reflect.Field field = c.getDeclaredField("platformWindow");
+        field.setAccessible(true);
+        com.sun.glass.ui.Window w = (com.sun.glass.ui.Window) field.get(stage.impl_getPeer());
+        if (w.isVisible())
+            w.setVisible(false);
+        w.minimize(false);
+        w.setVisible(true);
     }
 }
