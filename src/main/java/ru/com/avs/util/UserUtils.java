@@ -2,16 +2,15 @@ package ru.com.avs.util;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
-
+import com.sun.glass.ui.Window;
 import javafx.scene.image.Image;
-
 import javax.xml.bind.DatatypeConverter;
-
 import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -120,13 +119,13 @@ public class UserUtils {
     }
 
     public static void focusWindow(Stage stage) throws ClassNotFoundException, NoSuchFieldException, IllegalAccessException {
-        Class c = Class.forName("com.sun.javafx.tk.quantum.WindowStage");
-        java.lang.reflect.Field field = c.getDeclaredField("platformWindow");
+        Class aClass = Class.forName("com.sun.javafx.tk.quantum.WindowStage");
+        Field field = aClass.getDeclaredField("platformWindow");
         field.setAccessible(true);
-        com.sun.glass.ui.Window w = (com.sun.glass.ui.Window) field.get(stage.impl_getPeer());
-        if (w.isVisible())
-            w.setVisible(false);
-        w.minimize(false);
-        w.setVisible(true);
+        Window window = (Window) field.get(stage.impl_getPeer());
+        if (window.isVisible())
+            window.setVisible(false);
+        window.minimize(false);
+        window.setVisible(true);
     }
 }
