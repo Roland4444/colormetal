@@ -26,6 +26,9 @@ public class ReaderFactory {
             switch (scale.getType()) {
                 case SCALE_60:
                     return new Scale60EthReader(scale);
+                    /*Add 60_back for android*/
+                case SCALE_60_BACK:
+                    return new Scale60EthReader(scale);
                 case SCALE_600:
                     return new Scale600EthReader(scale);
                 default:
