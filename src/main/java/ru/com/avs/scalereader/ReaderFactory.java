@@ -31,6 +31,8 @@ public class ReaderFactory {
                     return new Scale60EthReader(scale);
                 case SCALE_600:
                     return new Scale600EthReader(scale);
+                case SCALE_3000:
+                    return new Scale3000RsReader(scale);
                 default:
                     throw new Exception("Can't create Reader " + scale.getType() + " " + scale.getConnectionType());
             }

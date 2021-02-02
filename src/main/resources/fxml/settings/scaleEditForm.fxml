@@ -119,7 +119,7 @@
                         <Insets bottom="10.0" />
                     </GridPane.margin>
                 </TextField>
-                <Label text="Команда" GridPane.rowIndex="2">
+                <Label text="URL" GridPane.rowIndex="2">
                     <GridPane.margin>
                         <Insets bottom="10.0" right="10.0" />
                     </GridPane.margin>
