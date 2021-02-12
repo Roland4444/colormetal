@@ -109,7 +109,6 @@ public class MainController extends AbstractController {
         threadService.stopThreads();
         scalePane.getChildren().clear();
         List<Scale> scales = scaleService.getByMode(id);
-
         double x = 10;
         if (scales.size() == 1) {
             x = 200;

@@ -6,13 +6,18 @@ import javafx.scene.control.Label;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.conn.ConnectTimeoutException;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import ru.com.avs.model.Scale;
 import ru.com.avs.scalereader.Reader;
 import ru.com.avs.scalereader.ReaderFactory;
+import ru.com.avs.util.GetWeightThread;
+import ru.com.avs.util.SimpleThread;
 import ru.com.avs.util.Utils;
 
 import java.io.BufferedReader;
@@ -24,7 +29,7 @@ import java.net.ConnectException;
 @Scope("prototype")
 public class ScaleThread extends Thread {
 
-    String weight = "0.0";
+    public String weight = "0.0";
     private Label lblScaleWeight;
     private boolean isActive;
     private final Scale scale;
@@ -52,15 +57,13 @@ public class ScaleThread extends Thread {
             e.printStackTrace();
         }
         /*Add read weight from rest server*/
-        while (!scale.getEthCmd().isEmpty()) {
+        while (!scale.getEthCmd().isEmpty() && isActive) {
             emptyURL = false;
-            try {
-                weight = getWeightFromURL(scale.getEthCmd());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            Utils.onFxThread(lblScaleWeight, weight);
+            GetWeightThread r = new GetWeightThread(scale.getEthCmd());
+            r.start();
             waiting(1000);
+            weight = r.getWeight();
+            Utils.onFxThread(lblScaleWeight, weight);
         }
         while (!isConnected && isActive && weightReader != null && emptyURL) {
             try {
@@ -102,22 +105,4 @@ public class ScaleThread extends Thread {
     }
 
 
-    public static String getWeightFromURL(String url) throws IOException {
-        HttpClient client = new DefaultHttpClient();
-        HttpGet request = new HttpGet(url);
-        String line = "";
-        try {
-            HttpResponse response = client.execute(request);
-            BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
-
-            while ((line = rd.readLine()) != null) {
-                return line;
-            }
-        } catch (ConnectException e) {
-            System.out.println("connection refused : " + url);
-            line = "ConErr";
-        }
-
-        return line;
-    }
 }
