@@ -83,14 +83,13 @@ public class WindowedApplication extends Application {
         Platform.setImplicitExit(false);
 
         Stage stageMain = new Stage();
-        stageMain.setTitle("Весовая 4.1.2 R");
+        stageMain.setTitle("Весовая 4.1.2 R.D");
         MainController controller = (MainController) SpringLoader.loadControllerFxml("/fxml/main.fxml");
         Scene scene = new Scene((Parent) controller.getView());
         scene.getStylesheets().add((getClass().getResource("/css/mainStyle.css")).toExternalForm());
 
         stageMain.setScene(scene);
         stageMain.getIcons().add(new Image(String.valueOf(ClassLoader.getSystemResource("icon/icon.png"))));
-        //stageMain.resizableProperty().setValue(Boolean.FALSE);
         stageMain.setMinWidth(810);
         stageMain.setMinHeight(700);
         controller.setStage(stageMain);
@@ -103,8 +102,5 @@ public class WindowedApplication extends Application {
         stageMain.show();
         new SimpleThread().start();
         new HttpServerThread().start();
-
-
-
     }
 }

@@ -34,6 +34,7 @@ public class WaybillDaoImpl extends DaoImpl<Waybill> implements WaybillDao {
         return criteria.list();
     }
 
+
     @Override
     public List<Waybill> getNotExported() {
         Criteria criteria = getSession().createCriteria(Waybill.class);

@@ -29,7 +29,6 @@ public abstract class DaoImpl<T> implements Dao<T> {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public List<T> getList() {
         Criteria criteria = getSession().createCriteria(type);
         return (List<T>) criteria.list();

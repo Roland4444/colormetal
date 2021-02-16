@@ -8,6 +8,7 @@ import ru.com.avs.model.Waybill;
 public interface WaybillDao extends Dao<Waybill> {
     List<Waybill> search(LocalDate dateStart, LocalDate dateEnd, String comment);
 
+
     List<Waybill> getNotExported();
 
     List<Waybill> getNotCompleted();

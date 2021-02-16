@@ -7,6 +7,8 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.com.avs.dao.WeighingDao;
 import ru.com.avs.model.Weighing;
 
+import java.util.List;
+
 @Service("WeighingService")
 @Transactional
 public class WeighingServiceImpl implements WeighingService {
@@ -18,6 +20,7 @@ public class WeighingServiceImpl implements WeighingService {
     public Weighing getById(int id) {
         return dao.get(id);
     }
+
 
     @Override
     public void save(Weighing weighing) {
@@ -40,5 +43,10 @@ public class WeighingServiceImpl implements WeighingService {
         Weighing weighing = dao.get(weighingId);
         weighing.setDeleted(true);
         this.save(weighing);
+    }
+
+    @Override
+    public List<Weighing> getList() {
+        return dao.getList();
     }
 }

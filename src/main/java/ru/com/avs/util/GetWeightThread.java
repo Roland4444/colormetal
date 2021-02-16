@@ -47,10 +47,10 @@ public class GetWeightThread extends Thread {
             BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
             return rd.readLine();
         } catch (ConnectException e) {
-            System.out.println("connection refused : " + url);
+//            System.out.println("connection refused : " + url);
             return "ConErr";
         } catch (ConnectTimeoutException e) {
-            System.out.println("connection timeout : " + url);
+//            System.out.println("connection timeout : " + url);
             return "TimeOut";
         } catch (ClientProtocolException e) {
             System.out.println("protocol exception : " + url);

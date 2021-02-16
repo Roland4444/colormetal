@@ -12,6 +12,8 @@ public interface WaybillService {
 
     int getLastWaybillNumber();
 
+    List<Waybill> getList();
+
     void delete(Waybill waybill);
 
     Waybill getById(int id);

@@ -60,6 +60,11 @@ public class WaybillServiceImpl implements WaybillService {
     }
 
     @Override
+    public List<Waybill> getList() {
+        return waybillDao.getList();
+    }
+
+    @Override
     public void delete(Waybill waybill) {
         waybillDao.delete(waybill);
     }

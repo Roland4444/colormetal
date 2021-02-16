@@ -2,6 +2,9 @@ package ru.com.avs.service;
 
 import ru.com.avs.model.Weighing;
 
+import java.util.List;
+
+
 public interface WeighingService {
 
     Weighing getById(int id);
@@ -11,4 +14,6 @@ public interface WeighingService {
     void delete(Weighing weighing);
 
     void delete(Integer weighingId);
+
+    List<Weighing> getList();
 }
