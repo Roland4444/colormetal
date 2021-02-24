@@ -128,6 +128,7 @@ public class CameraThread extends Thread {
     }
 
     private Mat grabFrame() {
+        System.out.println("grab grab");
         Mat frame = new Mat();
 
         if (this.capture.isOpened()) {
