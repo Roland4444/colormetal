@@ -1,5 +1,4 @@
 package ru.com.avs.controller;
-
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -18,9 +17,19 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import ru.com.avs.model.*;
-import ru.com.avs.service.*;
+import ru.com.avs.model.Mode;
+import ru.com.avs.model.TempTare;
+import ru.com.avs.model.ThreadModel;
+import ru.com.avs.model.Waybill;
+import ru.com.avs.model.Weighing;
+import ru.com.avs.service.MetalService;
+import ru.com.avs.service.ModeService;
+import ru.com.avs.service.PropertyService;
+import ru.com.avs.service.TareService;
+import ru.com.avs.service.TempTareService;
+import ru.com.avs.service.ThreadService;
+import ru.com.avs.service.WaybillService;
+import ru.com.avs.service.WeighingService;
 import ru.com.avs.thread.CameraThread;
 import ru.com.avs.thread.ScaleThread;
 import ru.com.avs.util.SpringLoader;
@@ -28,7 +37,8 @@ import ru.com.avs.util.SpringLoader;
 @RestController
 @RequestMapping("/api")
 public class MainRestController extends AbstractController {
-
+    ObjectMapper objectMapper = new ObjectMapper();
+    ResponseEntity badResp = new ResponseEntity<>("Не выбран режим", HttpStatus.BAD_REQUEST);
     @Autowired
     private MetalService metalService;
 
@@ -51,9 +61,6 @@ public class MainRestController extends AbstractController {
 
     private ModeService modeService;
 
-    @Autowired
-    private CarService carService;
-
     /**
      * Send list of metals service to client.
      *
@@ -62,10 +69,7 @@ public class MainRestController extends AbstractController {
      */
     @RequestMapping(value = "/list-metals", method = RequestMethod.GET, produces = "application/json; charset=utf-8")
     public String getListMetals() throws IOException {
-        List<Metal> list = metalService.getAll();
-        ObjectMapper objectMapper = new ObjectMapper();
-
-        return objectMapper.writeValueAsString(list);
+        return objectMapper.writeValueAsString(metalService.getAll());
     }
 
     /**
@@ -75,18 +79,7 @@ public class MainRestController extends AbstractController {
      */
     @RequestMapping(value = "/list-tares", method = RequestMethod.GET, produces = "application/json; charset=utf-8")
     public String getListTares() throws IOException {
-        List<Tare> tares = tareService.getList();
-        ObjectMapper objectMapper = new ObjectMapper();
-
-        return objectMapper.writeValueAsString(tares);
-    }
-
-    @RequestMapping(value = "/list-cars", method = RequestMethod.GET, produces = "application/json; charset=utf-8")
-    public String getListCars() throws IOException {
-        List<Car> cars = carService.getList();
-        ObjectMapper objectMapper = new ObjectMapper();
-        System.out.println("getcars");
-        return objectMapper.writeValueAsString(cars);
+        return objectMapper.writeValueAsString(tareService.getList());
     }
 
     /**
@@ -150,34 +143,24 @@ public class MainRestController extends AbstractController {
     @RequestMapping(value = "/set-weighing", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity setWeighing(@RequestBody() String json) throws IOException {
-
-        ObjectMapper objectMapper = new ObjectMapper();
         Waybill waybill = objectMapper.readValue(json, Waybill.class);
-
         if (waybill.getId() == 0) {
             waybill = createWaybillModel(waybill);
             waybillService.save(waybill);
         }
-
         Weighing weighing = waybill.getWeighings().stream().findFirst().get();
         weighing.setWaybill(waybill);
-
         if (weighing.getBrutto().longValue() < weighing.getTare().longValue()) {
             BigDecimal tmp = weighing.getBrutto();
             weighing.setBrutto(weighing.getTare());
             weighing.setTare(tmp);
         }
-
         weighingService.save(weighing);
-
         threadService = (ThreadService) SpringLoader.getBean("ThreadService");
         CameraThread cameraThread =
                 (CameraThread) threadService.getThread(ThreadModel.CAMERA_THREAD, waybill.getScaleId()).getThread();
         cameraThread.getSnapshot(String.valueOf(weighing.getId()));
-
-        waybill = waybillService.getById(waybill.getId());
-        String retJson = objectMapper.writeValueAsString(waybill);
-        return ResponseEntity.ok(retJson);
+        return ResponseEntity.ok(objectMapper.writeValueAsString(waybillService.getById(waybill.getId())));
     }
 
     /**
@@ -185,15 +168,6 @@ public class MainRestController extends AbstractController {
      *
      * @return ResponseEntity
      */
-    @RequestMapping(value = "/hello", method = RequestMethod.GET, produces = "application/json; charset=utf-8")
-    public ResponseEntity getHello() throws IOException {
-            System.out.println("\n\n\n\n\n\n HEllo");
-            String json = "hello";
-            return new ResponseEntity<>(json, HttpStatus.OK);
-    }
-
-
-
     @RequestMapping(value = "/get-settings", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
     public ResponseEntity getSettings(@RequestParam(value = "modeId") Integer modeId) throws IOException {
         modeService = (ModeService) SpringLoader.getBean("ModeService");
@@ -204,11 +178,9 @@ public class MainRestController extends AbstractController {
             String json = objectMapper.writeValueAsString(mode);
             return new ResponseEntity<>(json, HttpStatus.OK);
         } else {
-            return new ResponseEntity<>("Не выбран режим", HttpStatus.BAD_REQUEST);
+            return badResp;
         }
     }
-
-
 
     /**
      * Delete weighing by id.
@@ -231,7 +203,7 @@ public class MainRestController extends AbstractController {
     @RequestMapping(value = "/get-waybills", method = RequestMethod.GET, produces = "application/json; charset=utf-8")
     public ResponseEntity getWaybills() throws IOException {
         List<Waybill> waybills = waybillService.getNotCompleted();
-        ObjectMapper objectMapper = new ObjectMapper();
+
         String json = objectMapper.writeValueAsString(waybills);
         return ResponseEntity.ok(json);
     }
@@ -244,10 +216,7 @@ public class MainRestController extends AbstractController {
      */
     @RequestMapping(value = "set-tare", method = RequestMethod.PUT, produces = "application/json; charset=utf-8")
     public ResponseEntity createTempTare(@RequestBody() String json) throws IOException {
-
-        ObjectMapper objectMapper = new ObjectMapper();
         Waybill waybill = objectMapper.readValue(json, Waybill.class);
-
         if (waybill.getId() == 0) {
             waybill = createWaybillModel(waybill);
             waybillService.save(waybill);
@@ -265,28 +234,6 @@ public class MainRestController extends AbstractController {
         return ResponseEntity.ok(retJson);
     }
 
-    @RequestMapping(value = "set-car", method = RequestMethod.PUT, produces = "application/json; charset=utf-8")
-    public ResponseEntity createTempCar(@RequestBody() String json) throws IOException {
-
-        ObjectMapper objectMapper = new ObjectMapper();
-        Waybill waybill = objectMapper.readValue(json, Waybill.class);
-
-        if (waybill.getId() == 0) {
-            waybill = createWaybillModel(waybill);
-            waybillService.save(waybill);
-        }
-
-        Car car = waybill.getCars().stream().findFirst().get();
-        car.setWaybill(waybill);
-        carService.save(car);
-
-        waybill = waybillService.getById(waybill.getId());
-        List<Car> carList = new ArrayList<>();
-        carList.add(car);
-        waybill.setCars(carList);
-        String retJson = objectMapper.writeValueAsString(waybill);
-        return ResponseEntity.ok(retJson);
-    }
     /**
      * Delete TempTare.
      *
@@ -310,7 +257,7 @@ public class MainRestController extends AbstractController {
     public ResponseEntity stop(@RequestParam(value = "waybillId") Integer waybillId) {
         Waybill waybill = waybillService.getById(waybillId);
 
-        if (waybill.getWeighings().size() == 0 && waybill.getTempTares().size() == 0 && waybill.getCars().size() == 0) {
+        if (waybill.getWeighings().size() == 0 && waybill.getTempTares().size() == 0) {
             waybillService.delete(waybill);
         }
         return ResponseEntity.ok("ok");

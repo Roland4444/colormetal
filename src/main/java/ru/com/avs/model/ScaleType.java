@@ -11,7 +11,7 @@ public enum ScaleType implements Serializable {
     SCALE_60_BACK(9600, "00");   ////<<<<<<<<<<<>>>>>>>>>>>>>>>>////
 
     private int speed;
-    private String command;
+    public String command;
 
     ScaleType(int speed, String command) {
         this.speed = speed;

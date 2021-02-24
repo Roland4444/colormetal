@@ -30,4 +30,20 @@ public class Scale3000RsReader extends RsReader {
 
 
     }
+
+
+    public static  String parseWeight3000(String weight) throws IOException {
+        if (weight != null) {
+            String hex = removeSpaces(weight);
+            Pattern pattern = Pattern.compile("7777(.*?)6B670D0A");
+            Matcher matcher = pattern.matcher(hex);
+            if (matcher.find()) {
+                byte[] bytes = DatatypeConverter.parseHexBinary(matcher.group(1));
+                weight = new BigDecimal(new String(bytes, StandardCharsets.UTF_8)).toString();
+            }
+        }
+        return weight;
+
+
+    }
 }
