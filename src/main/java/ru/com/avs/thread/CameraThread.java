@@ -23,14 +23,16 @@ import ru.com.avs.util.Utils;
 @Component("CameraThread")
 @Scope("prototype")
 public class CameraThread extends Thread {
-
+    Mat frame___ = new Mat();
+    Size size1 = new Size(350, 350);
+    Size size2 = new Size(50, 50);
     @FXML
     private ImageView videoFrame;
     @FXML
     private String cameraUrl;
 
     private boolean isActive;
-    Mat frame = new Mat();
+
     @Autowired
     private PropertyService property;
     private VideoCapture capture;
@@ -58,12 +60,10 @@ public class CameraThread extends Thread {
             while (isActive) {
                 Mat frame = grabFrame();
                 if (!frame.empty()) {
-
                     if (isSnapshot) {
                         createSnapshot(frame);
                     }
-                    Size size = new Size(350, 350);
-                    Imgproc.resize(frame, frame, size);
+                    Imgproc.resize(frame, frame, size1);
                     Image imageToShow = Utils.mat2Image(frame);
                     onFxThread(videoFrame.imageProperty(), imageToShow);
                     frame.release();
@@ -111,32 +111,28 @@ public class CameraThread extends Thread {
         String fullImage = basePath + "snapshot-" + nameFile + ".jpg";
         Imgcodecs.imwrite(fullImage, frame);
 
-        Size size = new Size(350, 350);
-        Mat snap = new Mat();
-        Imgproc.resize(frame, snap, size);
+
+        Imgproc.resize(frame, frame___, size1);
         String preview = basePath + "previewOur-" + nameFile + ".jpg";
-        Imgcodecs.imwrite(preview, snap);
+        Imgcodecs.imwrite(preview, frame___);
 
-        size = new Size(50, 50);
-        snap = new Mat();
-        Imgproc.resize(frame, snap, size);
+        Imgproc.resize(frame, frame___, size2);
         preview = basePath + "preview-" + nameFile + ".jpg";
-        Imgcodecs.imwrite(preview, snap);
+        Imgcodecs.imwrite(preview, frame___);
 
-        snap.release();
+        frame___.release();
         isSnapshot = false;
     }
 
     private Mat grabFrame() {
-
-
+        System.out.println("grab grab");
         if (this.capture.isOpened()) {
             try {
-                this.capture.read(frame);
+                this.capture.read(frame___);
             } catch (Exception e) {
                 // log.error("Exception during the image elaboration: ", e);
             }
         }
-        return frame;
+        return frame___;
     }
 }
