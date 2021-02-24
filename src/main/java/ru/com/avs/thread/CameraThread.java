@@ -30,7 +30,7 @@ public class CameraThread extends Thread {
     private String cameraUrl;
 
     private boolean isActive;
-
+    Mat frame = new Mat();
     @Autowired
     private PropertyService property;
     private VideoCapture capture;
@@ -128,8 +128,7 @@ public class CameraThread extends Thread {
     }
 
     private Mat grabFrame() {
-        System.out.println("grab grab");
-        Mat frame = new Mat();
+
 
         if (this.capture.isOpened()) {
             try {
