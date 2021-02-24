@@ -35,7 +35,7 @@ public class GetWeightThread extends Thread {
 
 
     public String getWeightfromURL(String url) {
-        int timeout = 5;
+        int timeout = 2;
         RequestConfig config = RequestConfig.custom()
                 .setConnectTimeout(timeout * 1000)
                 .setConnectionRequestTimeout(timeout * 1000)
