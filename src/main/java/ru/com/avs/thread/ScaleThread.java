@@ -3,27 +3,15 @@ package ru.com.avs.thread;
 import static ru.com.avs.util.UserUtils.waiting;
 
 import javafx.scene.control.Label;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.conn.ConnectTimeoutException;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.params.HttpConnectionParams;
-import org.apache.http.params.HttpParams;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-
 import ru.com.avs.model.Scale;
 import ru.com.avs.scalereader.Reader;
 import ru.com.avs.scalereader.ReaderFactory;
 import ru.com.avs.util.GetWeightThread;
-import ru.com.avs.util.SimpleThread;
 import ru.com.avs.util.Utils;
-
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.ConnectException;
+
 
 @Component("ScaleThread")
 @Scope("prototype")

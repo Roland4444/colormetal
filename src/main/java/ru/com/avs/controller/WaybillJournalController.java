@@ -276,12 +276,14 @@ public class WaybillJournalController extends AbstractController {
 
     private List<WeighingView> createModel(List<Waybill> waybills) {
         List<WeighingView> viewModels = new ArrayList<>();
-        for (Waybill waybill : waybills) {
+     /*   for (Waybill waybill : waybills) {
 
             List<Weighing> weighings = waybill.getWeighings();
 
             List<Mode> modes = modeService.getList();
-            for (Weighing weighing : weighings) {
+
+
+           for (Weighing weighing : weighings) {
                 WeighingView viewModel = new WeighingView();
                 viewModel.setWaybillId(waybill.getId());
                 viewModel.setDateCreate(waybill.getDateCreate());
@@ -303,7 +305,11 @@ public class WaybillJournalController extends AbstractController {
                 viewModel.setTare(weighing.getTare());
                 viewModels.add(viewModel);
             }
+
+
         }
+        */
+
         return viewModels;
     }
 }
