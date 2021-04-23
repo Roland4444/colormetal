@@ -48,7 +48,7 @@ public class WaybillDaoImpl extends DaoImpl<Waybill> implements WaybillDao {
     public List<Waybill> getNotCompleted() {
         Criteria criteria = getSession().createCriteria(Waybill.class);
         criteria.add(Restrictions.eq("complete", false));
-        criteria.add(Restrictions.eq("dateCreate", LocalDate.now()));
+  //////      criteria.add(Restrictions.eq("dateCreate", LocalDate.now()));
         criteria.addOrder(Order.asc("id")).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
         return criteria.list();
     }
