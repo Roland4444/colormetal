@@ -52,7 +52,7 @@ IP                  |VARCHAR  |NULL|NULL|20    |''        |40        |YES
 ETH_PORT            |INTEGER  |0   |10  |10    |0         |NULL      |YES
 ETH_CMD             |VARCHAR  |NULL|NULL|50    |''        |100       |YES
 
-     |1          |ethernet  |                    |0          |
+                   |1             |ethernet  |               |0         |
 insert into scales(name, port) values ('scale60', 'com12');
 insert into scales(name, port) values ('scale60', 'com12');
 

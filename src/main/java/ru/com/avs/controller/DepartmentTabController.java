@@ -1,8 +1,5 @@
 package ru.com.avs.controller;
 
-import java.util.List;
-import java.util.Map;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -12,7 +9,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ru.com.avs.api.ApiService;
@@ -20,6 +16,9 @@ import ru.com.avs.model.Department;
 import ru.com.avs.model.Property;
 import ru.com.avs.service.DepartmentService;
 import ru.com.avs.service.PropertyService;
+
+import java.util.List;
+import java.util.Map;
 
 @Component
 public class DepartmentTabController extends AbstractController {

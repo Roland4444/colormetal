@@ -43,12 +43,12 @@ public class WindowedApplication extends Application {
             log.error("IOException:", e.getMessage());
         }
 
-        Flyway.configure()
-                .dataSource(host, null, null)
-                .validateOnMigrate(false)
-                .locations("classpath:db/migration")
-                .load()
-                .migrate();
+//        Flyway.configure()
+//                .dataSource(host, null, null)
+//                .validateOnMigrate(false)
+//                .locations("classpath:db/migration")
+//                .load()
+//                .migrate();
     }
 
     /**
