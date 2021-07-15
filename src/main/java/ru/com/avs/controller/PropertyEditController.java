@@ -18,9 +18,9 @@ public class PropertyEditController extends AbstractController {
     private Property property;
 
     @FXML
-    private TextField name;
+    private javafx.scene.control.TextField name;
     @FXML
-    private TextField value;
+    private javafx.scene.control.TextField value;
 
     @Autowired
     private PropertyService service;
@@ -32,18 +32,17 @@ public class PropertyEditController extends AbstractController {
      */
     void initData(Property property) {
         this.property = new Property();
-        name.setText(property.getName());
-        value.setText(property.getValue());
+        this.name.textProperty().setValue(property.getName());
+        this.value.textProperty().setValue(property.getValue());
 
         if (property != null) {
             this.property = property;
             List<String> ignored = Arrays.asList(service.getProperty("ignore.prop").split(","));
-            if (ignored.contains(property.getName())) {
-                this.value.setEnabled(false);
-            }
+//            if (ignored.contains(property.getName())) {
+//                this.value.setDisable(true);
+//            }
         }
     }
-
     /**
      * Save or update Property.
      */
