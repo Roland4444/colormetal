@@ -201,9 +201,11 @@ public class MainController extends AbstractController {
                 (AuthController) runController("auth", "Авторизация", true);
 
         Stage stage = controller.getStage();
-        stage.setOnCloseRequest(we -> {
-            enableAdminMode(authService.isAdminMode());
-        });
+
+       enableAdminMode(true);
+//        stage.setOnCloseRequest(we -> {
+//            enableAdminMode(authService.isAdminMode());
+//        });
     }
 
     @FXML

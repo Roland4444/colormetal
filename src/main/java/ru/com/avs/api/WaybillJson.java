@@ -16,6 +16,7 @@ class WaybillJson implements Serializable {
     private String date;
     private List<WaybillJsonItem> weighings;
     private int departmentId;
+    public int section;
 
     public int getId() {
         return id;

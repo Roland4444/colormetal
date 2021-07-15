@@ -122,6 +122,9 @@ public class WaybillServiceImpl implements WaybillService {
         waybillJson.put("date", String.valueOf(waybill.getDateCreate()));
         waybillJson.put("time", String.valueOf(waybill.getTimeCreate()));
         waybillJson.put("departmentId", waybill.getDepartmentId());
+
+        System.out.println("\n\n\n\nSECTION::"+property.getIntProperty("section")+"\n\n\n\n\n");
+        waybillJson.put("section", property.getIntProperty("section"));
         waybillJson.put("id", waybill.getWaybill());
         waybillJson.put("mode", waybill.getMode());
         waybillJson.put("weighings", items);

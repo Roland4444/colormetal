@@ -8,15 +8,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import ru.com.avs.service.PropertyService;
 
 @Service("ApiService")
 class ApiServiceImpl implements ApiService {
 
     private final RequestDao requestDao;
     private Token token = null;
-
+    @Autowired
+    PropertyService service;
     ApiServiceImpl(RequestDao requestDao) {
         this.requestDao = requestDao;
     }
@@ -94,7 +97,7 @@ class ApiServiceImpl implements ApiService {
         WaybillJson waybill = waybillFromMap(map);
         try {
             String json = new ObjectMapper().writeValueAsString(waybill);
-
+            System.out.println("\n\n\n\n\n\nGENERATED JSON::"+json);
         Token token = getToken();
         ClientResponse response = requestDao.exportWaybill(json, token);
 
@@ -128,6 +131,7 @@ class ApiServiceImpl implements ApiService {
             items.add(waybillJsonItem);
         }
         WaybillJson waybillJson = new WaybillJson();
+        waybillJson.section=service.getIntProperty("section");
         waybillJson.setWaybill((int) waybill.get("waybill"));
         waybillJson.setComment((String) waybill.get("comment"));
         waybillJson.setDate((String) waybill.get("date"));

@@ -69,6 +69,7 @@ class RequestDaoImpl implements RequestDao {
 
     @Override
     public ClientResponse exportWaybill(String json, Token token) {
+        System.out.println(json);
         return client
                 .resource(property.getProperty("endpoint.api"))
                 .path(property.getProperty("endpoint.api.export"))
